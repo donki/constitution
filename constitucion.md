@@ -19,18 +19,23 @@ Documento de referencia para la arquitectura, gobernanza, publicación y manteni
 
 ## 4. Estructura del Proyecto
 Carpetas y proposito estandar:
-- Pages/: interfaces de usuario en XAML/C#.
+- Pages/ o Views/: interfaces de usuario en XAML/C# (elegir una convencion y mantenerla; no duplicar la misma pagina en ambas).
+- ViewModels/: logica de presentacion (estado, comandos) en el patron MVVM.
 - Services/: logica de negocio e integraciones.
 - Models/: clases de datos y entidades.
+- Converters/: convertidores de valor para enlaces de datos (IValueConverter).
+- Helpers/: utilidades transversales (por ejemplo, acceso a servicios, formateo).
 - Platforms/Android/: codigo Android nativo, manifiestos, recursos especificos.
 - Resources/: iconos, imagenes, estilos, fuentes.
 - Properties/: configuracion del proyecto (launchSettings.json).
 
 Reglas de dependencia obligatorias:
 - La logica de negocio reside en Services, no en interfaz.
+- La logica de presentacion reside en ViewModels, no en el code-behind de la vista (ver seccion 14).
 - Codigo Android especifico (permisos, integraciones nativas) debe estar encapsulado en Platforms/Android.
 - La interfaz MAUI no debe contener logica de plataforma o referencias directas a APIs Android.
-- Inyeccion de dependencias para todos los servicios.
+- Inyeccion de dependencias para todos los servicios y ViewModels.
+- No debe quedar codigo muerto ni paginas/ViewModels duplicados (mantener un unico origen por componente).
 
 Convención de identificador de paquete (Package Name):
 - Formato obligatorio: `com.socratic.[nombre-aplicacion]` (en minusculas, sin espacios).
@@ -139,3 +144,40 @@ Politica de revision y optimizacion:
   - Incluir validacion manual en dispositivo antes de merge.
   - Documentarse en CHANGELOG como "mejora tecnica" o "refactorizacion".
 - Si una mejora requiere cambios mayores, planificar como feature independiente en version futura.
+
+## 14. Arquitectura de Presentacion (MVVM)
+- Patron obligatorio: Model-View-ViewModel (MVVM) para separar interfaz de logica.
+- Usar una libreria estandar de MVVM (por ejemplo, CommunityToolkit.Mvvm) para comandos y notificacion de cambios.
+- La vista (XAML + code-behind) solo contiene logica de presentacion estricta; el estado y los comandos viven en el ViewModel.
+- El code-behind no debe acceder a Services directamente saltandose el ViewModel salvo casos justificados y documentados.
+- Los ViewModels se registran e inyectan por dependencias; no se instancian manualmente en la vista.
+- No mezclar dos estilos (code-behind con logica y MVVM) para el mismo tipo de pagina sin justificacion.
+
+## 15. Internacionalizacion y Localizacion (i18n)
+- Todo texto visible al usuario debe ser localizable; no incrustar cadenas fijas en la interfaz cuando exista soporte multiidioma.
+- Centralizar las traducciones (servicio de localizacion o ficheros de recursos .resx) y acceder a ellas de forma uniforme.
+- Definir un idioma por defecto valido y fijarlo antes de eliminar cualquier traduccion (coherente con seccion 8).
+- Formatos sensibles a la cultura (fechas, numeros, divisas) deben usar la cultura del usuario, no valores fijos.
+- Mantener las traducciones de la interfaz sincronizadas con la metadata de Play en todos los idiomas soportados.
+
+## 16. Persistencia de Datos Local
+- Coherente con "Privacidad primero" (seccion 3): los datos del usuario se almacenan en el dispositivo.
+- Usar el mecanismo adecuado segun el dato: preferencias/clave-valor para configuracion ligera; almacenamiento estructurado (archivo o base de datos local) para historicos y conjuntos de datos.
+- No almacenar secretos ni credenciales en almacenamiento en claro; aplicar la politica de la seccion 5.
+- Validar y manejar datos ausentes o corruptos sin provocar fallos silenciosos (seccion 3).
+- Considerar la migracion de esquema cuando cambie el formato de los datos persistidos entre versiones.
+
+## 17. Manejo de Errores y Registro (Logging)
+- Prohibido el fallo silencioso (seccion 3): toda excepcion esperada se gestiona y se informa de forma adecuada.
+- Operaciones que puedan fallar (E/S, red, plataforma) se envuelven con manejo de errores y mensajes claros al usuario cuando proceda.
+- Usar el sistema de logging del framework; habilitar trazas de depuracion solo en configuracion Debug.
+- No registrar datos personales ni secretos en los logs.
+- Antes de publicar, revisar que no queden excepciones no controladas en flujos principales.
+
+## 18. Convenciones de Nombres y Estilo de Codigo
+- C#: PascalCase para tipos, metodos y propiedades; camelCase para variables locales y parametros; prefijo `_` para campos privados.
+- Interfaces con prefijo `I` (por ejemplo, `INotificationService`).
+- Nombres de paginas/vistas terminados en `Page`; ViewModels terminados en `ViewModel`; servicios en `Service`.
+- Habilitar `Nullable` e `ImplicitUsings` y tratar las advertencias del compilador como deuda a reducir (seccion 9).
+- XAML: nombrar recursos y estilos de forma consistente; preferir estilos y recursos compartidos sobre valores repetidos en linea.
+- Un idioma para el codigo y los comentarios por proyecto, de forma consistente.
