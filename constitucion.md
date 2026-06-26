@@ -44,8 +44,8 @@ dirige.
   (ver sección 21).
 
 ## 4. Licencia, Procedencia y Dependencias
-- **Licencia declarada:** el proyecto declara una licencia explícita (por ejemplo, MIT) en un
-  fichero `LICENSE`, y todo el código de primera mano se publica bajo ella.
+- **Licencia MIT obligatoria:** todo proyecto se publica bajo la licencia **MIT**, declarada en un
+  fichero `LICENSE` en la raíz del repositorio; todo el código de primera mano se publica bajo ella.
 - **Código propio:** salvo decisión explícita y documentada, el código es de desarrollo propio; no
   se forkea, vendoriza ni reutiliza código de terceros con licencia **copyleft** (GPL/AGPL/LGPL)
   que contamine la licencia del proyecto.
@@ -111,16 +111,15 @@ detallan en los anexos):
 
 ## 7. Arquitectura de Presentación
 - **Separar presentación de lógica siempre**, sea cual sea el framework de interfaz.
-- **MVVM preferido** en frameworks con enlace de datos (MAUI, WPF, WinUI, etc.): usar una librería
-  estándar de MVVM (por ejemplo, CommunityToolkit.Mvvm) para comandos y notificación de cambios; el
-  estado y los comandos viven en el **ViewModel**, no en el code-behind.
-- **Interfaces sin enlace de datos** (por ejemplo, WinForms o vistas Android nativas): el
-  code-behind / la actividad se limita a orquestar la interfaz y **delega la lógica de negocio en
-  Services**; no debe contener reglas de negocio ni acceso directo a datos.
-- El componente de presentación (ViewModel / presenter / controller) **no accede a los servicios
-  saltándose su capa** salvo casos justificados y documentados.
-- Los componentes de presentación se registran e **inyectan por dependencias**; no se instancian
-  manualmente en la vista.
+- **La lógica de negocio reside en Services**, nunca en la interfaz. El code-behind / la actividad /
+  el controlador se limita a orquestar la interfaz y **delega en Services**; no contiene reglas de
+  negocio ni acceso directo a datos.
+- **Capa de presentación ligera:** preferir la solución más simple que separe interfaz y lógica.
+  **Evitar patrones de presentación pesados** (por ejemplo, MVVM con ViewModels y librerías de
+  binding) cuando no aporten un valor claro; el code-behind delgado que delega en Services es el
+  enfoque por defecto.
+- Los servicios se registran e **inyectan por dependencias**; no se instancian manualmente,
+  salvo casos justificados.
 - No mezclar dos estilos de presentación para el mismo tipo de pantalla sin justificación.
 
 ## 8. Internacionalización y Localización (i18n)
@@ -293,7 +292,7 @@ Una versión se considera lista para producción cuando:
 - **C#:** PascalCase para tipos, métodos y propiedades; camelCase para variables locales y
   parámetros; prefijo `_` para campos privados; interfaces con prefijo `I`. Habilitar `Nullable` e
   `ImplicitUsings` y tratar las advertencias del compilador como deuda a reducir. Sufijos por rol:
-  vistas/páginas en `Page`/`Form`, ViewModels en `ViewModel`, servicios en `Service`.
+  vistas/páginas en `Page`/`Form`, servicios en `Service`.
 - **C/C++:** estilo consistente en todo el módulo nativo (convención de nombres de funciones,
   tipos y ficheros uniforme); cabeceras públicas mínimas y bien delimitadas; gestión explícita de
   recursos y errores. Ver Anexo D.
@@ -307,8 +306,7 @@ Una versión se considera lista para producción cuando:
 
 ## A.1 Estructura específica (.NET MAUI)
 - `Pages/` o `Views/`: interfaces en XAML/C# (elegir una convención y mantenerla; no duplicar la
-  misma página en ambas).
-- `ViewModels/`: lógica de presentación (estado, comandos) en MVVM.
+  misma página en ambas). La lógica vive en el code-behind delgado, que delega en `Services/`.
 - `Services/`, `Models/`, `Converters/`, `Helpers/`: como en la sección 5.
 - `Platforms/Android/`: código Android nativo, manifiestos y recursos específicos. La interfaz MAUI
   no debe contener lógica de plataforma ni referencias directas a APIs Android.
@@ -372,8 +370,8 @@ Una versión se considera lista para producción cuando:
 
 ## B.1 Interfaz
 - Frameworks admitidos: WinForms, WPF, WinUI (Windows); equivalentes en otras plataformas.
-- Aplicar la sección 7: con frameworks de enlace de datos, MVVM; con WinForms u otros sin binding,
-  code-behind delgado que delega en Services.
+- Aplicar la sección 7: code-behind delgado que delega en Services, evitando patrones de
+  presentación pesados salvo que aporten un valor claro.
 - Tema claro/oscuro coherente con el del sistema cuando sea viable.
 
 ## B.2 Empaquetado e instalación
