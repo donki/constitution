@@ -99,6 +99,15 @@ detallan en los anexos):
   en el equipo afectado.
 - **Metadata veraz:** descripciones, títulos y notas de lanzamiento precisos; sin promesas no
   cumplidas ni contenido engañoso, en todos los idiomas soportados.
+- **Aviso legal y exención de responsabilidad (obligatorio):** toda aplicación incluye, de forma
+  visible y accesible (p.ej. en la pantalla "Acerca de"), un aviso legal localizado en todos los
+  idiomas soportados (mínimo es/en) que establezca:
+  - El software se entrega "tal como está", sin garantías de ningún tipo, expresas o implícitas.
+  - En ningún caso los autores serán responsables de reclamaciones, daños u otras responsabilidades
+    derivadas del uso del software.
+  - El uso es bajo el propio riesgo del usuario; al usar la aplicación, el usuario exime al
+    desarrollador de toda responsabilidad.
+  - El aviso no debe contradecir la licencia (sección 4) ni la política de privacidad.
 
 ## 7. Arquitectura de Presentación
 - **Separar presentación de lógica siempre**, sea cual sea el framework de interfaz.
@@ -124,6 +133,9 @@ detallan en los anexos):
   valores fijos.
 - Mantener las traducciones de la interfaz sincronizadas con la metadata de la tienda/distribución
   en todos los idiomas soportados.
+- **Bilingüe siempre (es/en):** el español y el inglés son idiomas base obligatorios. La interfaz y
+  todos los materiales (ficha de tienda, política de privacidad, notas de versión y aviso legal)
+  deben estar disponibles, como mínimo, en español e inglés.
 
 ## 9. Persistencia de Datos
 - Coherente con "Privacidad primero" (sección 3): los datos del usuario se almacenan en el
@@ -250,6 +262,8 @@ Una versión se considera lista para producción cuando:
 - Los cambios principales están registrados en el CHANGELOG.
 - La versión (legible y código) está incrementada y registrada.
 - Se ha realizado validación manual en un entorno real (dispositivo, emulador o servidor de pruebas).
+- La aplicación incluye el aviso legal de exención de responsabilidad (sección 6), localizado en
+  todos los idiomas soportados.
 
 ## 20. Convenciones de Colaboración en Repositorio
 - **Confirmaciones (commits) atómicas:** un cambio lógico por commit.
@@ -310,9 +324,14 @@ Una versión se considera lista para producción cuando:
 - Justificar cada permiso solicitado en la documentación y aplicar mínimo privilegio (sección 6).
 
 ## A.4 Versionado de tienda
-- `ApplicationDisplayVersion`: cadena legible (p.ej. `2026.05.20.0` o `1.10.0`).
+- `ApplicationDisplayVersion`: cadena legible con esquema de fecha (p.ej. `2026.05.20.0`).
 - `ApplicationVersion`/`versionCode`: entero incremental requerido por la tienda (p.ej. `202605200`).
 - Ambos se actualizan en sincronía antes de cada publicación (coherente con sección 11).
+- **En cada build (Debug o Release)** se incrementa siempre la última cifra de
+  `ApplicationDisplayVersion` (p.ej. `2026.05.20.0` → `2026.05.20.1`) y se actualiza `versionCode`.
+- **Al publicar en Google Play** se fija toda la versión a la fecha actual:
+  `ApplicationDisplayVersion = AAAA.MM.DD.0` y `versionCode = AAAAMMDD0`
+  (ejemplo para 2026-06-26: `2026.06.26.0` y `202606260`).
 
 ## A.5 Política de Google Play Store
 - **Canales:** pruebas cerradas (primer canal obligatorio), pruebas internas (validación rápida sin
@@ -335,7 +354,16 @@ Una versión se considera lista para producción cuando:
    defecto válido, descripción y notas en los idiomas soportados.
 7. Registrar la publicación en el repositorio (tag, commit de merge).
 
-## A.7 Validación móvil
+## A.7 Despliegue con ensamblados embebidos
+- **En cualquier despliegue** a emulador (MuMu) o dispositivo, tanto en **Debug** como en
+  **Release**, el paquete debe incluir todos los ensamblados dentro del APK/AAB
+  (`EmbedAssembliesIntoApk=true`).
+- Prohibido instalar manualmente paquetes con **Fast Deployment**: los ensamblados no viajan en el
+  APK y la app aborta al arrancar con `No assemblies found ... Fast Deployment`.
+- Recuperación ante ese fallo: recompilar con `EmbedAssembliesIntoApk=true`, volver a firmar e
+  instalar el paquete autocontenido.
+
+## A.8 Validación móvil
 - Cada cambio funcional se verifica en **dispositivo Android real o emulador** antes de publicar.
 
 ---
