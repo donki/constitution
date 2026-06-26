@@ -1,183 +1,414 @@
-# Constitucion de Proyectos Android en .NET MAUI
+# Constitución de Proyectos de Software
 
-## 1. Proposito
-Documento de referencia para la arquitectura, gobernanza, publicación y mantenimiento de aplicaciones Android desarrolladas en .NET MAUI. Define estándares operacionales aplicables a cualquier proyecto con este stack.
+## 1. Propósito
+Documento de referencia para la **arquitectura, gobernanza, seguridad, publicación y mantenimiento**
+de cualquier proyecto de software, con independencia de su plataforma (móvil, escritorio,
+web/servicios de servidor o código nativo) y de su stack tecnológico. Define estándares
+operacionales y de calidad que todo proyecto debe cumplir.
 
-## 2. Alcance
-- Plataforma objetivo principal: Android.
-- Ciclo de desarrollo: desde arquitectura hasta publicación en Google Play.
-- Áreas cubiertas: estructura del proyecto, seguridad, versionado, publicación, iconografía, idiomas, calidad y colaboración.
-- Fuera del alcance: decisiones de producto específicas, requisitos funcionales particulares, integraciones de terceros.
+Su origen es una constitución específica de aplicaciones **Android en .NET MAUI**; se ha
+generalizado para que **el núcleo común** (secciones 1–22) aplique a *cualquier* proyecto y los
+detalles específicos de cada plataforma vivan en sus **anexos** (A–D). Un proyecto cumple esta
+constitución aplicando el núcleo común **más** el/los anexo(s) de las plataformas a las que se
+dirige.
+
+## 2. Alcance y cómo se aplica
+- **Tipos de proyecto cubiertos:** aplicaciones móviles, aplicaciones de escritorio, servicios y
+  APIs de servidor, paneles/aplicaciones web y módulos de código nativo.
+- **Ciclo cubierto:** desde la arquitectura hasta la publicación, el despliegue y el mantenimiento.
+- **Áreas cubiertas:** estructura, licencia y procedencia, seguridad y secretos, arquitectura de
+  presentación, internacionalización, persistencia, errores y logging, versionado, build,
+  distribución, despliegue de servidor, autoactualización, calidad, colaboración y estilo.
+- **Estructura del documento:**
+  - **Núcleo común (secciones 3–22):** obligatorio para todo proyecto.
+  - **Anexo A — Móvil y tiendas de aplicaciones** (.NET MAUI / Android / Google Play…).
+  - **Anexo B — Escritorio** (Windows/Linux/macOS).
+  - **Anexo C — Web y servicios de servidor** (ASP.NET Core / APIs / paneles / autoalojado).
+  - **Anexo D — Código nativo** (C++ / interop).
+- **Fuera del alcance:** decisiones de producto específicas, requisitos funcionales particulares y
+  la elección de integraciones de terceros concretas.
 
 ## 3. Principios no negociables
-- Privacidad primero: datos de usuario se mantienen en el dispositivo.
-- Minimo privilegio: solo permisos estrictamente necesarios.
-- Confiabilidad operativa: prevenir fallos silenciosos y errores no documentados.
-- Trazabilidad: toda publicacion debe ser reproducible y verificable.
-- Cambios pequenos y seguros: evitar refactorizaciones masivas sin necesidad.
-- Reproducibilidad: cualquier version debe poder regenerarse desde el codigo fuente.
+- **Privacidad primero:** los datos del usuario se mantienen bajo su control; se minimiza la
+  recolección y la salida de datos fuera del dispositivo o del servidor autoalojado.
+- **Mínimo privilegio:** solo los permisos, puertos y accesos estrictamente necesarios.
+- **Seguridad por defecto:** cifrado en tránsito siempre que haya red; secretos fuera del
+  repositorio; credenciales sin valores por defecto (ver secciones 4 y 6).
+- **Confiabilidad operativa:** prevenir fallos silenciosos y errores no documentados.
+- **Trazabilidad:** toda publicación y todo despliegue debe ser reproducible y verificable.
+- **Reproducibilidad:** cualquier versión debe poder regenerarse desde el código fuente.
+- **Procedencia limpia de la licencia:** no incorporar código que contamine la licencia elegida
+  (ver sección 4).
+- **Cambios pequeños y seguros:** evitar refactorizaciones masivas sin necesidad.
+- **Estabilidad sobre mejora:** ninguna mejora justifica dejar el producto en estado no funcional
+  (ver sección 21).
 
-## 4. Estructura del Proyecto
-Carpetas y proposito estandar:
-- Pages/ o Views/: interfaces de usuario en XAML/C# (elegir una convencion y mantenerla; no duplicar la misma pagina en ambas).
-- ViewModels/: logica de presentacion (estado, comandos) en el patron MVVM.
-- Services/: logica de negocio e integraciones.
-- Models/: clases de datos y entidades.
-- Converters/: convertidores de valor para enlaces de datos (IValueConverter).
-- Helpers/: utilidades transversales (por ejemplo, acceso a servicios, formateo).
-- Platforms/Android/: codigo Android nativo, manifiestos, recursos especificos.
-- Resources/: iconos, imagenes, estilos, fuentes.
-- Properties/: configuracion del proyecto (launchSettings.json).
+## 4. Licencia, Procedencia y Dependencias
+- **Licencia declarada:** el proyecto declara una licencia explícita (por ejemplo, MIT) en un
+  fichero `LICENSE`, y todo el código de primera mano se publica bajo ella.
+- **Código propio:** salvo decisión explícita y documentada, el código es de desarrollo propio; no
+  se forkea, vendoriza ni reutiliza código de terceros con licencia **copyleft** (GPL/AGPL/LGPL)
+  que contamine la licencia del proyecto.
+- **Dependencias permitidas:** solo dependencias de terceros con licencia **permisiva**
+  (MIT/BSD/Apache-2.0) o **APIs del sistema operativo**. El uso de APIs del SO no contamina la
+  licencia del proyecto.
+- **Inventario de terceros:** mantener un fichero de avisos de terceros
+  (`THIRD-PARTY-NOTICES.md`) con cada dependencia, su uso, su licencia y su titular.
+- **Revisión antes de añadir:** antes de incorporar una dependencia nueva, verificar su licencia y
+  registrarla en el inventario.
 
-Reglas de dependencia obligatorias:
-- La logica de negocio reside en Services, no en interfaz.
-- La logica de presentacion reside en ViewModels, no en el code-behind de la vista (ver seccion 14).
-- Codigo Android especifico (permisos, integraciones nativas) debe estar encapsulado en Platforms/Android.
-- La interfaz MAUI no debe contener logica de plataforma o referencias directas a APIs Android.
-- Inyeccion de dependencias para todos los servicios y ViewModels.
-- No debe quedar codigo muerto ni paginas/ViewModels duplicados (mantener un unico origen por componente).
+## 5. Estructura del Proyecto
+Reglas de organización aplicables a cualquier stack (los nombres concretos de carpetas se
+detallan en los anexos):
+- **Separación por responsabilidades:**
+  - **Lógica de negocio / servicios:** aislada y reutilizable (carpeta de servicios), nunca en la
+    interfaz.
+  - **Modelos:** clases de datos y entidades, sin lógica de presentación.
+  - **Presentación:** estado y comandos separados de la interfaz (ver sección 7).
+  - **Interfaz / vistas:** solo presentación.
+  - **Utilidades transversales / helpers / convertidores:** agrupadas y reutilizables.
+  - **Código específico de plataforma:** encapsulado en su módulo o carpeta de plataforma; la capa
+    común no contiene referencias directas a APIs de una plataforma concreta.
+- **Código compartido:** los contratos comunes (protocolo, modelos del API, constantes de versión)
+  residen en un módulo compartido único, reutilizado por todos los clientes y servidores.
+- **Inyección de dependencias** para servicios y componentes de presentación; no instanciarlos
+  manualmente saltándose el contenedor, salvo casos justificados.
+- **Una sola fuente por componente:** no debe quedar código muerto ni vistas/componentes
+  duplicados; mantener un único origen por cada responsabilidad.
 
-Convención de identificador de paquete (Package Name):
-- Formato obligatorio: `com.socratic.[nombre-aplicacion]` (en minusculas, sin espacios).
-- Ejemplos: `com.socratic.smsforwarder`, `com.socratic.notasapp`, `com.socratic.calculadora`.
-- Configurar en CSPROJ: ApplicationId = "com.socratic.[nombre-aplicacion]".
-- Este identificador es permanente y publicamente visible en Google Play; no puede cambiar una vez publicado.
+## 6. Seguridad, Secretos y Cumplimiento
+- **Política de secretos:**
+  - Nunca subir al repositorio archivos con credenciales (JSON de servicio, contraseñas, almacenes
+    de claves, tokens).
+  - Usar variables de entorno, ficheros locales *gitignored* o secretos del pipeline de CI para las
+    credenciales.
+  - **Sin credenciales por defecto:** los ficheros de configuración versionados se publican con los
+    campos sensibles vacíos; con credenciales vacías el sistema no permite el acceso.
+  - Tratar las credenciales como material sensible incluso en máquinas locales.
+- **Cifrado en tránsito:**
+  - Todo canal de red usa cifrado (TLS/HTTPS) por defecto.
+  - Cuando el contenido es sensible y atraviesa intermediarios, aplicar cifrado **extremo a
+    extremo** de modo que el intermediario no vea el contenido.
+  - Documentar qué viaja en claro (y por qué es inocuo) si algo no puede cifrarse.
+- **Almacenamiento de credenciales:** las contraseñas se guardan como **hash**, nunca en claro;
+  los secretos en reposo se protegen según la sensibilidad del dato (sección 10 del anexo aplicable).
+- **Mínimo privilegio:** revisar y justificar cada permiso (móvil), cada puerto abierto en el
+  firewall (servidor) y cada acceso concedido, antes de cada publicación o despliegue.
+- **Consentimiento y uso responsable:** cuando el software pueda afectar a terceros (acceso remoto,
+  recolección de datos), incluir aviso de uso responsable y, cuando proceda, confirmación explícita
+  en el equipo afectado.
+- **Metadata veraz:** descripciones, títulos y notas de lanzamiento precisos; sin promesas no
+  cumplidas ni contenido engañoso, en todos los idiomas soportados.
 
-## 5. Seguridad, Secretos y Cumplimiento
-- Politica de secretos:
-  - Nunca subir archivos con credenciales (json de servicio, contrasenas, almacenes de claves) a repositorio.
-  - Usar variables de entorno o archivos locales gitignored para credenciales.
-  - Tratar credenciales como material sensible incluso en máquinas locales.
-- Permisos Android:
-  - Revisar AndroidManifest.xml antes de cada publicacion.
-  - Justificar cada permiso solicitado en documentacion.
-  - Aplicar principio de minimo privilegio.
-- Metadata de Play:
-  - Mantener descripciones, titulos y notas de lanzamiento precisos y veridicos.
-  - Evitar promesas no cumplidas o contenido enganoso.
-  - Actualizar descripciones en todos los idiomas soportados antes de publicar.
+## 7. Arquitectura de Presentación
+- **Separar presentación de lógica siempre**, sea cual sea el framework de interfaz.
+- **MVVM preferido** en frameworks con enlace de datos (MAUI, WPF, WinUI, etc.): usar una librería
+  estándar de MVVM (por ejemplo, CommunityToolkit.Mvvm) para comandos y notificación de cambios; el
+  estado y los comandos viven en el **ViewModel**, no en el code-behind.
+- **Interfaces sin enlace de datos** (por ejemplo, WinForms o vistas Android nativas): el
+  code-behind / la actividad se limita a orquestar la interfaz y **delega la lógica de negocio en
+  Services**; no debe contener reglas de negocio ni acceso directo a datos.
+- El componente de presentación (ViewModel / presenter / controller) **no accede a los servicios
+  saltándose su capa** salvo casos justificados y documentados.
+- Los componentes de presentación se registran e **inyectan por dependencias**; no se instancian
+  manualmente en la vista.
+- No mezclar dos estilos de presentación para el mismo tipo de pantalla sin justificación.
 
-## 6. Versionado y Publicacion
-Esquema de versionado recomendado:
-- ApplicationDisplayVersion: cadena legible para usuario (ejemplo: 2026.05.20.0 o 1.10.0).
-- ApplicationVersion: entero incremental requerido por Play Store (ejemplo: 202605200).
-- Ambos valores deben actualizarse en sincronía antes de cada publicacion.
-- Registrar todos los cambios de version en CHANGELOG.
+## 8. Internacionalización y Localización (i18n)
+- Todo texto visible al usuario debe ser **localizable**; no incrustar cadenas fijas en la interfaz
+  cuando exista soporte multiidioma.
+- Centralizar las traducciones (servicio de localización o ficheros de recursos, p.ej. `.resx`) y
+  acceder a ellas de forma uniforme.
+- Definir un **idioma por defecto** válido y fijarlo antes de eliminar cualquier traducción.
+- Formatos sensibles a la cultura (fechas, números, divisas) deben usar la cultura del usuario, no
+  valores fijos.
+- Mantener las traducciones de la interfaz sincronizadas con la metadata de la tienda/distribución
+  en todos los idiomas soportados.
 
-Artefactos de compilacion y publicacion:
-- Proyecto CSPROJ: configura version, metadatos, dependencias.
-- Script de compilacion: automatiza generacion de APK y AAB firmados (debe ser reproducible).
-- Script de publicacion: subida a Google Play automatizando AAB, ficha, icono, canal de distribucion.
+## 9. Persistencia de Datos
+- Coherente con "Privacidad primero" (sección 3): los datos del usuario se almacenan en el
+  dispositivo o en el servidor autoalojado bajo su control.
+- Usar el mecanismo adecuado según el dato: preferencias/clave-valor para configuración ligera;
+  almacenamiento estructurado (archivo o base de datos) para históricos y conjuntos de datos.
+- No almacenar secretos ni credenciales en claro; aplicar la política de la sección 6.
+- Validar y manejar datos ausentes o corruptos sin provocar fallos silenciosos (sección 3).
+- Considerar la **migración de esquema** cuando cambie el formato de los datos persistidos entre
+  versiones.
 
-## 7. Flujo de Publicacion Estandar
-1. Actualizar ApplicationDisplayVersion y ApplicationVersion en el archivo CSPROJ.
-2. Actualizar CHANGELOG con los cambios de esta version.
-3. Ejecutar script de compilacion y firmado (debe producir APK y AAB).
-4. Validar localmente el artefacto AAB firmado.
-5. Ejecutar script de publicacion con parametros de Play Console (cuenta de servicio, pista, metadata).
-6. Confirmar en Play Console:
-   - versionCode es incremental y correcto
-   - pista/canal es la deseada
-   - icono de aplicacion se ve correctamente
-   - idioma por defecto es valido
-   - descripcion y notas de lanzamiento estan en idiomas soportados
-7. Registrar la publicacion en repositorio (tag de version, commit de merge).
+## 10. Manejo de Errores y Registro (Logging)
+- **Prohibido el fallo silencioso** (sección 3): toda excepción esperada se gestiona y se informa
+  de forma adecuada.
+- Operaciones que puedan fallar (E/S, red, plataforma) se envuelven con manejo de errores y
+  mensajes claros al usuario cuando proceda.
+- Usar el sistema de logging del framework; habilitar trazas de depuración solo en configuración
+  Debug.
+- **No registrar** datos personales ni secretos en los logs.
+- **Logging operativo en servidores/servicios:** logging persistente con **rotación** (límite de
+  tamaño y número de ficheros) para no agotar el disco; cuando aplique, segmentar por sesión/par.
+- Antes de publicar, revisar que no queden excepciones no controladas en los flujos principales.
 
-## 8. Politica de Google Play Store
-Canales de distribucion:
-- Pruebas cerradas (closed testing): primer canal obligatorio de publicacion, para grupos limitados de testers autorizados.
-- Pruebas internas: canal opcional de validacion rapida sin revisor de Play.
-- Produccion: distribucion publica a todos los usuarios.
+## 11. Versionado
+- **Esquema único y coherente** para todo el proyecto, definido en una **constante única**
+  reutilizada por todos los componentes. Esquemas admitidos:
+  - **Fecha:** `AAAA.MM.DD.N` (p.ej. `2026.06.18.1`), donde `N` es el build incremental del día.
+  - **Semántico / tienda:** versión legible (`1.10.0`) más, cuando la tienda lo exija, un entero
+    incremental de build (ver Anexo A).
+- **Versión legible y código de versión deben actualizarse en sincronía** antes de cada publicación.
+- **Incremento automatizado:** un script de build incrementa la versión de forma reproducible (la
+  constante de versión y, en móvil, el `versionCode`).
+- Registrar todos los cambios de versión en un **CHANGELOG**.
 
-Reglas obligatorias:
-- Publicar siempre primero en pruebas cerradas (closed testing) para validacion con testers antes de cualquier otro canal.
-- No pasar a produccion sin haber validado previamente en pruebas cerradas y sin cumplir lista de verificacion completa de metadata y permisos.
-- Mantener metadatos (titulo, descripcion corta, descripcion larga, notas de lanzamiento, capturas) consistentes en todos los idiomas.
-- Fijar idioma por defecto antes de eliminar cualquier traduccion.
-- El icono de aplicacion debe ser visible, legible y cumplir guias de Google Play.
-- No mezclar cambios funcionales con cambios de metadata en misma publicacion.
+## 12. Build, Empaquetado y Reproducibilidad
+- **Build reproducible:** scripts versionados (p.ej. PowerShell) que automatizan la compilación, el
+  empaquetado y el firmado, de modo que cualquier versión se regenere desde el código fuente.
+- **Salida autocontenida** cuando reduzca dependencias del entorno de destino (p.ej. *publish
+  self-contained* para servicios de servidor).
+- **Multi-toolchain:** si el proyecto combina varios lenguajes/toolchains (gestionado + nativo),
+  documentar todas las herramientas requeridas y orquestar el build completo con un único script.
+- **Artefactos firmados** cuando la plataforma lo requiera, con el material de firma fuera del
+  repositorio (sección 6).
+- La compilación debe finalizar **sin errores**; las advertencias se documentan y se reducen
+  progresivamente.
 
-## 9. Estandares de Calidad
-- Compilacion: debe finalizar sin errores. Las advertencias deben documentarse y reducirse progresivamente.
-- Pruebas: incluir pruebas unitarias e integracion cuando sea viable.
-- Permisos: revisar AndroidManifest.xml y justificar cada permiso.
-- Validacion manual: cada cambio funcional debe verificarse en dispositivo Android real o emulador antes de publicar.
-- Documentacion: mantener README y CHANGELOG actualizados con cambios relevantes.
+## 13. Distribución y Publicación
+- **Liberación escalonada:** validar primero en un canal restringido (pruebas cerradas/internas,
+  rollout parcial) antes de la distribución general; no pasar a producción sin haber validado y sin
+  cumplir la lista de verificación de la sección 19.
+- **Verificación de integridad:** los artefactos distribuidos (instaladores, paquetes de
+  actualización) se verifican por **hash (SHA-256)** antes de instalarse.
+- **Metadata consistente:** título, descripciones, notas de lanzamiento y capturas coherentes en
+  todos los idiomas soportados; fijar el idioma por defecto antes de eliminar traducciones.
+- **No mezclar** cambios funcionales con cambios solo de metadata en la misma publicación.
+- Los detalles por canal (tiendas, instaladores de escritorio, autoactualización autoalojada) se
+  describen en los anexos y en la sección 15.
 
-## 10. Convenciones de Colaboracion en Repositorio
-- Confirmaciones (commits) atomicas: un cambio logico por commit.
-- Mensajes de commit descriptivos: explicar el "que" y el "por que", no solo el "que".
-- No mezclar cambios funcionales con cambios cosmeticos o refactorizacion.
-- Ramas de trabajo: crear rama descriptiva para cada feature o fix.
-- Pull requests: incluir descripcion del cambio, impacto y verificacion realizada.
-- Revisor: al menos un revisor antes de merge a rama principal.
-- Documentacion: actualizar README y CHANGELOG si aplica.
-- Publicacion: si el cambio afecta publicacion o scripts de build, registrar procedimiento.
+## 14. Despliegue de Servidor y Servicios
+*(Aplica a proyectos con componente de servidor; ver Anexo C para el detalle.)*
+- **Instalación como servicio** del sistema (servicios de Windows / unidades systemd) con arranque
+  automático; el instalador abre los puertos de firewall necesarios y aplica la configuración.
+- **Configuración externalizada** en ficheros junto al binario, sin secretos versionados (sección 6).
+- **Alcanzabilidad:** las direcciones públicas que el servidor anuncia a los clientes deben ser
+  realmente alcanzables por ellos (IP pública / DNS), no direcciones de LAN privada.
+- **CI/CD:** flujo `checkout → instalar toolchain → build → desplegar → verificar`. Las credenciales
+  de despliegue se guardan como **secretos del pipeline**, nunca en el repositorio ni en el YAML.
+- **Verificación post-despliegue:** comprobar que el servicio responde y sirve la versión esperada.
 
-## 11. Plan de Contingencia
-Errores comunes y procedimientos de recuperacion:
-- Compilacion bloqueada por permisos: cerrar procesos de compilacion, limpiar bin/obj, reintentar.
-- versionCode rechazado por Play: regenerar AAB con entero incremental valido que no haya sido usado antes.
-- Play bloquea publicacion por idioma por defecto: cambiar idioma por defecto a uno soportado via API, reintentar.
-- Problemas de firma: validar que el keystore sea accesible, contrasena correcta, alias correcto.
-- Fallo de autenticacion Play: verificar cuenta de servicio JSON, permisos en Play Console, token expirado.
+## 15. Autoactualización
+*(Aplica a clientes/servicios con actualización automática.)*
+- **Comprobación de versión** contra una fuente de confianza (el propio servidor del proyecto) al
+  arrancar o conectar.
+- **Descarga desde fuente de confianza** y **verificación SHA-256** del artefacto antes de
+  instalarlo (sección 13).
+- **Reinstalación preservando la configuración** del usuario (p.ej. swap + reinicio en escritorio;
+  instalador del sistema con confirmación del usuario en móvil).
+- **Rollout escalonado:** limitar las descargas concurrentes en el servidor y aplicar *jitter* por
+  dispositivo para no saturar; no actualizar a todos los clientes a la vez.
 
-## 12. Criterio de Entrega (Definition of Done)
-Una version se considera lista para produccion cuando:
-- Compila sin errores y genera AAB/APK firmado correctamente.
-- Subida a Play Console sin fallos.
-- Icono de aplicacion visible y legible en Play Store.
-- Metadata (titulo, descripcion, notas) esta en todos los idiomas soportados.
-- Permisos solicitados estan justificados y documentados.
-- Cambios principales estan registrados en CHANGELOG.
-- Version (versionCode y versionName) esta incrementada y registrada.
-- Se ha realizado validacion manual en dispositivo Android real o emulador.
+## 16. Estándares de Calidad
+- **Compilación:** sin errores; advertencias documentadas y en reducción.
+- **Pruebas:** incluir pruebas unitarias y de integración cuando sea viable; para sistemas
+  distribuidos, **prueba de extremo a extremo automatizada** ejecutable sin intervención manual.
+- **Permisos y superficie:** revisar permisos (móvil), puertos (servidor) y accesos, justificando
+  cada uno.
+- **Validación manual:** cada cambio funcional se verifica en un entorno real (dispositivo real,
+  emulador, servidor de pruebas) antes de publicar.
+- **Documentación:** mantener README y CHANGELOG actualizados con los cambios relevantes.
 
-## 13. Revision Continua y Mejora Incremental
-Politica de revision y optimizacion:
-- Revisar periodicamente el codigo, arquitectura y dependencias para identificar areas de mejora.
-- Aplicar mejoras pequeñas e incrementales: refactorizacion, actualizacion de dependencias, optimizacion de rendimiento, claridad de codigo.
-- **Principio fundamental: nunca sacrificar estabilidad por mejora.** Todo cambio debe dejar la aplicacion en estado funcional y verificado.
-- Cambios de mejora deben:
-  - Aislarse en rama separada y commit independiente.
-  - No alterar la funcionalidad existente o la experiencia del usuario.
-  - Incluir validacion manual en dispositivo antes de merge.
-  - Documentarse en CHANGELOG como "mejora tecnica" o "refactorizacion".
-- Si una mejora requiere cambios mayores, planificar como feature independiente en version futura.
+## 17. Flujo de Publicación Estándar
+1. Actualizar la versión (legible y código) en la constante única / proyecto.
+2. Actualizar el **CHANGELOG** con los cambios de la versión.
+3. Ejecutar el script de build y firmado (reproducible); generar los artefactos.
+4. Validar localmente los artefactos firmados (y verificar su hash).
+5. Publicar/desplegar en el canal restringido correspondiente (pruebas cerradas / rollout parcial /
+   servidor de pruebas).
+6. Confirmar la lista de verificación del canal (ver anexo): versión incremental correcta, canal
+   adecuado, iconografía/idioma por defecto válidos, metadata en todos los idiomas, permisos/puertos
+   justificados.
+7. Promover a producción y registrar la publicación en el repositorio (tag de versión, commit de
+   merge).
 
-## 14. Arquitectura de Presentacion (MVVM)
-- Patron obligatorio: Model-View-ViewModel (MVVM) para separar interfaz de logica.
-- Usar una libreria estandar de MVVM (por ejemplo, CommunityToolkit.Mvvm) para comandos y notificacion de cambios.
-- La vista (XAML + code-behind) solo contiene logica de presentacion estricta; el estado y los comandos viven en el ViewModel.
-- El code-behind no debe acceder a Services directamente saltandose el ViewModel salvo casos justificados y documentados.
-- Los ViewModels se registran e inyectan por dependencias; no se instancian manualmente en la vista.
-- No mezclar dos estilos (code-behind con logica y MVVM) para el mismo tipo de pagina sin justificacion.
+## 18. Plan de Contingencia
+Errores comunes y procedimientos de recuperación (adaptar al stack):
+- **Compilación bloqueada por permisos/procesos:** cerrar procesos de compilación, limpiar
+  `bin`/`obj` (o equivalente), reintentar.
+- **Código/versión de build rechazado por la tienda:** regenerar con un entero incremental válido
+  no usado antes.
+- **Bloqueo por idioma por defecto:** cambiar el idioma por defecto a uno soportado y reintentar.
+- **Problemas de firma:** validar accesibilidad del keystore/certificado, contraseña y alias.
+- **Fallo de autenticación de publicación/despliegue:** verificar cuenta de servicio/credenciales,
+  permisos y caducidad de tokens.
+- **Fallo de despliegue de servidor:** verificar conectividad (WinRM/SSH), reglas de firewall y
+  estado de los servicios.
 
-## 15. Internacionalizacion y Localizacion (i18n)
-- Todo texto visible al usuario debe ser localizable; no incrustar cadenas fijas en la interfaz cuando exista soporte multiidioma.
-- Centralizar las traducciones (servicio de localizacion o ficheros de recursos .resx) y acceder a ellas de forma uniforme.
-- Definir un idioma por defecto valido y fijarlo antes de eliminar cualquier traduccion (coherente con seccion 8).
-- Formatos sensibles a la cultura (fechas, numeros, divisas) deben usar la cultura del usuario, no valores fijos.
-- Mantener las traducciones de la interfaz sincronizadas con la metadata de Play en todos los idiomas soportados.
+## 19. Criterio de Entrega (Definition of Done)
+Una versión se considera lista para producción cuando:
+- Compila sin errores y genera artefactos firmados correctamente (y con hash verificable).
+- Se publica/despliega en el canal correspondiente sin fallos.
+- La iconografía es visible y legible donde aplique.
+- La metadata (título, descripción, notas) está en todos los idiomas soportados.
+- Los permisos/puertos solicitados están justificados y documentados.
+- Los cambios principales están registrados en el CHANGELOG.
+- La versión (legible y código) está incrementada y registrada.
+- Se ha realizado validación manual en un entorno real (dispositivo, emulador o servidor de pruebas).
 
-## 16. Persistencia de Datos Local
-- Coherente con "Privacidad primero" (seccion 3): los datos del usuario se almacenan en el dispositivo.
-- Usar el mecanismo adecuado segun el dato: preferencias/clave-valor para configuracion ligera; almacenamiento estructurado (archivo o base de datos local) para historicos y conjuntos de datos.
-- No almacenar secretos ni credenciales en almacenamiento en claro; aplicar la politica de la seccion 5.
-- Validar y manejar datos ausentes o corruptos sin provocar fallos silenciosos (seccion 3).
-- Considerar la migracion de esquema cuando cambie el formato de los datos persistidos entre versiones.
+## 20. Convenciones de Colaboración en Repositorio
+- **Confirmaciones (commits) atómicas:** un cambio lógico por commit.
+- **Mensajes de commit descriptivos:** explicar el "qué" y el "por qué", no solo el "qué".
+- **No mezclar** cambios funcionales con cambios cosméticos o refactorización.
+- **Ramas de trabajo:** crear una rama descriptiva para cada feature o fix.
+- **Pull requests:** incluir descripción del cambio, impacto y verificación realizada; al menos un
+  revisor antes de merge a la rama principal.
+- **Documentación:** actualizar README y CHANGELOG cuando aplique.
+- **Publicación/despliegue:** si el cambio afecta a build, scripts o despliegue, registrar el
+  procedimiento.
 
-## 17. Manejo de Errores y Registro (Logging)
-- Prohibido el fallo silencioso (seccion 3): toda excepcion esperada se gestiona y se informa de forma adecuada.
-- Operaciones que puedan fallar (E/S, red, plataforma) se envuelven con manejo de errores y mensajes claros al usuario cuando proceda.
-- Usar el sistema de logging del framework; habilitar trazas de depuracion solo en configuracion Debug.
-- No registrar datos personales ni secretos en los logs.
-- Antes de publicar, revisar que no queden excepciones no controladas en flujos principales.
+## 21. Revisión Continua y Mejora Incremental
+- Revisar periódicamente el código, la arquitectura y las dependencias para identificar mejoras.
+- Aplicar mejoras **pequeñas e incrementales**: refactorización, actualización de dependencias,
+  optimización de rendimiento, claridad de código.
+- **Principio fundamental: nunca sacrificar estabilidad por mejora.** Todo cambio debe dejar el
+  producto en estado funcional y verificado.
+- Los cambios de mejora deben: aislarse en rama y commit independientes; no alterar la funcionalidad
+  existente ni la experiencia del usuario; incluir validación antes de merge; documentarse en el
+  CHANGELOG como "mejora técnica" o "refactorización".
+- Si una mejora requiere cambios mayores, planificarla como feature independiente en una versión
+  futura.
 
-## 18. Convenciones de Nombres y Estilo de Codigo
-- C#: PascalCase para tipos, metodos y propiedades; camelCase para variables locales y parametros; prefijo `_` para campos privados.
-- Interfaces con prefijo `I` (por ejemplo, `INotificationService`).
-- Nombres de paginas/vistas terminados en `Page`; ViewModels terminados en `ViewModel`; servicios en `Service`.
-- Habilitar `Nullable` e `ImplicitUsings` y tratar las advertencias del compilador como deuda a reducir (seccion 9).
-- XAML: nombrar recursos y estilos de forma consistente; preferir estilos y recursos compartidos sobre valores repetidos en linea.
-- Un idioma para el codigo y los comentarios por proyecto, de forma consistente.
+## 22. Convenciones de Nombres y Estilo de Código
+- **Un idioma para el código y los comentarios por proyecto**, de forma consistente.
+- **C#:** PascalCase para tipos, métodos y propiedades; camelCase para variables locales y
+  parámetros; prefijo `_` para campos privados; interfaces con prefijo `I`. Habilitar `Nullable` e
+  `ImplicitUsings` y tratar las advertencias del compilador como deuda a reducir. Sufijos por rol:
+  vistas/páginas en `Page`/`Form`, ViewModels en `ViewModel`, servicios en `Service`.
+- **C/C++:** estilo consistente en todo el módulo nativo (convención de nombres de funciones,
+  tipos y ficheros uniforme); cabeceras públicas mínimas y bien delimitadas; gestión explícita de
+  recursos y errores. Ver Anexo D.
+- **Interfaz declarativa (XAML/markup):** nombrar recursos y estilos de forma consistente; preferir
+  estilos y recursos compartidos sobre valores repetidos en línea.
+- Preferir nombres descriptivos sobre abreviaturas; evitar duplicación de constantes (sección 5).
+
+---
+
+# Anexo A — Móvil y Tiendas de Aplicaciones (.NET MAUI / Android / Google Play)
+
+## A.1 Estructura específica (.NET MAUI)
+- `Pages/` o `Views/`: interfaces en XAML/C# (elegir una convención y mantenerla; no duplicar la
+  misma página en ambas).
+- `ViewModels/`: lógica de presentación (estado, comandos) en MVVM.
+- `Services/`, `Models/`, `Converters/`, `Helpers/`: como en la sección 5.
+- `Platforms/Android/`: código Android nativo, manifiestos y recursos específicos. La interfaz MAUI
+  no debe contener lógica de plataforma ni referencias directas a APIs Android.
+- `Resources/`: iconos, imágenes, estilos, fuentes. `Properties/`: configuración del proyecto.
+
+## A.2 Identificador de paquete
+- Formato obligatorio: `com.socratic.[nombre-aplicacion]` (en minúsculas, sin espacios).
+- Configurar en CSPROJ: `ApplicationId = "com.socratic.[nombre-aplicacion]"`.
+- Es **permanente y públicamente visible**; no puede cambiar una vez publicado.
+
+## A.3 Permisos Android
+- Revisar `AndroidManifest.xml` antes de cada publicación.
+- Justificar cada permiso solicitado en la documentación y aplicar mínimo privilegio (sección 6).
+
+## A.4 Versionado de tienda
+- `ApplicationDisplayVersion`: cadena legible (p.ej. `2026.05.20.0` o `1.10.0`).
+- `ApplicationVersion`/`versionCode`: entero incremental requerido por la tienda (p.ej. `202605200`).
+- Ambos se actualizan en sincronía antes de cada publicación (coherente con sección 11).
+
+## A.5 Política de Google Play Store
+- **Canales:** pruebas cerradas (primer canal obligatorio), pruebas internas (validación rápida sin
+  revisor) y producción (distribución pública).
+- Publicar **siempre primero en pruebas cerradas** con testers antes de cualquier otro canal.
+- No pasar a producción sin validar en pruebas cerradas y sin cumplir la lista completa de metadata
+  y permisos.
+- El icono debe ser visible, legible y cumplir las guías de Google Play.
+- Mantener metadatos consistentes en todos los idiomas; fijar el idioma por defecto antes de
+  eliminar traducciones.
+
+## A.6 Flujo de publicación móvil
+1. Actualizar `ApplicationDisplayVersion` y `ApplicationVersion` en el CSPROJ.
+2. Actualizar el CHANGELOG.
+3. Ejecutar el script de compilación y firmado (APK y AAB).
+4. Validar localmente el AAB firmado.
+5. Ejecutar el script de publicación con parámetros de Play Console (cuenta de servicio, pista,
+   metadata).
+6. Confirmar en Play Console: `versionCode` incremental, canal correcto, icono correcto, idioma por
+   defecto válido, descripción y notas en los idiomas soportados.
+7. Registrar la publicación en el repositorio (tag, commit de merge).
+
+## A.7 Validación móvil
+- Cada cambio funcional se verifica en **dispositivo Android real o emulador** antes de publicar.
+
+---
+
+# Anexo B — Escritorio
+
+## B.1 Interfaz
+- Frameworks admitidos: WinForms, WPF, WinUI (Windows); equivalentes en otras plataformas.
+- Aplicar la sección 7: con frameworks de enlace de datos, MVVM; con WinForms u otros sin binding,
+  code-behind delgado que delega en Services.
+- Tema claro/oscuro coherente con el del sistema cuando sea viable.
+
+## B.2 Empaquetado e instalación
+- Empaquetado a instalador o ZIP mediante script reproducible (sección 12).
+- Núcleo nativo (si lo hay) compilado y empaquetado junto a la UI (ver Anexo D).
+- Opciones de integración con el SO (arranque automático, bandeja del sistema) configurables por el
+  usuario.
+
+## B.3 Actualización
+- Autoactualización por swap + reinicio **preservando la configuración** del usuario (sección 15),
+  con verificación SHA-256 del paquete.
+
+---
+
+# Anexo C — Web y Servicios de Servidor (ASP.NET Core / APIs / Autoalojado)
+
+## C.1 Estructura y responsabilidades
+- API/servicio (p.ej. ASP.NET Core) con registro, autenticación, señalización y/o panel web según
+  el proyecto.
+- Persistencia propia (p.ej. SQLite/SQL Server) según el despliegue.
+- Los modelos del API se comparten con los clientes desde el módulo común (sección 5).
+
+## C.2 Seguridad de servidor
+- **API siempre por HTTPS (TLS).** Documentar el uso de certificados (CA de confianza o
+  autofirmados aceptados explícitamente por el cliente).
+- Autenticación por token (p.ej. bearer); contraseñas almacenadas como hash (sección 6).
+- Cuando el servidor reenvía tráfico entre clientes, preferir **cifrado extremo a extremo** entre
+  los clientes para que el servidor no vea el contenido.
+- Mínimo privilegio en puertos: abrir solo los necesarios y documentarlos.
+
+## C.3 Despliegue (coherente con sección 14)
+- Publicar de forma **autocontenida** para no depender del runtime en el servidor.
+- Instalar como servicios del sistema con arranque automático; el instalador abre el firewall local
+  y aplica la configuración.
+- **CI/CD:** flujo `checkout → toolchain → build → deploy → verificar` (p.ej. WinRM/SSH); secretos
+  de despliegue como secretos del pipeline.
+- Las direcciones públicas anunciadas a los clientes deben ser alcanzables (sección 14).
+- Abrir los puertos necesarios tanto en el firewall local como en el del proveedor (Security
+  List/NSG, grupo de seguridad, etc.).
+
+## C.4 Operación
+- Logging persistente con **rotación** (tamaño × número de ficheros); segmentar por sesión/conexión
+  cuando ayude al diagnóstico (sección 10).
+- Verificación post-despliegue automatizada (sección 14).
+
+---
+
+# Anexo D — Código Nativo (C++ / Interop)
+
+## D.1 Alcance y encapsulación
+- El código nativo se encapsula en un módulo propio con una **cabecera pública mínima**; la capa
+  gestionada (C#) interactúa a través de esa frontera (P/Invoke / interop NDK), sin filtrar detalles
+  de implementación nativa al resto del proyecto.
+- El código específico de plataforma del módulo nativo se mantiene aislado.
+
+## D.2 Toolchain y build
+- Compilación con MSVC/CMake (Windows) o NDK (Android), orquestada por el script de build común
+  (sección 12).
+- Documentar las herramientas requeridas (p.ej. Visual Studio Build Tools, `vcvars`, NDK).
+- Enlazar contra bibliotecas de importación del SO y **APIs del sistema** (captura, códec, red) en
+  lugar de redistribuir binarios o librerías copyleft de terceros (sección 4).
+
+## D.3 Calidad
+- Gestión explícita de recursos (RAII / liberación determinista) y de errores; no propagar fallos
+  silenciosos a la capa gestionada (sección 10).
+- Estilo y convenciones de nombres consistentes en todo el módulo (sección 22).
