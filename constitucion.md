@@ -85,13 +85,13 @@ Artefactos de compilacion y publicacion:
 
 ## 8. Politica de Google Play Store
 Canales de distribucion:
-- Pruebas internas: primer canal para validacion, sin revisor de Play.
-- Pruebas cerradas: para grupos limitados de testers.
+- Pruebas cerradas (closed testing): primer canal obligatorio de publicacion, para grupos limitados de testers autorizados.
+- Pruebas internas: canal opcional de validacion rapida sin revisor de Play.
 - Produccion: distribucion publica a todos los usuarios.
 
 Reglas obligatorias:
-- Publicar siempre primero en pruebas internas para validacion.
-- No pasar a produccion sin cumplir lista de verificacion completa de metadata y permisos.
+- Publicar siempre primero en pruebas cerradas (closed testing) para validacion con testers antes de cualquier otro canal.
+- No pasar a produccion sin haber validado previamente en pruebas cerradas y sin cumplir lista de verificacion completa de metadata y permisos.
 - Mantener metadatos (titulo, descripcion corta, descripcion larga, notas de lanzamiento, capturas) consistentes en todos los idiomas.
 - Fijar idioma por defecto antes de eliminar cualquier traduccion.
 - El icono de aplicacion debe ser visible, legible y cumplir guias de Google Play.
