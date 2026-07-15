@@ -412,20 +412,48 @@ Una versión se considera lista para producción cuando:
 
 ## A.8 Validación móvil
 
-**Emulador estándar: MuMu Player**
-- El emulador de referencia del proyecto es **MuMu Player** (`nx_main/MuMuManager.exe`,
-  `nx_main/adb.exe`). Un dispositivo Android real es siempre válido y preferible cuando el cambio
-  toca hardware (cámara, sensores, telefonía, SMS).
-- Conexión por ADB: `adb connect 127.0.0.1:5555`. El puerto se confirma con
-  `MuMuManager.exe info -v all` (campo `adb_port`).
-- Instalación del artefacto de Release firmado:
-  `adb -s 127.0.0.1:5555 install -r <paquete>.apk`, con los ensamblados embebidos (A.7).
-- Comprobar que el arranque no produce ninguna excepción:
-  `adb -s 127.0.0.1:5555 logcat -d | grep "FATAL EXCEPTION"` debe salir vacío.
+### A.8.1 Emulador de referencia: MuMu Player
+MuMu Player es el emulador estándar para la validación manual del día a día (sección 16) por su
+rapidez de arranque frente a un AVD. Cada proyecto debe incluir un script `install_mumu.ps1` que
+resuelva adb, instale el APK y lance la aplicación, con los conmutadores `-BuildFirst`, `-Launch`
+y `-GrantPermissions`.
 
-**Qué se verifica antes de publicar**
-- Cada cambio funcional se ejercita **de extremo a extremo en dispositivo real o emulador**: no
-  basta con que compile ni con que pasen las pruebas.
+**Convenciones de conexión**
+- adb de MuMu: `C:\Program Files\Netease\MuMuPlayer\nx_main\adb.exe`.
+- Puertos habituales, en este orden: `127.0.0.1:16384`, `127.0.0.1:7555`, `127.0.0.1:16416`,
+  `127.0.0.1:5555`. El script debe intentar `adb connect` sobre todos ellos antes de fallar.
+  El puerto real de una instancia se confirma con `MuMuManager.exe info -v all` (campo `adb_port`).
+- Arrancar la instancia sin abrir la interfaz: `MuMuManager.exe control -v 0 launch`.
+- Instalar con `adb install -r -d`: MuMu rechaza la instalación incremental y `-d` permite
+  reinstalar sobre una versión con `versionCode` mayor durante las pruebas.
+- El paquete instalado debe llevar los ensamblados embebidos (A.7).
+
+**Reglas de uso**
+- Lanzar la aplicación con `adb shell am start -n <paquete>/<actividad>`, nunca con `monkey`:
+  `monkey` inyecta un evento aleatorio además de abrir la app y falsea la pantalla que se valida.
+  La actividad real se resuelve con `adb shell cmd package resolve-activity --brief <paquete>`.
+- MuMu no incluye el binario `appops`, así que los permisos especiales (por ejemplo
+  MANAGE_EXTERNAL_STORAGE) deben concederse desde la interfaz de la aplicación. Esto es una ventaja:
+  obliga a validar el flujo real de permisos que verá el usuario.
+- Puede haber otras aplicaciones abiertas en el emulador: confirmar con
+  `adb shell dumpsys window | findstr mCurrentFocus` que la ventana en primer plano es la nuestra
+  antes de dar por buena una captura.
+- Comprobar que el arranque no produce ninguna excepción: `adb logcat -d | findstr "FATAL
+  EXCEPTION"` debe salir vacío. Un arranque que "se ve bien" en una captura puede haber registrado
+  una excepción no controlada (sección 10).
+
+**Límites (no negociables, sección 3 "confiabilidad operativa")**
+- MuMu ejecuta una versión de Android antigua (Android 12 / API 32) y modificada. **No sustituye**
+  a la validación en dispositivo real ni cubre los comportamientos obligatorios de las APIs
+  recientes (por ejemplo el modo edge-to-edge forzado desde Android 15).
+- Antes de publicar (sección 19) sigue siendo obligatoria la validación en **dispositivo real o en
+  un AVD con el nivel de API objetivo**.
+- Un dispositivo real es siempre preferible cuando el cambio toca hardware (cámara, sensores,
+  telefonía, SMS).
+
+### A.8.2 Qué se verifica antes de publicar
+- Cada cambio funcional se ejercita **de extremo a extremo**: no basta con que compile ni con que
+  pasen las pruebas.
 - La verificación recorre el **flujo real del usuario** (elegir un fichero con el selector del
   sistema, recibir un intent de otra app, etc.), no solo la pantalla afectada.
 - Se comprueban explícitamente, por ser fuentes habituales de fallo que la compilación no detecta:
