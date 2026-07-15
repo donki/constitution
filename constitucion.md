@@ -7,7 +7,7 @@ web/servicios de servidor o código nativo) y de su stack tecnológico. Define e
 operacionales y de calidad que todo proyecto debe cumplir.
 
 Su origen es una constitución específica de aplicaciones **Android en .NET MAUI**; se ha
-generalizado para que **el núcleo común** (secciones 1–22) aplique a *cualquier* proyecto y los
+generalizado para que **el núcleo común** (secciones 1–23) aplique a *cualquier* proyecto y los
 detalles específicos de cada plataforma vivan en sus **anexos** (A–D). Un proyecto cumple esta
 constitución aplicando el núcleo común **más** el/los anexo(s) de las plataformas a las que se
 dirige.
@@ -18,9 +18,10 @@ dirige.
 - **Ciclo cubierto:** desde la arquitectura hasta la publicación, el despliegue y el mantenimiento.
 - **Áreas cubiertas:** estructura, licencia y procedencia, seguridad y secretos, arquitectura de
   presentación, internacionalización, persistencia, errores y logging, versionado, build,
-  distribución, despliegue de servidor, autoactualización, calidad, colaboración y estilo.
+  distribución, despliegue de servidor, autoactualización, calidad, colaboración, estilo y
+  gobernanza.
 - **Estructura del documento:**
-  - **Núcleo común (secciones 3–22):** obligatorio para todo proyecto.
+  - **Núcleo común (secciones 3–23):** obligatorio para todo proyecto.
   - **Anexo A — Móvil y tiendas de aplicaciones** (.NET MAUI / Android / Google Play…).
   - **Anexo B — Escritorio** (Windows/Linux/macOS).
   - **Anexo C — Web y servicios de servidor** (ASP.NET Core / APIs / paneles / autoalojado).
@@ -66,7 +67,10 @@ detallan en los anexos):
   - **Modelos:** clases de datos y entidades, sin lógica de presentación.
   - **Presentación:** estado y comandos separados de la interfaz (ver sección 7).
   - **Interfaz / vistas:** solo presentación.
-  - **Utilidades transversales / helpers / convertidores:** agrupadas y reutilizables.
+  - **Utilidades transversales / helpers / convertidores:** agrupadas y reutilizables. Los
+    *helpers* son utilidades **puras y sin estado** (formato, parseo, ficheros, algoritmos): no
+    contienen lógica de plataforma ni dependencias de interfaz. Lo que necesite estado o
+    plataforma es un servicio (sección 7) o código de plataforma, no un helper.
   - **Código específico de plataforma:** encapsulado en su módulo o carpeta de plataforma; la capa
     común no contiene referencias directas a APIs de una plataforma concreta.
 - **Código compartido:** los contratos comunes (protocolo, modelos del API, constantes de versión)
@@ -123,11 +127,19 @@ detallan en los anexos):
 - No mezclar dos estilos de presentación para el mismo tipo de pantalla sin justificación.
 
 ## 8. Internacionalización y Localización (i18n)
-- Todo texto visible al usuario debe ser **localizable**; no incrustar cadenas fijas en la interfaz
-  cuando exista soporte multiidioma.
+- Todo texto visible al usuario debe **externalizarse** (servicio de localización, ficheros de
+  recursos, CSV o catálogo de traducciones). **No se permite texto de interfaz escrito directamente
+  en código o en el markup.**
 - Centralizar las traducciones (servicio de localización o ficheros de recursos, p.ej. `.resx`) y
   acceder a ellas de forma uniforme.
 - Definir un **idioma por defecto** válido y fijarlo antes de eliminar cualquier traducción.
+- **Fallback sin fugas:** cuando falte una traducción se recurre al idioma por defecto; **nunca se
+  muestra la clave interna al usuario**.
+- **Lista de idiomas sincronizada con la realidad:** los idiomas declarados en código deben
+  corresponderse con las traducciones realmente disponibles. Si un idioma se anuncia pero no está
+  traducido, debe completarse o **retirarse de la lista de soportados**.
+- **Selección de idioma:** se persiste en los ajustes del usuario y **respeta el idioma del sistema
+  en el primer arranque**.
 - Formatos sensibles a la cultura (fechas, números, divisas) deben usar la cultura del usuario, no
   valores fijos.
 - Mantener las traducciones de la interfaz sincronizadas con la metadata de la tienda/distribución
@@ -152,8 +164,11 @@ detallan en los anexos):
 - Operaciones que puedan fallar (E/S, red, plataforma) se envuelven con manejo de errores y
   mensajes claros al usuario cuando proceda.
 - Usar el sistema de logging del framework; habilitar trazas de depuración solo en configuración
-  Debug.
+  Debug. Preferir logging condicionado a compilación (`#if DEBUG`) o niveles de severidad, para no
+  filtrar detalle interno en release.
 - **No registrar** datos personales ni secretos en los logs.
+- **Los ficheros de log (`*.log`) no se versionan:** deben estar en `.gitignore` y mantenerse fuera
+  del control de versiones.
 - **Logging operativo en servidores/servicios:** logging persistente con **rotación** (límite de
   tamaño y número de ficheros) para no agotar el disco; cuando aplique, segmentar por sesión/par.
 - Antes de publicar, revisar que no queden excepciones no controladas en los flujos principales.
@@ -227,7 +242,8 @@ detallan en los anexos):
 
 ## 17. Flujo de Publicación Estándar
 1. Actualizar la versión (legible y código) en la constante única / proyecto.
-2. Actualizar el **CHANGELOG** con los cambios de la versión.
+2. Actualizar el **CHANGELOG** con los cambios de la versión y comprobar que el submódulo de
+   gobernanza está al día (sección 23).
 3. Ejecutar el script de build y firmado (reproducible); generar los artefactos.
 4. Validar localmente los artefactos firmados (y verificar su hash).
 5. Publicar/desplegar en el canal restringido correspondiente (pruebas cerradas / rollout parcial /
@@ -300,6 +316,21 @@ Una versión se considera lista para producción cuando:
   estilos y recursos compartidos sobre valores repetidos en línea.
 - Preferir nombres descriptivos sobre abreviaturas; evitar duplicación de constantes (sección 5).
 
+## 23. Documentos de Gobernanza y Submódulos
+- Esta constitución es el **documento de gobernanza de referencia** y se comparte entre proyectos
+  como **repositorio independiente** (`donki/constitution`).
+- **Una sola copia canónica:** cuando se consume como **submódulo Git**, el submódulo es la fuente
+  canónica de **solo lectura**; no se edita desde el proyecto consumidor ni se copia a mano dentro
+  de él. Un fichero de constitución fuera del submódulo es una divergencia, no una versión.
+- **Las mejoras se proponen aguas arriba:** cualquier extensión que sea de utilidad general se lleva
+  al repositorio canónico. Lo que sea específico de un proyecto se marca como tal y vive en el
+  README o el CHANGELOG del proyecto, nunca en una copia editada del documento.
+- **Anclaje deliberado:** los submódulos se fijan a un **commit concreto** y se actualizan de forma
+  deliberada y documentada, nunca de forma automática e implícita. Anclar a un commit es una
+  decisión legítima; **quedarse anclado sin revisar no lo es**: al publicar una versión se comprueba
+  si el submódulo de gobernanza está al día (sección 17).
+- Registrar en el CHANGELOG la incorporación o actualización de submódulos de gobernanza.
+
 ---
 
 # Anexo A — Móvil y Tiendas de Aplicaciones (.NET MAUI / Android / Google Play)
@@ -310,7 +341,16 @@ Una versión se considera lista para producción cuando:
 - `Services/`, `Models/`, `Converters/`, `Helpers/`: como en la sección 5.
 - `Platforms/Android/`: código Android nativo, manifiestos y recursos específicos. La interfaz MAUI
   no debe contener lógica de plataforma ni referencias directas a APIs Android.
-- `Resources/`: iconos, imágenes, estilos, fuentes. `Properties/`: configuración del proyecto.
+- `Resources/`: iconos, imágenes, estilos, fuentes, traducciones y assets crudos.
+  `Properties/`: configuración del proyecto (`launchSettings.json`).
+
+**Plataformas secundarias de desarrollo**
+- Se permite habilitar plataformas adicionales (por ejemplo Windows) como objetivo **secundario de
+  desarrollo y depuración**.
+- El objetivo de publicación y soporte sigue siendo Android; **las plataformas secundarias no
+  relajan ninguna regla** de esta constitución.
+- El código específico de una plataforma secundaria se encapsula en su carpeta `Platforms/`
+  correspondiente.
 
 ## A.2 Identificador de paquete
 - Formato obligatorio: `com.socratic.[nombre-aplicacion]` (en minúsculas, sin espacios).
@@ -320,6 +360,15 @@ Una versión se considera lista para producción cuando:
 ## A.3 Permisos Android
 - Revisar `AndroidManifest.xml` antes de cada publicación.
 - Justificar cada permiso solicitado en la documentación y aplicar mínimo privilegio (sección 6).
+- **No solicitar en Android moderno permisos que las APIs actuales ya no requieren.** Preferir las
+  APIs que no exigen permiso (por ejemplo, el *Storage Access Framework* concede acceso solo al
+  archivo que el usuario elige, sin permiso de almacenamiento).
+- **Acotar con `android:maxSdkVersion`** los permisos que solo son necesarios en versiones antiguas
+  de Android (por ejemplo, almacenamiento externo cuando el almacenamiento con alcance ya cubre el
+  caso).
+- **Revisar los permisos que introduce la plantilla del proyecto** y retirar los que la aplicación
+  no use (`INTERNET` y `ACCESS_NETWORK_STATE` vienen por defecto en .NET MAUI): un permiso heredado
+  y no usado incumple el mínimo privilegio igual que uno añadido a mano.
 
 ## A.4 Versionado de tienda
 - `ApplicationDisplayVersion`: cadena legible con esquema de fecha (p.ej. `2026.05.20.0`).
@@ -362,7 +411,31 @@ Una versión se considera lista para producción cuando:
   instalar el paquete autocontenido.
 
 ## A.8 Validación móvil
-- Cada cambio funcional se verifica en **dispositivo Android real o emulador** antes de publicar.
+
+**Emulador estándar: MuMu Player**
+- El emulador de referencia del proyecto es **MuMu Player** (`nx_main/MuMuManager.exe`,
+  `nx_main/adb.exe`). Un dispositivo Android real es siempre válido y preferible cuando el cambio
+  toca hardware (cámara, sensores, telefonía, SMS).
+- Conexión por ADB: `adb connect 127.0.0.1:5555`. El puerto se confirma con
+  `MuMuManager.exe info -v all` (campo `adb_port`).
+- Instalación del artefacto de Release firmado:
+  `adb -s 127.0.0.1:5555 install -r <paquete>.apk`, con los ensamblados embebidos (A.7).
+- Comprobar que el arranque no produce ninguna excepción:
+  `adb -s 127.0.0.1:5555 logcat -d | grep "FATAL EXCEPTION"` debe salir vacío.
+
+**Qué se verifica antes de publicar**
+- Cada cambio funcional se ejercita **de extremo a extremo en dispositivo real o emulador**: no
+  basta con que compile ni con que pasen las pruebas.
+- La verificación recorre el **flujo real del usuario** (elegir un fichero con el selector del
+  sistema, recibir un intent de otra app, etc.), no solo la pantalla afectada.
+- Se comprueban explícitamente, por ser fuentes habituales de fallo que la compilación no detecta:
+  - **arranque en frío** de la aplicación instalada desde el paquete de Release;
+  - **tema claro y oscuro** (el emulador y el dispositivo pueden diferir);
+  - **cada idioma soportado**, incluida la resolución del idioma del sistema en el primer arranque
+    (sección 8);
+  - **estados vacíos y de error**, no solo el camino feliz.
+- Los datos de prueba son **sintéticos**: no se cargan documentos, contactos ni ficheros personales
+  reales en un emulador (sección 3, privacidad primero).
 
 ---
 
