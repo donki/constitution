@@ -331,6 +331,75 @@ Una versión se considera lista para producción cuando:
   si el submódulo de gobernanza está al día (sección 17).
 - Registrar en el CHANGELOG la incorporación o actualización de submódulos de gobernanza.
 
+## 24. Sistema de Diseño Visual
+Esta sección fija el aspecto de las aplicaciones. Está extraída de `FileManager` y `PDFReader`, que
+son la referencia; las aplicaciones anteriores se adaptarán cuando se decida, no de forma
+automática.
+
+**Principio: un valor visible, un origen.**
+- **Ningún valor visual se escribe en línea en el markup**: ni colores, ni tamaños de fuente, ni
+  radios, ni sombras, ni alturas. Todo procede de un *token* de color o de un estilo con nombre.
+  Un color en línea es una decisión que nadie puede volver a encontrar.
+- Un color literal en una página es una **divergencia**, no un atajo. La única excepción es el
+  blanco puro del texto sobre un botón de marca, y aun así se prefiere el token.
+
+**Tokens de color.** Se declaran en un único diccionario de recursos por aplicación, con nombres
+**semánticos** (por rol, no por apariencia: `Primary`, no `Azul`) y **sin prefijo de aplicación**:
+el diccionario ya delimita el ámbito. Conjunto mínimo:
+
+| Rol | Tokens |
+|---|---|
+| Marca | `Primary`, `PrimaryDark`, `Accent` |
+| Estado | `Danger`, `Success` |
+| Superficies | `PageBackground{Light,Dark}`, `CardBackground{Light,Dark}`, `Separator{Light,Dark}` |
+| Texto | `TextPrimary{Light,Dark}`, `TextSecondary{Light,Dark}` |
+| Neutros | `White`, `Black` |
+
+- **Todo color de superficie o de texto se declara por pares claro/oscuro** y se consume con
+  `AppThemeBinding`. Una aplicación con tema oscuro a medias es peor que sin él.
+- Los colores de marca pueden ser únicos si mantienen contraste suficiente sobre ambos temas.
+
+**Estilos de componente.** Se declaran con `x:Key` y nombre estable. Conjunto mínimo:
+
+| Estilo | Rol |
+|---|---|
+| `Card` | Superficie contenedora. Es la base visual de la aplicación. |
+| `CardTitle` | Título dentro de una tarjeta. |
+| `BodyText` | Texto corriente. |
+| `SecondaryText` | Texto de apoyo, atenuado. |
+| `PrimaryButton` | Acción principal, fondo de marca. |
+| `OutlineButton` | Acción secundaria, contorno. |
+
+- Los estilos específicos de una pantalla (barras de herramientas, botones de icono) se permiten,
+  pero se declaran junto a los anteriores y siguen las mismas reglas.
+- **Un estilo con `x:Key` no hereda el estilo implícito de su tipo.** Si el control tiene estados
+  (deshabilitado, pulsado), el estilo debe declararlos: si no, un control inactivo se ve idéntico a
+  uno activo y la interfaz miente.
+- **Objetivos táctiles: mínimo 48 dp.** Es el mínimo de accesibilidad de Android, no una
+  preferencia estética.
+
+**Escala.** Los valores concretos se fijan una vez por aplicación y no se reinventan por pantalla.
+Línea base: radio de tarjeta 12; altura de botón 48; radio de botón 10-12; texto 18 (título de
+tarjeta) / 14 (cuerpo) / 12-13 (secundario). Una aplicación puede desviarse si lo documenta, pero
+**no puede desviarse de sí misma**: dos radios distintos para la misma clase de tarjeta son un
+defecto.
+
+**Errores que esta sección existe para impedir.** Todos observados en aplicaciones de este
+propietario:
+- **Diccionarios de estilo que no se fusionan.** Un `Colors.xaml` o `Styles.xaml` que no está en
+  `MergedDictionaries` es código muerto que aparenta ser un sistema de diseño. Si existe, se usa;
+  si no se usa, se borra.
+- **Publicar la plantilla por defecto del framework sin tocarla**, y decorar encima con valores en
+  línea. La plantilla no es un sistema de diseño.
+- **`AppThemeBinding` neutralizado**: definirlo en los estilos y luego fijar un color claro en cada
+  página. El tema oscuro deja de existir sin que nadie lo note.
+- **Varias paletas conviviendo** en la misma aplicación por copiar pantallas de proyectos distintos.
+- **Texto de interfaz en el markup** (prohibido por la sección 8) o traducciones que recorren el
+  árbol visual por índices.
+
+**Verificación antes de publicar** (complementa el anexo A.8.2): comprobar en tema claro y oscuro
+que ninguna pantalla queda ilegible, y que no hay literales de color en el markup.
+
 ---
 
 # Anexo A — Móvil y Tiendas de Aplicaciones (.NET MAUI / Android / Google Play)
@@ -464,6 +533,53 @@ y `-GrantPermissions`.
   - **estados vacíos y de error**, no solo el camino feliz.
 - Los datos de prueba son **sintéticos**: no se cargan documentos, contactos ni ficheros personales
   reales en un emulador (sección 3, privacidad primero).
+
+## A.9 Sistema de diseño en .NET MAUI
+Concreción de la sección 24 para MAUI. Referencia: `FileManager` y `PDFReader`.
+
+**Ubicación y carga**
+- Los tokens de color en `Resources/Styles/Colors.xaml`; los estilos en `Resources/Styles/Styles.xaml`.
+- **Ambos se fusionan en `App.xaml`** dentro de `<ResourceDictionary.MergedDictionaries>`. Sin esa
+  fusión el diccionario no existe en tiempo de ejecución, por mucho que esté en el repositorio.
+- La plantilla `Styles.xaml` que genera `dotnet new maui` **se sustituye, no se acompaña**: se parte
+  de ella y se recorta a lo que la aplicación usa de verdad. No se deja intacta al lado de un
+  segundo diccionario propio.
+- Comprobación barata de que el diccionario está vivo: si al renombrar un `x:Key` la aplicación no
+  falla al arrancar, es que no se estaba cargando.
+
+**Controles**
+- **`Border`, nunca `Frame`.** `Frame` está obsoleto en MAUI y arrastra
+  `Microsoft.Maui.Controls.Compatibility`. Una tarjeta es un `Border` con `StrokeShape`
+  `RoundRectangle`.
+- El estilo `Card` deja `Padding="0"`: el relleno lo pone el contenedor interior, que es quien sabe
+  cuánto aire necesita su contenido.
+
+**Temas**
+```xml
+<Setter Property="BackgroundColor"
+        Value="{AppThemeBinding Light={StaticResource CardBackgroundLight},
+                                Dark={StaticResource CardBackgroundDark}}" />
+```
+- Ninguna página fija `BackgroundColor` con un literal: lo hereda del estilo implícito de `Page`.
+
+**Estados**
+- Un estilo con `x:Key` pierde el estilo implícito del tipo. Para `Button` eso incluye el estado
+  `Disabled`, que hay que declarar con `VisualStateManager` o los botones inactivos se verán
+  activos.
+
+**Iconografía**
+- Emoji en `Label`/`Button.Text` es admisible y es lo que hacen las aplicaciones actuales; si se
+  adopta una fuente de iconos, se registra en `ConfigureFonts` y **se comprueba que el `.ttf` es un
+  fuente real**, no un fichero de relleno.
+- El icono de ficha de Google Play (`Resources/AppIcon/play_store_icon.png`, 512×512) **no es** el
+  icono de launcher que MAUI genera en el AAB: es un asset aparte de la ficha. Si `appicon.svg` es
+  solo un rectángulo de color y el dibujo vive en `appiconfg.svg`, hay que **componer los dos**;
+  renderizar `appicon.svg` a solas produce un cuadrado liso.
+
+**Textos**
+- Los textos se resuelven con el servicio de localización y se asignan desde el code-behind
+  (sección 8). Un `Text="..."` literal en el XAML solo es aceptable para un glifo decorativo sin
+  significado lingüístico.
 
 ---
 
