@@ -591,6 +591,20 @@ Concreción de la sección 24 para MAUI. Referencia: `FileManager` y `PDFReader`
   (sección 8). Un `Text="..."` literal en el XAML solo es aceptable para un glifo decorativo sin
   significado lingüístico.
 
+**Pantalla «Acerca de»**
+Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
+1. **Cabecera:** la **imagen real del icono de la aplicación** (no un emoji), el nombre, la versión
+   —que coincide con `ApplicationDisplayVersion` del csproj— una descripción breve y «Socratic».
+2. **Contacto:** correo **`jsoladelarosa@gmail.com`** en un botón que abre el cliente de correo.
+3. **Apoyo:** enlace de Ko-fi **`https://ko-fi.com/josepsola`** (el mismo en todas las apps), que
+   abre el navegador y, si falla, copia la URL al portapapeles.
+4. **Aviso legal:** el descargo y la licencia (MIT).
+
+- El **selector de idioma no va en «Acerca de»**: vive en la pantalla de Configuración. Tampoco se
+  incluye información del sistema (plataforma, modelo, versión de OS) en la ficha pública.
+- El correo de contacto y la URL de Ko-fi son constantes idénticas en todos los proyectos; al
+  cambiarlos hay que hacerlo en todos a la vez.
+
 ---
 
 # Anexo B — Escritorio
