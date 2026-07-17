@@ -568,9 +568,19 @@ Concreción de la sección 24 para MAUI. Referencia: `FileManager` y `PDFReader`
   activos.
 
 **Iconografía**
-- Emoji en `Label`/`Button.Text` es admisible y es lo que hacen las aplicaciones actuales; si se
-  adopta una fuente de iconos, se registra en `ConfigureFonts` y **se comprueba que el `.ttf` es un
-  fuente real**, no un fichero de relleno.
+- **Estilo: flat, de contorno (line icons).** Los iconos de acción de la interfaz son trazos sin
+  relleno, de grosor uniforme, sin sombras ni degradados. Es el estilo de la aplicación; no se
+  mezcla con iconos rellenos o multicolor para la misma clase de elemento.
+- **Los iconos de acción son vectoriales, no emoji.** Un emoji lo dibuja la fuente del sistema:
+  cambia de aspecto entre dispositivos, suele ser multicolor y relleno, y no respeta el color de la
+  interfaz. Se usa un SVG en `Resources/Images/` (que MAUI rasteriza por densidad) o una fuente de
+  iconos. Un emoji solo es admisible como glifo grande y decorativo de un estado vacío, nunca como
+  icono de un control.
+- **Color por contexto.** Un icono sobre una superficie de color de marca lleva trazo blanco fijo
+  (la superficie es del mismo color en ambos temas). Un icono sobre una superficie neutra toma su
+  color del token de texto correspondiente, con `AppThemeBinding` o tintado, para seguir el tema.
+- Si se adopta una fuente de iconos, se registra en `ConfigureFonts` y **se comprueba que el `.ttf`
+  es una fuente real**, no un fichero de relleno.
 - El icono de ficha de Google Play (`Resources/AppIcon/play_store_icon.png`, 512×512) **no es** el
   icono de launcher que MAUI genera en el AAB: es un asset aparte de la ficha. Si `appicon.svg` es
   solo un rectángulo de color y el dibujo vive en `appiconfg.svg`, hay que **componer los dos**;
