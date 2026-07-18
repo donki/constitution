@@ -598,10 +598,18 @@ Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
 2. **Contacto:** correo **`jsoladelarosa@gmail.com`** en un botón que abre el cliente de correo.
 3. **Apoyo:** enlace de Ko-fi **`https://ko-fi.com/josepsola`** (el mismo en todas las apps), que
    abre el navegador y, si falla, copia la URL al portapapeles.
-4. **Aviso legal:** el descargo y la licencia (MIT).
+4. **Idioma:** dos botones **Español / English** (los idiomas oficiales, ver sección 8), que aplican
+   el idioma de inmediato y resaltan el activo con el color de acento de la app.
+5. **Privacidad:** una declaración breve y honesta de qué datos usa la app y que no se comparten con
+   terceros (adaptada a cada aplicación).
+6. **Licencia:** declaración de software libre bajo licencia **MIT** + línea `MIT License · Copyright
+   © <año> Socratic`.
+7. **Aviso legal:** el descargo de responsabilidad («tal cual», sin garantías) rematado con un
+   recuadro de advertencia «⚠️ Uso bajo su propio riesgo».
 
-- El **selector de idioma no va en «Acerca de»**: vive en la pantalla de Configuración. Tampoco se
-  incluye información del sistema (plataforma, modelo, versión de OS) en la ficha pública.
+- Las tres declaraciones —**Privacidad, Licencia y Aviso legal**— son obligatorias y aparecen en la
+  «Acerca de» de **todas** las aplicaciones (incluido el juego sOC, adaptadas a su formato).
+- **No** se incluye información del sistema (plataforma, modelo, versión de OS) en la ficha pública.
 - El correo de contacto y la URL de Ko-fi son constantes idénticas en todos los proyectos; al
   cambiarlos hay que hacerlo en todos a la vez.
 
