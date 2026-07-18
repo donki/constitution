@@ -598,8 +598,11 @@ Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
 2. **Contacto:** correo **`jsoladelarosa@gmail.com`** en un botón que abre el cliente de correo.
 3. **Apoyo:** enlace de Ko-fi **`https://ko-fi.com/josepsola`** (el mismo en todas las apps), que
    abre el navegador y, si falla, copia la URL al portapapeles.
-4. **Idioma:** dos botones **Español / English** (los idiomas oficiales, ver sección 8), que aplican
-   el idioma de inmediato y resaltan el activo con el color de acento de la app.
+4. **Idioma:** dos botones **«🇪🇸 Español» / «🇺🇸 English»** —cada uno con su **bandera** (emoji de
+   indicador regional) delante del nombre— para los idiomas oficiales (ver sección 8). Aplican el
+   idioma de inmediato y resaltan el activo (estilo primario) frente al inactivo (contorno). Se usa
+   **botones, nunca un `Picker`**, y el mismo selector con banderas aparece también donde se elija el
+   idioma en Configuración.
 5. **Privacidad:** una declaración breve y honesta de qué datos usa la app y que no se comparten con
    terceros (adaptada a cada aplicación).
 6. **Licencia:** declaración de software libre bajo licencia **MIT** + línea `MIT License · Copyright
