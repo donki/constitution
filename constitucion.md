@@ -616,6 +616,20 @@ Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
 - El correo de contacto y la URL de Ko-fi son constantes idénticas en todos los proyectos; al
   cambiarlos hay que hacerlo en todos a la vez.
 
+**Navegación: menú hamburguesa (obligatorio)**
+- Toda aplicación tiene un **menú hamburguesa** (flyout de Shell) accesible desde la barra superior.
+- Como **mínimo** ofrece las opciones **«Inicio»** (pantalla principal) y **«Acerca de»**.
+- Si la app tiene más pantallas (Configuración, Histórico, Rutas…), **todas** sus opciones de
+  navegación de primer nivel viven en ese menú.
+- El menú debe respetar el tema: fondo y texto de los items con tokens `PageBackground*` /
+  `TextPrimary*` (nunca colores fijos que dejen el texto invisible en modo oscuro).
+
+**Tipografía**
+- Las aplicaciones usan la **tipografía del sistema** (la fuente por defecto de la plataforma); no se
+  embeben ni fijan familias tipográficas propias.
+- **Excepción: los juegos** (p.ej. **sOC**), que sí pueden usar su propia tipografía como parte de su
+  identidad artística.
+
 ---
 
 # Anexo B — Escritorio
