@@ -219,16 +219,21 @@ detallan en los anexos):
   de despliegue se guardan como **secretos del pipeline**, nunca en el repositorio ni en el YAML.
 - **Verificación post-despliegue:** comprobar que el servicio responde y sirve la versión esperada.
 
-## 15. Autoactualización
-*(Aplica a clientes/servicios con actualización automática.)*
-- **Comprobación de versión** contra una fuente de confianza (el propio servidor del proyecto) al
-  arrancar o conectar.
-- **Descarga desde fuente de confianza** y **verificación SHA-256** del artefacto antes de
-  instalarlo (sección 13).
+## 15. Comprobación de versión y actualización
+- **Comprobación al arrancar (obligatoria en todas las aplicaciones):** al iniciarse, la aplicación
+  comprueba —contra una fuente de confianza (el propio servidor/repositorio del proyecto)— si existe
+  una **versión distinta a la instalada**. La comprobación es no bloqueante (no impide usar la app si
+  no hay red) y silenciosa cuando ya se está en la última versión.
+- **Propuesta de actualización:** si hay una versión más reciente, se **avisa al usuario y se le
+  propone actualizar**, indicando la versión disponible; el usuario decide (aceptar o posponer). Nunca
+  se actualiza sin su consentimiento.
+- **Descarga desde fuente de confianza** y **verificación SHA-256** del artefacto antes de instalarlo
+  (sección 13).
 - **Reinstalación preservando la configuración** del usuario (p.ej. swap + reinicio en escritorio;
   instalador del sistema con confirmación del usuario en móvil).
-- **Rollout escalonado:** limitar las descargas concurrentes en el servidor y aplicar *jitter* por
-  dispositivo para no saturar; no actualizar a todos los clientes a la vez.
+- **Rollout escalonado** (para clientes/servicios con actualización automática): limitar las descargas
+  concurrentes en el servidor y aplicar *jitter* por dispositivo para no saturar; no actualizar a
+  todos los clientes a la vez.
 
 ## 16. Estándares de Calidad
 - **Compilación:** sin errores; advertencias documentadas y en reducción.
