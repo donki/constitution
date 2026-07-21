@@ -599,7 +599,8 @@ Concreción de la sección 24 para MAUI. Referencia: `FileManager` y `PDFReader`
 **Pantalla «Acerca de»**
 Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
 1. **Cabecera:** la **imagen real del icono de la aplicación** (no un emoji), el nombre, la versión
-   —que coincide con `ApplicationDisplayVersion` del csproj— una descripción breve y «Socratic».
+   —que coincide con `ApplicationDisplayVersion` del csproj— una descripción breve (opcional) y
+   «Socratic». Todas las tarjetas usan el estilo `Card` (Border) con `CardTitle` de encabezado.
 2. **Contacto:** correo **`jsoladelarosa@gmail.com`** en un botón que abre el cliente de correo.
 3. **Apoyo:** enlace de Ko-fi **`https://ko-fi.com/josepsola`** (el mismo en todas las apps), que
    abre el navegador y, si falla, copia la URL al portapapeles.
@@ -628,6 +629,25 @@ Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
   navegación de primer nivel viven en ese menú.
 - El menú debe respetar el tema: fondo y texto de los items con tokens `PageBackground*` /
   `TextPrimary*` (nunca colores fijos que dejen el texto invisible en modo oscuro).
+- **Cada opción del menú lleva un icono a la izquierda del texto** (vectorial, línea, coherente con
+  la iconografía de A.9; nunca solo texto). Si se usa un `Shell.ItemTemplate` propio, éste debe
+  incluir la `Image` del `FlyoutIcon` además del `Label`, y cada `FlyoutItem` define su `FlyoutIcon`.
+
+**Formato del menú (canónico, tomado de Hiker)**
+Todas las apps siguen este formato visual (Hiker es la referencia):
+- **Cabecera** (`Shell.FlyoutHeader`): fondo `Primary`, alto ≈150, contenido alineado abajo-izquierda:
+  el **logo real** de la app (`app_logo.png`, ≈52×52), el **nombre** (FontSize 22, `Bold`, `OnPrimary`)
+  y una **frase/tagline** corta (FontSize 12, `OnPrimary`, opacidad ≈0.9).
+- **Filas de opción**: `Grid` de `ColumnDefinitions="26,*"`, `Padding="20,0"`, `HeightRequest="52"`,
+  `ColumnSpacing="16"`; icono `Image` 24×24 en la 1.ª columna y `Label` FontSize 16 en la 2.ª, con
+  color por tokens `TextPrimary*`.
+- **Submenús desplegables** cuando una opción agrupa acciones (patrón «GPS» de Hiker): la fila lleva un
+  chevron (`▸`/`▾`, 3.ª columna `Auto`) que muestra/oculta un bloque indentado (`Padding="46,0,20,0"`,
+  filas de alto 46, iconos 20×20, texto 15, fondo `SubmenuBackground*`).
+- Se puede pintar con `Shell.FlyoutContent` a medida (como Hiker, obligatorio si hay submenús) o con
+  `Shell.ItemTemplate` (icono+texto) cuando el menú es plano; en ambos casos con la cabecera rica.
+- Los `FlyoutItem` siguen definiendo las **rutas** de navegación aunque el menú visual lo pinte
+  `FlyoutContent`.
 
 **Tipografía**
 - Las aplicaciones usan la **tipografía del sistema** (la fuente por defecto de la plataforma); no se
