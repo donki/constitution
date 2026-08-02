@@ -729,3 +729,119 @@ Todas las apps siguen este formato visual (Hiker es la referencia):
 - Gestión explícita de recursos (RAII / liberación determinista) y de errores; no propagar fallos
   silenciosos a la capa gestionada (sección 10).
 - Estilo y convenciones de nombres consistentes en todo el módulo (sección 22).
+
+# Anexo E — Componentes de UI compartidos y Sistema de Diseño (sOCratic)
+
+Las apps sOCratic comparten una carpeta `Shared/` (enlazada por `<Compile Include="..\Shared\*.cs" />`
+en cada `.csproj`) con componentes comunes. Una sola fuente de verdad, sin duplicar por app.
+
+## E.1 Diálogos NO nativos — `SocShared.ModernDialog`
+- **Prohibido** usar los diálogos del sistema (`Page.DisplayAlert`, `DisplayActionSheet`,
+  `DisplayPromptAsync`): rompen la coherencia visual y no siguen el tema de la app.
+- En su lugar se usa `SocShared.ModernDialog` (`Shared/ModernDialog.cs`): una tarjeta con esquinas
+  redondeadas sobre un velo, con animación de entrada, tema-aware (claro/oscuro) y color de acento
+  de la app (token `Primary`). API:
+  - `Task<bool> AlertAsync(Page, title, message, accept, cancel?)`
+  - `Task<string?> ActionSheetAsync(Page, title, cancel, params options)`
+  - `Task<string?> PromptAsync(Page, title, message, accept, cancel, initialValue?, placeholder?)`
+- Reemplazan 1:1 a los métodos nativos (el primer argumento es la página; en code-behind, `this`).
+
+## E.2 Notas de autor — `SocShared.AuthorNotes`
+- Botón flotante 📝 (solo en los dispositivos del autor por `DeviceInfo.Model`) que guarda notas
+  con el contexto de pantalla en `author_notes.json`. Se engancha con `AuthorNotes.Attach(window)`
+  y re-engancha si `window.Page` se reasigna (p.ej. tras un SplashPage).
+- **Obligatorio para publicación**: la llamada a `AuthorNotes.Attach(window)` va envuelta en
+  `#if DEBUG … #endif`. En compilaciones **Release** (las que se suben a Google Play / van a
+  producción) las notas de autor quedan **totalmente desactivadas** — nunca deben llegar al usuario
+  final. Verificar antes de generar cualquier AAB de release.
+
+## E.3 Barras del sistema (edge-to-edge, Android 15+)
+- Con targetSdk 35+ Android dibuja de borde a borde: hay que separar el contenido de la barra de
+  estado y la de navegación aplicando los insets como *padding* en `MainActivity`
+  (`ViewCompat.SetOnApplyWindowInsetsListener` sobre `android.R.id.content`, `SetPadding`,
+  `WindowInsetsCompat.Consumed`), pintando el hueco con el color de marca. Nunca `Fullscreen`.
+
+## E.4 Sistema de diseño visual
+- Lenguaje visual unificado estilo Material 3 (ver `style.txt` en la raíz del monorepo): tipografía
+  Inter, iconos Material Symbols, tarjetas redondeadas (radios 8/12 px), tokens de espaciado
+  (4/8/16/24/32) y paleta de superficies/acento coherente en claro y oscuro.
+- **Navegación**: menú "hamburguesa" arriba a la izquierda (Shell `FlyoutBehavior="Flyout"`), NUNCA
+  barra de botones inferior.
+- Sin secciones de donación/Ko-fi en las apps.
+- Radio de tarjeta unificado a **16 px**.
+
+## E.5 Paleta índigo unificada (idéntica en TODAS las apps)
+- Todas las apps comparten exactamente la misma paleta índigo Material 3. No hay acento por app:
+  el look es el mismo en las 7. Las claves de `Resources/Styles/Colors.xaml` conservan su nombre;
+  solo cambian los valores:
+  - `Primary` **#3525CD** · `PrimaryDark` **#2A1CB8** · `PrimaryLight` **#635BF2** · `Accent` **#4F46E5**
+  - `Danger` **#BA1A1A** (rojo, solo semántico: destructivo/error) · `Success` **#27AE60** (verde,
+    solo semántico: estado positivo). **Ningún** acento verde/morado/teal de marca fuera de estos.
+  - Fondos: `PageBackgroundLight` #F8F9FA / `PageBackgroundDark` #141318 ·
+    `CardBackgroundLight` #FFFFFF / `CardBackgroundDark` #201F27
+  - Texto: `TextPrimaryLight` #191C1D / `TextPrimaryDark` #E6E1E9 ·
+    `TextSecondaryLight` #464555 / `TextSecondaryDark` #C7C4D8
+  - Separador/outline: #C7C4D8 (claro) / #48454F (oscuro)
+- Barra de estado/navegación (edge-to-edge, E.3) pintada con **#2A1CB8**.
+- Los SVG de iconos de menú/toolbar usan el índigo `#3525CD` (o blanco sobre cabecera índigo);
+  nunca `currentColor` ni un negro fijo que quede invisible en modo oscuro.
+
+## E.6 Icono de aplicación
+- **Fondo** (`Resources/AppIcon/appicon.svg`): gradiente diagonal índigo **#635BF2 → #2A1CB8**.
+- **Primer plano** (`appiconfg.svg`): glifo en blanco `#FFFFFF` y/o índigo claro `#C3C0FF`, dentro de
+  la zona segura del icono adaptativo. `MauiIcon Color="#3525CD"`.
+- El icono 512×512 de la ficha de tienda se compone rasterizando `appicon_background` +
+  `appicon_foreground` (carpeta `obj/.../resizetizer`) y escalando a 512.
+- Ejemplo de referencia (TXT Reader): documento blanco con esquina doblada, líneas de texto en
+  índigo claro y una insignia "TXT" en índigo — legible a tamaño pequeño.
+
+## E.7 Cromo del menú hamburguesa
+- **Cabecera**: logo + nombre de la app y **nada más**. Prohibidas las frases/tagline bajo el
+  nombre (p. ej. "Control de mensajes", "Don't Give Up", "Lector de archivos…").
+- **Logo de cabecera**: glifo blanco (o blanco + índigo claro `#C3C0FF`) acorde al icono de la app,
+  sobre la cabecera índigo. No usar logos de marca antiguos (azules, verdes, etc.).
+- **Filas**: icono índigo a la izquierda del texto; el texto toma color por tokens de tema (A.9).
+- **Pie**: la **versión** siempre abajo, formato `v<CalVer>` (p. ej. `v2026.07.28.0`), tema-aware
+  con color de texto secundario. Obligatorio en todas las apps. **Sin** sufijos como "- sOCratic".
+
+## E.8b Firma y publicación (Google Play)
+- **Clave de firma única compartida**: todas las apps sOCratic firman el **AAB de release** con
+  `Shared\socratic.keystore` (alias `smsforwarder`), vía `Shared\signing.props` que cada `.csproj`
+  importa (`<Import Project="..\Shared\signing.props" />`; Hiker `..\..\Shared\...`). Fuente única
+  de verdad, sin keystores por app.
+- La **contraseña NUNCA** se guarda en el repo: se pasa por CLI al generar el AAB
+  (`-p:AndroidSigningStorePass=… -p:AndroidSigningKeyPass=…`).
+- Antes de subir: verificar que las notas de autor están desactivadas en Release (E.2) y que los
+  permisos sensibles (p. ej. `REQUEST_INSTALL_PACKAGES`) están **declarados** en Play Console.
+- Cada app tiene su propia *upload key* registrada en Play (App Signing): si se cambia la clave de
+  firma hay que **restablecer la upload key** en la consola para ese paquete.
+
+## E.8 Splash nativo
+- Todas las apps usan el **splash nativo de MAUI** (`MauiSplashScreen`), **no** una `SplashPage`
+  propia (páginas de bienvenida artificiales con `Task.Delay` quedan prohibidas; la app abre
+  directamente en el `AppShell`).
+- `MauiSplashScreen Color="#3525CD"` (índigo de marca) y `BaseSize="200,200"`.
+- El `splash.svg` es **solo el glifo** (fondo transparente) en blanco / índigo claro, centrado;
+  nunca un rectángulo de color propio (se vería como un cuadro sobre el color del splash).
+- En Android 12+ el sistema muestra el fondo índigo + el icono de la app; en versiones previas se
+  usa el `splash.svg`. Ambos quedan configurados.
+
+# Anexo F — RemoteSoc (RSoc)
+
+RemoteSoc (acceso remoto) forma parte de la familia sOCratic y comparte el **mismo sistema de
+diseño índigo** (Anexo E.5) en todos sus clientes.
+
+## F.1 Cliente Android (`client-android/RSoc.Android`)
+- App Android nativa en C# (sin MAUI/XAML): la paleta vive en `AndroidTheme.cs`. Barra de app /
+  estado, superficies, texto y acentos usan la paleta índigo por rol (Primary `#3525CD`,
+  PrimaryDark `#2A1CB8`, fondos/superficies/texto de E.5). Los indicadores de estado de conexión
+  (verde/ámbar/rojo) se mantienen por ser **semánticos**.
+
+## F.2 Cliente Windows (`client-windows/RSoc.WindowsApp`, WinForms)
+- **Ventana estándar del sistema**: barra de título nativa del SO con sus botones
+  (minimizar/maximizar/cerrar) y borde redimensionable estándar. **Nada** de chrome de ventana
+  personalizado ni barra de título dibujada a mano.
+- **Componentes estándar** de WinForms con su aspecto por defecto donde antes había pintado a medida.
+- Esquema **índigo** en los componentes (acentos, cabeceras, botones primarios `#3525CD` texto
+  blanco); la barra de título nativa no se recolorea. El lienzo de vídeo remoto conserva su fondo
+  oscuro (es el viewport, no cromo).
