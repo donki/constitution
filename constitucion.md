@@ -157,6 +157,29 @@ detallan en los anexos):
 - Validar y manejar datos ausentes o corruptos sin provocar fallos silenciosos (sección 3).
 - Considerar la **migración de esquema** cuando cambie el formato de los datos persistidos entre
   versiones.
+- **El texto del usuario viaja cifrado.** Todo campo de **texto libre** que salga del dispositivo
+  hacia un servidor —títulos, notas, etiquetas, nombres de lista, pasos, apodos, nombre y dirección
+  de los adjuntos, y el perfil (nombre, correo, foto)— se cifra en el cliente antes de subir y se
+  descifra al bajar. La base local se queda en claro: es del usuario, está en su dispositivo, y es
+  donde buscan, filtran y ordenan las pantallas.
+  - **No se cifran** fechas, booleanos, números ni identificadores. Son los que deciden qué se baja,
+    quién gana en un conflicto y quién puede ver una fila: cifrarlos no deja la aplicación más
+    discreta, la deja rota. Tampoco los códigos por los que se busca (un código de invitación) ni
+    los hashes que hay que comparar.
+  - **Con qué clave:** lo de una persona, con su identificador de usuario; lo de un grupo —sus
+    tareas, su nombre y los apodos de sus miembros—, con el identificador del grupo. Es lo que
+    permite que lo lean los demás miembros, y solo ellos.
+  - El formato lleva **marca de versión** (p.ej. `enc1:`) delante. Es lo que permite convivir con lo
+    que ya se subió en claro y cambiar de algoritmo más adelante sin perder lo anterior.
+  - **Ningún tope de longitud en el servidor** sobre una columna cifrada: el cifrado alarga el texto
+    (cabecera más un tercio por el base64) y un solo valor largo hace que se rechace el lote entero.
+  - Si el servidor escribe texto por su cuenta —un disparador, una función—, hay que quitarle esa
+    parte: reescribiría en claro lo que el cliente acababa de cifrar.
+  - **Decir hasta dónde llega**, escrito donde se implementa: una clave derivada de un dato que el
+    servidor también conoce protege de quien vea la tabla, no de quien tenga la tabla y ese dato.
+- Al cifrar por primera vez, **migrar lo que ya estaba subido en claro**: una reescritura única de
+  todo lo del usuario, apuntada para no repetirla, y sin tocar la marca de tiempo de modificación
+  para que los demás dispositivos no vean un cambio que no existe.
 
 ## 10. Manejo de Errores y Registro (Logging)
 - **Prohibido el fallo silencioso** (sección 3): toda excepción esperada se gestiona y se informa
