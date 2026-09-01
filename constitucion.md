@@ -665,13 +665,35 @@ Todas las apps siguen este formato visual (Hiker es la referencia):
   presentación pesados salvo que aporten un valor claro.
 - Tema claro/oscuro coherente con el del sistema cuando sea viable.
 
-## B.2 Empaquetado e instalación
+## B.2 Librerías de controles de terceros
+**Regla: se toman controles sueltos, nunca el tema completo.**
+
+- **Prohibido adoptar el tema global** de una librería de terceros (`WPF UI`,
+  `MaterialDesignInXamlToolkit`, `MahApps.Metro` y equivalentes). El aspecto de una aplicación lo
+  fija la sección 24 y, cuando la aplicación tiene hermana móvil, **el escritorio se parece a ella**,
+  no a la plataforma. Un tema de terceros impone su propia identidad —WinUI/Fluent en el caso de
+  `WPF UI`— y deshace esa coherencia de un plumazo.
+- **Motivo técnico añadido:** esas librerías reestilizan los controles nativos por `BasedOn`, así
+  que chocan con las plantillas propias (`Card`, `Chip`, `Field`, `IconButton`…) y obligan a
+  perseguir divergencias que la sección 24 existe justamente para evitar.
+- **Librería admitida para controles sueltos: `HandyControl`** (MIT, cumple la sección 4). Se usa
+  **solo** cuando hace falta un control que no existe en el framework y escribirlo a mano no compra
+  nada:
+  - `TagContainer` — etiquetas con alta y baja.
+  - `Growl` — avisos dentro de la ventana.
+  - `TimePicker` — hora, donde el selector de fecha no basta.
+- **Cómo se importa:** únicamente los diccionarios de recursos de los controles que se usen.
+  **Nunca** el diccionario global de la librería, que arrastra el tema entero y vuelve al problema
+  de arriba.
+- Toda dependencia de este tipo se registra en `THIRD-PARTY-NOTICES.md` (sección 4).
+
+## B.3 Empaquetado e instalación
 - Empaquetado a instalador o ZIP mediante script reproducible (sección 12).
 - Núcleo nativo (si lo hay) compilado y empaquetado junto a la UI (ver Anexo D).
 - Opciones de integración con el SO (arranque automático, bandeja del sistema) configurables por el
   usuario.
 
-## B.3 Actualización
+## B.4 Actualización
 - Autoactualización por swap + reinicio **preservando la configuración** del usuario (sección 15),
   con verificación SHA-256 del paquete.
 
