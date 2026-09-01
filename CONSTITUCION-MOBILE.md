@@ -167,7 +167,35 @@ Notas de la API:
 - Pantalla **About** homogénea en todas (logo, versión, contacto, idioma, licencia).
 - Las que sincronizan enseñan **quién ha entrado** y con qué cuenta, en Ajustes, y permiten salir.
 
-## 8. Pruebas en dispositivo
+## 8. Task Manager: cuenta, servidor y cifrado
+
+La única aplicación del catálogo con cuenta y con servidor. Se documenta aquí porque es lo que hay
+que poder consultar sin abrir el código, y porque tiene que **coincidir palabra por palabra** con la
+política de privacidad ([Web §2](CONSTITUCION-WEB.md)) y con lo que diga la ficha el día que se
+publique.
+
+- **Entrada obligatoria** con una cuenta que el usuario ya tiene: Google o Microsoft (OAuth 2.0 con
+  PKCE contra el proveedor, no contra el servidor). Nunca vemos la contraseña. Microsoft está escrito
+  y activado en el servidor pero **oculto** hasta completar una entrada real.
+- **Servidor:** Supabase, región `eu-west-2` (Londres, Reino Unido). Único tercero, como alojamiento.
+- **Qué se guarda arriba:** `tasks`, `task_lists`, `task_steps`, `task_attachments`, `profiles`,
+  `groups`, `group_members` y `deletions` (apuntes de baja: identificador y fecha, **sin texto**).
+- **Qué va cifrado** (sección 5 de la [general](CONSTITUCION-GENERAL.md)): título, notas, etiquetas,
+  nombre de lista, título de paso, nombre y dirección de adjunto, nombre de grupo, apodo de miembro,
+  y del perfil el nombre, el correo y la foto. AES-256-GCM, prefijo `enc1:`.
+- **Qué NO va cifrado, a propósito:** fechas, marcas, números, identificadores, el `join_code` de un
+  grupo (es por donde se busca) y el hash de su clave (hay que compararlo). Los bytes de un fichero
+  adjunto se guardan tal cual; lo cifrado es su nombre.
+- **Con qué clave:** lo del usuario, con su identificador de `profiles`; lo que cuelga de un grupo
+  —sus tareas, su nombre y los apodos—, con el identificador del grupo.
+- **La autorización se comprueba arriba**, con RLS por fila. Que el cliente no pida algo no protege.
+- **Sin servidor la aplicación sigue funcionando**: los datos están también en el dispositivo; lo que
+  se pierde es la sincronización.
+- **El aviso entre dispositivos no es inmediato** y es una decisión, no una carencia por hacer: una
+  pasada en segundo plano cada 30 minutos más el botón de refrescar. Un aviso instantáneo exigiría
+  FCM y un proyecto de Firebase.
+
+## 9. Pruebas en dispositivo
 
 - Dispositivos de referencia: Xiaomi `24090RA29G` (Android 16) y tablet Samsung `SM-X130`.
 - El material de pruebas va en `testing/<app>/`, con `testing/PRUEBAS.md` como índice.

@@ -26,12 +26,15 @@
   de las 8 apps publicadas y desde la pantalla About de cada una.
 - **Si cambia la URL, hay que actualizarla en los dos sitios de las 8.** No es opcional: Google
   rechaza fichas con política de privacidad rota.
-- **Hoy la política dice que no hay cuentas de usuario y que no se guarda nada en ningún servidor.**
-  Es cierto para las 8 publicadas. **Deja de serlo el día que se publique Task Manager**, que entra
-  con cuenta de Google o Microsoft y guarda las tareas en Supabase. Ese día, y **antes** de subir
-  nada a la consola, la política tiene que decir: qué cuenta se usa y para qué, qué se guarda en el
-  servidor, que el texto se guarda **cifrado**, dónde está alojado y cómo se borra todo. Publicar la
-  app con la política actual sería declarar algo falso.
+- **La política ya recoge a Task Manager** (1-sep-2026): que entra con cuenta de Google o Microsoft,
+  qué se guarda en el servidor, que el texto va **cifrado** y qué no lo va y por qué, dónde está
+  alojado (Supabase, `eu-west-2`, Londres), quién puede verlo y cómo se borra. Antes decía que no
+  había cuentas ni servidor, lo cual dejó de ser cierto ese día.
+- **Lo que dicen la política, la ficha y la aplicación tiene que ser lo mismo.** Si cambia lo que se
+  guarda o dónde, se cambian los tres en el mismo ciclo, y la política **antes** de subir nada a la
+  consola: publicar con una política que no cuadra es declarar algo falso.
+- La fuente son `Web/socraticweb/privacidad.html` y `CONTENIDO-PARA-GOOGLE-SITES.md`; **Google Sites
+  hay que actualizarlo a mano** pegando el segundo (sección 3).
 - Tiene que reflejar la realidad de cada app: qué permisos usa y para qué. Si una app cambia de
   permisos, la política se actualiza en el mismo ciclo.
 - Lleva fecha de última actualización visible.
