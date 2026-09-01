@@ -8,7 +8,7 @@
 > - **En Google Play (8):** FileManager, Hiker, MusicPlayer, PDFReader, QuitSmoke, SMSForwarder,
 >   TXTReader, Uninstaller. Todo lo de firma, ficha, permisos y publicación es para estas.
 > - **Fuera de Play (1): Task Manager.** Se reparte por APK (`C:\ID\OneDrive\TaskManager`) y es la
->   única que ademas tiene **cliente de escritorio** (WPF, `TaskManager.Desktop`) y **servidor**
+>   única que además tiene **cliente de escritorio** (WPF, `TaskManager.Desktop`) y **servidor**
 >   (Supabase). Le aplican la firma y el versionado de aquí; lo de la consola de Play, solo el día
 >   que se publique — y ese día hay que repasar antes la política de privacidad (ver
 >   [Web §2](CONSTITUCION-WEB.md)) y las secciones 4 y 5 de la

@@ -48,7 +48,7 @@
 ```
 sOCProjects/
 ├── Mobile/    aplicaciones Android (.NET MAUI) + Shared/ + GooglePlayConsole/ + PlayConsole-Videos/
-│           (Task Manager añade ademas un cliente de escritorio WPF en la misma carpeta)
+│           (Task Manager añade además un cliente de escritorio WPF en la misma carpeta)
 ├── Games/     videojuegos (Godot)
 ├── Tools/     utilidades internas y de escritorio
 ├── Web/       sitios y contenido web
