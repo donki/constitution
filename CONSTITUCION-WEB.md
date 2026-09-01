@@ -26,17 +26,23 @@
   de las 8 apps publicadas y desde la pantalla About de cada una.
 - **Si cambia la URL, hay que actualizarla en los dos sitios de las 8.** No es opcional: Google
   rechaza fichas con política de privacidad rota.
-- **La política ya recoge a Task Manager** (1-sep-2026): que entra con cuenta de Google o Microsoft,
-  qué se guarda en el servidor, que el texto va **cifrado** y qué no lo va y por qué, dónde está
-  alojado (Supabase, `eu-west-2`, Londres), quién puede verlo y cómo se borra. Antes decía que no
-  había cuentas ni servidor, lo cual dejó de ser cierto ese día.
+- **Está escrita en genérico, por casos, no aplicación por aplicación** (1-sep-2026). No enumera qué
+  toca cada app ni para qué: dice que cada una accede solo a lo que necesita para la función que
+  anuncia en su ficha, y separa los dos casos que existen — las que funcionan enteras en el
+  dispositivo y las que sincronizan, que necesitan cuenta y servidor. Así una app nueva no obliga a
+  reescribirla, y la que sí toca al detalle es su ficha de Play.
+- **El caso «sincroniza» lleva sus condiciones escritas**: cuenta que el usuario ya tiene, sin ver ni
+  guardar contraseñas, contenido **cifrado en el dispositivo antes de salir** y guardado cifrado,
+  solo lo que esa función necesita, y sin publicidad, perfiles ni analítica. Hasta el 1-sep-2026 la
+  política decía que no había cuentas ni servidor, y había dejado de ser cierto.
 - **Lo que dicen la política, la ficha y la aplicación tiene que ser lo mismo.** Si cambia lo que se
   guarda o dónde, se cambian los tres en el mismo ciclo, y la política **antes** de subir nada a la
   consola: publicar con una política que no cuadra es declarar algo falso.
 - La fuente son `Web/socraticweb/privacidad.html` y `CONTENIDO-PARA-GOOGLE-SITES.md`; **Google Sites
   hay que actualizarlo a mano** pegando el segundo (sección 3).
-- Tiene que reflejar la realidad de cada app: qué permisos usa y para qué. Si una app cambia de
-  permisos, la política se actualiza en el mismo ciclo.
+- El detalle de permisos de cada app va **en su ficha de Play**, no aquí. Si una app cambia de
+  permisos se actualiza la ficha; la política solo se toca si cambia el **tipo** de tratamiento
+  (p.ej. una app que hasta ahora era solo local empieza a sincronizar).
 - Lleva fecha de última actualización visible.
 
 ## 3. Google Sites
