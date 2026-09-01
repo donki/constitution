@@ -31,7 +31,10 @@ dirige.
 
 ## 3. Principios no negociables
 - **Privacidad primero:** los datos del usuario se mantienen bajo su control; se minimiza la
-  recolección y la salida de datos fuera del dispositivo o del servidor autoalojado.
+  recolección y la salida de datos fuera del dispositivo o del servidor autoalojado. Cuando la
+  función de la aplicación **es** compartir entre dispositivos o entre personas, cabe un servicio
+  gestionado de terceros, y entonces el texto del usuario sale **cifrado** (sección 9) y la
+  autorización se comprueba en el servidor, no en el cliente (Anexo C).
 - **Mínimo privilegio:** solo los permisos, puertos y accesos estrictamente necesarios.
 - **Seguridad por defecto:** cifrado en tránsito siempre que haya red; secretos fuera del
   repositorio; credenciales sin valores por defecto (ver secciones 4 y 6).
@@ -233,6 +236,12 @@ detallan en los anexos):
 
 ## 14. Despliegue de Servidor y Servicios
 *(Aplica a proyectos con componente de servidor; ver Anexo C para el detalle.)*
+- **Servicio gestionado de terceros** (tipo Supabase/PaaS): no hay instalador ni puertos que abrir,
+  pero sí hay que versionar el esquema como código —ficheros numerados y relanzables dentro del
+  repositorio de la aplicación—, dejar en el cliente **solo la clave publicable**, y comprobar la
+  autorización con políticas de fila en el propio servicio. Que la aplicación no pida algo no es una
+  protección. Si el servicio cae, la aplicación sigue funcionando con sus datos locales: lo que se
+  pierde es la sincronización.
 - **Instalación como servicio** del sistema (servicios de Windows / unidades systemd) con arranque
   automático; el instalador abre los puertos de firewall necesarios y aplica la configuración.
 - **Configuración externalizada** en ficheros junto al binario, sin secretos versionados (sección 6).
