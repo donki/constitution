@@ -572,7 +572,12 @@ y `-GrantPermissions`.
   reales en un emulador (sección 3, privacidad primero).
 
 ## A.9 Sistema de diseño en .NET MAUI
-Concreción de la sección 24 para MAUI. Referencia: `FileManager` y `PDFReader`.
+Concreción de la sección 24 para MAUI.
+
+**La referencia es `TaskManager`.** Todas las aplicaciones siguen su mismo formato: la estructura de
+la «Acerca de», el menú hamburguesa, las tarjetas, los botones con icono y la resolución de textos.
+Ante una duda —o ante una diferencia entre lo escrito aquí y lo que hace una aplicación— se mira
+cómo lo hace TaskManager y se copia. Lo que se cambie en él se lleva a las demás, no al revés.
 
 **Ubicación y carga**
 - Los tokens de color en `Resources/Styles/Colors.xaml`; los estilos en `Resources/Styles/Styles.xaml`.
@@ -634,25 +639,27 @@ Todas las aplicaciones comparten la misma estructura de tarjetas, en este orden:
    —que coincide con `ApplicationDisplayVersion` del csproj— una descripción breve (opcional) y
    «Socratic». Todas las tarjetas usan el estilo `Card` (Border) con `CardTitle` de encabezado.
 2. **Contacto:** correo **`jsoladelarosa@gmail.com`** en un botón que abre el cliente de correo.
-3. **Apoyo:** enlace de Ko-fi **`https://ko-fi.com/josepsola`** (el mismo en todas las apps), que
-   abre el navegador y, si falla, copia la URL al portapapeles.
-4. **Idioma:** dos botones **«🇪🇸 Español» / «🇺🇸 English»** —cada uno con su **bandera** (emoji de
+3. **Idioma:** dos botones **«🇪🇸 Español» / «🇺🇸 English»** —cada uno con su **bandera** (emoji de
    indicador regional) delante del nombre— para los idiomas oficiales (ver sección 8). Aplican el
    idioma de inmediato y resaltan el activo (estilo primario) frente al inactivo (contorno). Se usa
    **botones, nunca un `Picker`**, y el mismo selector con banderas aparece también donde se elija el
    idioma en Configuración.
-5. **Privacidad:** una declaración breve y honesta de qué datos usa la app y que no se comparten con
+4. **Privacidad:** una declaración breve y honesta de qué datos usa la app y que no se comparten con
    terceros (adaptada a cada aplicación).
-6. **Licencia:** declaración de software libre bajo licencia **MIT** + línea `MIT License · Copyright
+5. **Licencia:** declaración de software libre bajo licencia **MIT** + línea `MIT License · Copyright
    © <año> Socratic`.
-7. **Aviso legal:** el descargo de responsabilidad («tal cual», sin garantías) rematado con un
+6. **Aviso legal:** el descargo de responsabilidad («tal cual», sin garantías) rematado con un
    recuadro de advertencia «⚠️ Uso bajo su propio riesgo».
 
 - Las tres declaraciones —**Privacidad, Licencia y Aviso legal**— son obligatorias y aparecen en la
   «Acerca de» de **todas** las aplicaciones (incluido el juego sOC, adaptadas a su formato).
 - **No** se incluye información del sistema (plataforma, modelo, versión de OS) en la ficha pública.
-- El correo de contacto y la URL de Ko-fi son constantes idénticas en todos los proyectos; al
-  cambiarlos hay que hacerlo en todos a la vez.
+- El correo de contacto es una constante idéntica en todos los proyectos; al cambiarlo hay que
+  hacerlo en todos a la vez.
+- **Nada de donaciones.** No hay tarjeta de apoyo ni enlace de Ko-fi, ni en la «Acerca de» ni en
+  ninguna otra pantalla, ficha de tienda o documento. Hasta el 2026-09-06 esta sección pedía una
+  tarjeta de Ko-fi como tercera y **E.4 la prohibía** en la misma página: la contradicción explica
+  que unas aplicaciones la lleven y otras no. Manda la prohibición; donde siga puesta, se quita.
 
 **Navegación: menú hamburguesa (obligatorio)**
 - Toda aplicación tiene un **menú hamburguesa** (flyout de Shell) accesible desde la barra superior.
