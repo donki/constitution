@@ -62,6 +62,6 @@
 
 - Si el juego va a Google Play, se le aplica también la
   [constitución de Mobile](CONSTITUCION-MOBILE.md): firma con `socratic.keystore`,
-  versionado `AAAAMMDDN` (con lo que dice su sección 3 para cuando un día se pasa de 10
-  compilaciones), targetSdk vigente y ficha con capturas reales de juego.
+  versionado `AAAAMMDDNN` (con el contador del día a dos cifras, ver su sección 3), targetSdk
+  vigente y ficha con capturas reales de juego.
 - Build de Android desde `tools/build_android.ps1`.

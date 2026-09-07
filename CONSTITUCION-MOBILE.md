@@ -62,14 +62,19 @@
 
 ## 3. Versionado
 
-- `ApplicationVersion` (versionCode) con formato `AAAAMMDDN` — p. ej. `202607310`. Leído de otra
-  forma: **fecha × 10 + número de compilación del día**.
-- `ApplicationDisplayVersion` con formato `AAAA.MM.DD.N`.
-- **Si un día se pasa de 10 compilaciones**, el versionCode sigue subiendo de uno en uno y se mete
-  en el hueco del día siguiente (la undécima del 1-sep es `202609020`, no `2026090110`, que se
-  saldría del máximo que admite Android). El nombre visible sí sigue contando (`2026.09.01.11`). Lo
-  único que Android exige es que el número **suba**; que se lea como una fecha es comodidad nuestra.
-  *(Pasó el 2026-09-01 con Task Manager, que llegó a la compilación 12 del día.)*
+- `ApplicationVersion` (versionCode) con formato `AAAAMMDDNN` — p. ej. `2026073100`. Leído de otra
+  forma: **fecha × 100 + número de compilación del día**.
+- **El contador va con dos cifras, rellenado con cero**: `2026090701`, no `202609071`. El versionCode
+  es un número, no una fecha: con una sola cifra, un día que llegue a la compilación 13
+  (`2026090613`, diez cifras) deja al día siguiente sin sitio, porque `202609071` (nueve cifras) es
+  **menor**. Android lo rechaza con `INSTALL_FAILED_VERSION_DOWNGRADE` y Play con `Version code
+  must be greater than…`. *(Pasó el 2026-09-07 con Task Manager.)*
+- `ApplicationDisplayVersion` con formato `AAAA.MM.DD.N`, **sin rellenar**: es para leerlo, y
+  `2026.09.07.1` se lee mejor que `2026.09.07.01`.
+- Con dos cifras caben 99 compilaciones al día, que no se agotan; y el número sigue cabiendo en el
+  máximo que admite Android (2 100 000 000) hasta el año 2099.
+- Lo único que Android exige es que el número **suba**; que se lea como una fecha es comodidad
+  nuestra.
 - **El versionCode solo sube, nunca baja.** Antes de compilar una release hay que comprobar qué
   versionCode está publicado en Play; si el csproj tiene uno menor, se corrige primero.
 - El versionCode del csproj y el del AAB publicado deben coincidir. Si se restaura el repositorio

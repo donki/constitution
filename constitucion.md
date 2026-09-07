@@ -478,13 +478,15 @@ que ninguna pantalla queda ilegible, y que no hay literales de color en el marku
 
 ## A.4 Versionado de tienda
 - `ApplicationDisplayVersion`: cadena legible con esquema de fecha (p.ej. `2026.05.20.0`).
-- `ApplicationVersion`/`versionCode`: entero incremental requerido por la tienda (p.ej. `202605200`).
+- `ApplicationVersion`/`versionCode`: entero incremental requerido por la tienda, con el contador
+  del día a **dos cifras** (p.ej. `2026052000`). Con una sola, el día que se pase de nueve
+  compilaciones el número del día siguiente sale menor y la instalación se rechaza.
 - Ambos se actualizan en sincronía antes de cada publicación (coherente con sección 11).
 - **En cada build (Debug o Release)** se incrementa siempre la última cifra de
   `ApplicationDisplayVersion` (p.ej. `2026.05.20.0` → `2026.05.20.1`) y se actualiza `versionCode`.
 - **Al publicar en Google Play** se fija toda la versión a la fecha actual:
-  `ApplicationDisplayVersion = AAAA.MM.DD.0` y `versionCode = AAAAMMDD0`
-  (ejemplo para 2026-06-26: `2026.06.26.0` y `202606260`).
+  `ApplicationDisplayVersion = AAAA.MM.DD.0` y `versionCode = AAAAMMDD00`
+  (ejemplo para 2026-06-26: `2026.06.26.0` y `2026062600`).
 
 ## A.5 Política de Google Play Store
 - **Canales:** pruebas cerradas (primer canal obligatorio), pruebas internas (validación rápida sin
