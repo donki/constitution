@@ -13,7 +13,7 @@
 > `constitution/`. **Se editan aquí**: una copia suelta en la carpeta de trabajo se queda vieja sin
 > que nadie se entere.
 >
-> **Última actualización: 2026-09-01**
+> **Última actualización: 2026-09-12**
 
 ---
 
@@ -70,6 +70,13 @@ sOCProjects/
 3. Nunca se commitean secretos: keystores, contraseñas, ficheros de service account. Van en
    `.gitignore` y se pasan por CLI o por fichero local.
 4. Mensajes de commit en español, en imperativo, describiendo el **qué** y el **por qué**.
+5. **Claude (ni ningún otro asistente) no aparece como autor ni como colaborador.** Los commits
+   van firmados solo por Josep: ningún `Co-Authored-By: Claude …`, ningún `Generated with Claude
+   Code` en descripciones de PR, ningún autor de commit que no sea una persona. El código es del
+   proyecto, y quien responde de él es quien lo publica. *(El 2026-09-12 se reescribió el historial
+   de todos los repositorios para quitar esos avales, y GitHub dejó de listar a Claude como
+   contribuidor.)* Vale también para la documentación: nada de «hecho con Claude» en READMEs ni en
+   fichas de tienda.
 
 ## 4. Secretos
 
