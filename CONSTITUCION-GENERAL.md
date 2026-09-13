@@ -147,6 +147,25 @@ Una tarea está **terminada** cuando:
 - [ ] Está commiteada.
 - [ ] La documentación afectada está actualizada.
 - [ ] Si cambia algo de cara al usuario, la ficha o la web se actualizan también.
+- [ ] **La versión está publicada como release en GitHub**, con sus paquetes adjuntos (APK en
+      Android; EXE autocontenido y MSIX en Windows) y las notas de la primera sección del
+      CHANGELOG. Etiqueta `v` + versión del csproj (`v2026.09.13.2`). Se hace con
+      `Mobile/Shared/release-github.py <etiqueta> <ficheros…>`, que usa la credencial de GitHub que
+      ya tiene git. La copia en OneDrive es para Josep; la release es lo que queda de cada versión y
+      lo que se puede enlazar. *(Regla del 2026-09-13.)*
+
+### 8.1 Dónde se consigue cada aplicación
+
+El README de cada repositorio lleva, al principio, una sección **«Dónde conseguirla»** con los
+enlaces a sus tiendas y a las releases de GitHub:
+
+- Android: `https://play.google.com/store/apps/details?id=<paquete>` (aunque siga en prueba
+  cerrada: el enlace es el mismo cuando pase a producción).
+- Windows: el enlace de producto de Microsoft Store (`https://apps.microsoft.com/detail/<id>`)
+  en cuanto Partner Center lo dé; hasta entonces, la búsqueda por el nombre reservado.
+- Siempre: `https://github.com/donki/<repo>/releases`.
+
+Cuando una aplicación se publica en una tienda nueva, el README se actualiza en el mismo commit.
 
 ## 9. Cómo se registran las tareas
 
