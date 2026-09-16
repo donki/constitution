@@ -128,6 +128,11 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
    diálogos propios (`ModernDialog`) en vez de los del sistema.
 3. **Modo claro y oscuro** en todo lo que tenga interfaz.
 4. **Accesibilidad**: contraste suficiente, áreas táctiles de 48 dp mínimo, textos escalables.
+5. **Toda casilla de contraseña lleva el botón del ojo para verla.** Contraseñas de conexión, de
+   cuenta, frases de cifrado, códigos: siempre con el ojo dentro de la casilla, que alterna entre
+   puntos y texto. En WPF el `PasswordBox` no sabe destapar, así que se usa un control propio con un
+   `PasswordBox` y un `TextBox` superpuestos (`RevealPasswordBox` en RCManager, referencia); en
+   MAUI, `IsPassword` alternado con un botón. *(Decisión de Josep del 2026-09-16.)*
 
 ## 7. Idiomas
 
