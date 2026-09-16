@@ -202,7 +202,10 @@ detallan en los anexos):
 ## 11. Versionado
 - **Esquema único y coherente** para todo el proyecto, definido en una **constante única**
   reutilizada por todos los componentes. Esquemas admitidos:
-  - **Fecha:** `AAAA.MM.DD.N` (p.ej. `2026.06.18.1`), donde `N` es el build incremental del día.
+  - **Fecha:** `AAAA.MM.DD.NN` (p.ej. `2026.06.18.01`), donde `NN` es el build incremental del
+    día, a dos cifras (`00`–`99`), el mismo que cierra el `versionCode` (`AAAAMMDDNN`). En
+    Windows, donde `System.Version` no conserva ceros a la izquierda, se escribe igual en el
+    CHANGELOG y en los nombres de fichero, aunque el ensamblado enseñe `2026.6.18.1`.
   - **Semántico / tienda:** versión legible (`1.10.0`) más, cuando la tienda lo exija, un entero
     incremental de build (ver Anexo A).
 - **Versión legible y código de versión deben actualizarse en sincronía** antes de cada publicación.
@@ -482,11 +485,11 @@ que ninguna pantalla queda ilegible, y que no hay literales de color en el marku
   del día a **dos cifras** (p.ej. `2026052000`). Con una sola, el día que se pase de nueve
   compilaciones el número del día siguiente sale menor y la instalación se rechaza.
 - Ambos se actualizan en sincronía antes de cada publicación (coherente con sección 11).
-- **En cada build (Debug o Release)** se incrementa siempre la última cifra de
-  `ApplicationDisplayVersion` (p.ej. `2026.05.20.0` → `2026.05.20.1`) y se actualiza `versionCode`.
+- **En cada build (Debug o Release)** se incrementa siempre el contador de
+  `ApplicationDisplayVersion` (p.ej. `2026.05.20.00` → `2026.05.20.01`) y se actualiza `versionCode`.
 - **Al publicar en Google Play** se fija toda la versión a la fecha actual:
-  `ApplicationDisplayVersion = AAAA.MM.DD.0` y `versionCode = AAAAMMDD00`
-  (ejemplo para 2026-06-26: `2026.06.26.0` y `2026062600`).
+  `ApplicationDisplayVersion = AAAA.MM.DD.00` y `versionCode = AAAAMMDD00`
+  (ejemplo para 2026-06-26: `2026.06.26.00` y `2026062600`).
 
 ## A.5 Política de Google Play Store
 - **Canales:** pruebas cerradas (primer canal obligatorio), pruebas internas (validación rápida sin

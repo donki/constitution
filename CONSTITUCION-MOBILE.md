@@ -69,8 +69,9 @@
   (`2026090613`, diez cifras) deja al día siguiente sin sitio, porque `202609071` (nueve cifras) es
   **menor**. Android lo rechaza con `INSTALL_FAILED_VERSION_DOWNGRADE` y Play con `Version code
   must be greater than…`. *(Pasó el 2026-09-07 con Task Manager.)*
-- `ApplicationDisplayVersion` con formato `AAAA.MM.DD.N`, **sin rellenar**: es para leerlo, y
-  `2026.09.07.1` se lee mejor que `2026.09.07.01`.
+- `ApplicationDisplayVersion` con formato `AAAA.MM.DD.NN`, **con el contador a dos cifras**
+  (`2026.09.07.01`), igual que el `versionCode`: así la versión legible y el código dicen lo mismo
+  y no hay que traducir de uno a otro. *(Decisión de Josep del 2026-09-16; antes iba sin rellenar.)*
 - Con dos cifras caben 99 compilaciones al día, que no se agotan; y el número sigue cabiendo en el
   máximo que admite Android (2 100 000 000) hasta el año 2099.
 - Lo único que Android exige es que el número **suba**; que se lea como una fecha es comodidad
