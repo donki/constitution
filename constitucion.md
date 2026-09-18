@@ -1,4 +1,4 @@
-# Constitución de Proyectos de Software
+﻿# Constitución de Proyectos de Software
 
 ## 1. Propósito
 Documento de referencia para la **arquitectura, gobernanza, seguridad, publicación y mantenimiento**
@@ -453,13 +453,21 @@ que ninguna pantalla queda ilegible, y que no hay literales de color en el marku
 - `Resources/`: iconos, imágenes, estilos, fuentes, traducciones y assets crudos.
   `Properties/`: configuración del proyecto (`launchSettings.json`).
 
-**Plataformas secundarias de desarrollo**
-- Se permite habilitar plataformas adicionales (por ejemplo Windows) como objetivo **secundario de
-  desarrollo y depuración**.
-- El objetivo de publicación y soporte sigue siendo Android; **las plataformas secundarias no
-  relajan ninguna regla** de esta constitución.
-- El código específico de una plataforma secundaria se encapsula en su carpeta `Platforms/`
-  correspondiente.
+**Objetivos de publicación** *(regla del 2026-09-18; antes Android era el único objetivo)*
+- Cada aplicación declara su objetivo de publicación: **Android**, **Windows** o **los dos**. Se
+  recoge en `TargetFrameworks` del csproj (`net9.0-android36.0`, `net9.0-windows10.0.19041.0` o
+  ambos) y en el README («Dónde conseguirla»).
+- Es **el mismo proyecto MAUI** para los dos objetivos: las páginas, los servicios y los modelos son
+  comunes; lo que depende de la plataforma queda detrás de una interfaz de `Services/` y se
+  implementa en `Platforms/Android/` y en `Platforms/Windows/`. La interfaz MAUI no contiene lógica
+  de plataforma ni referencias directas a APIs de Android o de Windows.
+- **Ninguna regla se relaja** por el objetivo: idiomas, permisos mínimos, versionado, pruebas en
+  dispositivo real y release en GitHub valen para los dos.
+- En Windows la aplicación se entrega como **EXE autocontenido y MSIX** (constitución general §8) y
+  se publica en **Microsoft Store**; la ficha vive en `Mobile/MicrosoftStore/<app>/`. En Android,
+  APK/AAB y Google Play, con la ficha en `Mobile/GooglePlayConsole/<app>/`.
+- Se puede habilitar una plataforma solo para desarrollo y depuración sin publicarla; en ese caso
+  el README lo dice y no se le exige ficha ni release.
 
 ## A.2 Identificador de paquete
 - Formato obligatorio: `com.socratic.[nombre-aplicacion]` (en minúsculas, sin espacios).

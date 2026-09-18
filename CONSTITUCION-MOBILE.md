@@ -1,12 +1,15 @@
-# Constitución — Mobile
+﻿# Constitución — Mobile
 
 > Amplía la [constitución general](CONSTITUCION-GENERAL.md). El detalle técnico está en
 > [constitucion.md](constitucion.md), **Anexo A**.
 >
-> Alcance: las 9 apps en .NET MAUI de `Mobile/`.
+> Alcance: las 9 apps en .NET MAUI de `Mobile/`. Cada una tiene por objetivo **Android, Windows o
+> los dos**, con el mismo proyecto (Anexo A.1); lo de Android se aplica a las que van a Android y lo
+> de Windows (EXE + MSIX, Microsoft Store, carpeta en OneDrive) a las que van a Windows.
 >
 > - **En Google Play (8):** FileManager, Hiker, MusicPlayer, PDFReader, QuitSmoke, SMSForwarder,
 >   TXTReader, Uninstaller. Todo lo de firma, ficha, permisos y publicación es para estas.
+> - **También en Windows (Microsoft Store): Uninstaller** *(desde 2026-09-18)*.
 > - **Fuera de Play (1): Task Manager.** Se reparte por APK (`C:\ID\OneDrive\TaskManager`) y es la
 >   única que además tiene **cliente de escritorio** (WPF, `TaskManager.Desktop`) y **servidor**
 >   (Supabase). Le aplican la firma y el versionado de aquí; lo de la consola de Play, solo el día
@@ -14,7 +17,7 @@
 >   [Web §2](CONSTITUCION-WEB.md)) y las secciones 4 y 5 de la
 >   [constitución general](CONSTITUCION-GENERAL.md).
 >
-> **Última actualización: 2026-09-01**
+> **Última actualización: 2026-09-18**
 
 ---
 

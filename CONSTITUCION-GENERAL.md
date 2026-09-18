@@ -1,4 +1,4 @@
-# Constitución general — sOCratic
+﻿# Constitución general — sOCratic
 
 > Norma común a **todo** lo que hay en este repositorio: `Mobile/`, `Games/`, `Tools/` y `Web/`.
 > Cada categoría añade la suya, que **amplía** esta pero nunca la contradice:
@@ -158,6 +158,11 @@ Una tarea está **terminada** cuando:
       `Mobile/Shared/release-github.py <etiqueta> <ficheros…>`, que usa la credencial de GitHub que
       ya tiene git. La copia en OneDrive es para Josep; la release es lo que queda de cada versión y
       lo que se puede enlazar. *(Regla del 2026-09-13.)*
+- [ ] **Toda aplicación Windows tiene su carpeta en OneDrive**, `C:\ID\OneDrive\<App>`, y en cada
+      versión se dejan ahí el **EXE** autocontenido, el **MSIX** (con la versión en el nombre, y solo
+      el último) y los **assets** que el EXE necesite al lado (por ejemplo `Assets\` con adb y
+      scrcpy-server en Phone Mirror), más un `LEEME.txt` que diga qué es cada cosa. Lo que hay en
+      esa carpeta tiene que arrancar tal cual, sin copiar nada más. *(Regla del 2026-09-18.)*
 
 ### 8.1 Dónde se consigue cada aplicación
 
