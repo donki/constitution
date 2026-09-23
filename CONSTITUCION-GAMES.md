@@ -43,7 +43,8 @@
 ## 4. Interfaz
 
 - Se aplica el sistema de diseño común (paleta índigo, esquinas redondeadas, modo claro/oscuro).
-- **Botones con iconos**, no con palabras.
+- **Botones con iconos**, no con palabras, y los iconos **siempre planos** (SVG de línea, nunca
+  emoji; ver [General §6.2](CONSTITUCION-GENERAL.md)).
 - Los menús deben ser navegables con mando y con pantalla táctil, no solo con ratón.
 
 ## 5. Idiomas

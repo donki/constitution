@@ -172,7 +172,8 @@ Notas de la API:
 ## 7. Interfaz
 
 - Se aplica el sistema de diseño índigo común y `ModernDialog` en vez de los diálogos del sistema.
-- **Botones con iconos**, no con palabras.
+- **Botones con iconos**, no con palabras, y los iconos **siempre planos**: SVG de línea de 24×24 en
+  `Resources/Images/ic_*.svg`, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 - Pantalla **About** homogénea en todas (logo, versión, contacto, idioma, licencia).
 - Las que sincronizan enseñan **quién ha entrado** y con qué cuenta, en Ajustes, y permiten salir.
 

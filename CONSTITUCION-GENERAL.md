@@ -124,11 +124,21 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
 
 1. **Botones con iconos, no con palabras.** Un icono reconocible por acción; el texto acompaña solo
    cuando el icono es ambiguo. Vale para móvil, escritorio, juegos y web.
-2. **Sistema de diseño unificado**: paleta índigo, tipografía del sistema, esquinas redondeadas,
+2. **Los iconos son siempre planos.** Dibujo de línea en SVG, lienzo 24×24, `fill="none"`, trazo
+   1.8 con puntas y uniones redondeadas, un solo color: el índigo de la paleta (`#3525CD`), blanco
+   (`_w`) sobre fondos rellenos y el rojo de peligro (`_danger`) para borrar. **Nunca emoji**, ni
+   iconos de color, ni degradados, ni sombras: los emoji cambian de dibujo según el teléfono, se
+   cortan con la letra grande y no siguen el tema. Se guardan en `Resources/Images/ic_<nombre>.svg`
+   (referencia: `Mobile/TaskManager`) y **cada acción usa el mismo icono en toda la aplicación**.
+   Las banderas del selector de idioma son el único dibujo con color, también plano.
+   *(Decisión de Josep del 2026-09-23.)*
+3. **Sistema de diseño unificado**: paleta índigo, tipografía del sistema, esquinas redondeadas,
    diálogos propios (`ModernDialog`) en vez de los del sistema.
-3. **Modo claro y oscuro** en todo lo que tenga interfaz.
-4. **Accesibilidad**: contraste suficiente, áreas táctiles de 48 dp mínimo, textos escalables.
-5. **Toda casilla de contraseña lleva el botón del ojo para verla.** Contraseñas de conexión, de
+4. **Modo claro y oscuro** en todo lo que tenga interfaz.
+5. **Accesibilidad**: contraste suficiente, áreas táctiles de 48 dp mínimo, textos escalables. Con
+   la letra del sistema en grande no se puede cortar ningún texto ni ningún icono: se prueba en un
+   dispositivo real con la escala de letra que tenga puesta el usuario.
+6. **Toda casilla de contraseña lleva el botón del ojo para verla.** Contraseñas de conexión, de
    cuenta, frases de cifrado, códigos: siempre con el ojo dentro de la casilla, que alterna entre
    puntos y texto. En WPF el `PasswordBox` no sabe destapar, así que se usa un control propio con un
    `PasswordBox` y un `TextBox` superpuestos (`RevealPasswordBox` en RCManager, referencia); en

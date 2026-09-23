@@ -25,6 +25,8 @@ ficha y clasificación, pero **no** los de licencia, seguridad ni privacidad.
    pide confirmación o exige un flag explícito. Modo *dry-run* siempre que tenga sentido.
 4. **Idempotente** cuando sea posible: ejecutarla dos veces no debe empeorar el estado.
 5. **Salida legible.** Que se entienda qué hizo, qué omitió y por qué.
+6. **Si tiene ventana, los iconos son planos**: dibujo de línea de un solo color, nunca emoji
+   (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 
 ## 3. Secretos
 

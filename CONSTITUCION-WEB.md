@@ -59,7 +59,8 @@ El sitio público vive en Google Sites, que **no admite subir HTML**. Por eso:
 - La página de inicio lista las aplicaciones con su estado real (producción / prueba cerrada) y su
   enlace a Google Play. **El estado se revisa cada vez que cambia en Play**, no se deja obsoleto.
 - Español e inglés cuando haya versión internacional; hoy, español.
-- **Botones con iconos** cuando haya interfaz, igual que en el resto del catálogo.
+- **Botones con iconos** cuando haya interfaz, igual que en el resto del catálogo, y **planos**:
+  SVG de línea, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 
 ## 5. Servicios de servidor
 
