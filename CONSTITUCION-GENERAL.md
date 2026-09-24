@@ -130,7 +130,11 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
    iconos de color, ni degradados, ni sombras: los emoji cambian de dibujo según el teléfono, se
    cortan con la letra grande y no siguen el tema. Se guardan en `Resources/Images/ic_<nombre>.svg`
    (referencia: `Mobile/TaskManager`) y **cada acción usa el mismo icono en toda la aplicación**.
-   Las banderas del selector de idioma son el único dibujo con color, también plano.
+   Las banderas del selector de idioma son el único dibujo con color, también plano: **los botones
+   de idioma llevan el icono de su bandera** (`ic_flag_es.svg`, `ic_flag_us.svg`, `ic_flag_gb.svg`…,
+   rectángulo 24×16 con los colores de la bandera) al lado del nombre del idioma. Nunca las letras
+   del país («ES», «US») ni el emoji de bandera, que Windows no dibuja y enseña como esas dos letras.
+   *(Decisión de Josep del 2026-09-24.)*
    *(Decisión de Josep del 2026-09-23.)*
 3. **Sistema de diseño unificado**: paleta índigo, tipografía del sistema, esquinas redondeadas,
    diálogos propios (`ModernDialog`) en vez de los del sistema.
