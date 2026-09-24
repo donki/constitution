@@ -198,6 +198,22 @@ enlaces a sus tiendas y a las releases de GitHub:
 
 Cuando una aplicación se publica en una tienda nueva, el README se actualiza en el mismo commit.
 
+### 8.2 Fichas de la Microsoft Store y de Edge Add-ons, en castellano e inglés
+
+Toda aplicación que va a la **Microsoft Store**, y toda extensión que va a **Edge Add-ons**, tiene
+sus fichas de tienda en `.md` dentro del repo, **una en castellano y otra en inglés**, listas para
+pegar campo a campo en Partner Center:
+
+- Microsoft Store: `store/microsoft/ficha-es-ES.md` y `store/microsoft/ficha-en-US.md` (nombre,
+  descripción, características, notas de la versión, palabras clave, imágenes).
+- Edge Add-ons: `store/edge/ficha-es-ES.md` y `store/edge/ficha-en-US.md` (descripción, términos de
+  búsqueda, propiedades, imágenes), más `store/edge/privacidad.md` con el propósito único y la
+  justificación de cada permiso.
+
+Las dos versiones dicen lo mismo, y se actualizan en el mismo commit que el cambio que las deja
+viejas: una función que desaparece (Windows Hello en sOC Credentials, 2026-09-24) sale también de
+las fichas. Referencia: `Mobile/Credentials/store/`. *(Decisión de Josep del 2026-09-24.)*
+
 ## 9. Cómo se registran las tareas
 
 | Fichero | Qué va ahí |
