@@ -198,21 +198,31 @@ enlaces a sus tiendas y a las releases de GitHub:
 
 Cuando una aplicación se publica en una tienda nueva, el README se actualiza en el mismo commit.
 
-### 8.2 Fichas de la Microsoft Store y de Edge Add-ons, en castellano e inglés
+### 8.2 Fichas de tienda en castellano e inglés (Microsoft Store y extensiones)
 
-Toda aplicación que va a la **Microsoft Store**, y toda extensión que va a **Edge Add-ons**, tiene
-sus fichas de tienda en `.md` dentro del repo, **una en castellano y otra en inglés**, listas para
-pegar campo a campo en Partner Center:
+Toda aplicación que va a la **Microsoft Store**, y toda **extensión de navegador** que va a una tienda
+(**Edge Add-ons**, **Chrome Web Store**, **Firefox Add-ons**), tiene sus fichas en `.md` dentro del
+repo, **una en castellano y otra en inglés**, listas para pegar campo a campo:
 
-- Microsoft Store: `store/microsoft/ficha-es-ES.md` y `store/microsoft/ficha-en-US.md` (nombre,
-  descripción, características, notas de la versión, palabras clave, imágenes).
-- Edge Add-ons: `store/edge/ficha-es-ES.md` y `store/edge/ficha-en-US.md` (descripción, términos de
-  búsqueda, propiedades, imágenes), más `store/edge/privacidad.md` con el propósito único y la
-  justificación de cada permiso.
+- Microsoft Store: `store/microsoft/ficha-es-ES.md` y `ficha-en-US.md` (nombre, descripción,
+  características, notas de la versión, palabras clave, imágenes).
+- Edge Add-ons: `store/edge/ficha-es-ES.md` y `ficha-en-US.md` (descripción, términos de búsqueda,
+  propiedades, imágenes), más `store/edge/privacidad.md` con el propósito único, la justificación de
+  cada permiso, el código remoto y el uso de datos.
+- Chrome Web Store: `store/chrome/ficha-es-ES.md` y `ficha-en-US.md`. Como pide lo mismo que Edge,
+  **remite a los textos y las imágenes de Edge** en vez de copiarlos: un solo sitio que mantener.
+- Firefox Add-ons: `store/firefox/ficha-es-ES.md` (con lo común: categorías, licencia, notas para
+  revisores) y `ficha-en-US.md` (solo lo que se traduce).
+
+Las **imágenes** de la extensión (capturas 1280×800 y mosaicos 440×280 y 1400×560) van por idioma en
+`store/edge/imagenes/es-ES/` y `en-US/`, hechas con el código real de la extensión y datos
+inventados sobre un sitio de ejemplo (nunca datos reales ni marcas ajenas).
 
 Las dos versiones dicen lo mismo, y se actualizan en el mismo commit que el cambio que las deja
 viejas: una función que desaparece (Windows Hello en sOC Credentials, 2026-09-24) sale también de
-las fichas. Referencia: `Mobile/Credentials/store/`. *(Decisión de Josep del 2026-09-24.)*
+las fichas. Los límites de cada tienda se respetan en el propio paquete (la descripción corta de la
+extensión, 132 caracteres como máximo; el zip de las tiendas, sin el campo `key`). Referencia:
+`Mobile/Credentials/store/`. *(Decisión de Josep del 2026-09-24.)*
 
 ## 9. Cómo se registran las tareas
 
