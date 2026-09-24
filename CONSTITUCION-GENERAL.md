@@ -143,6 +143,13 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
    puntos y texto. En WPF el `PasswordBox` no sabe destapar, así que se usa un control propio con un
    `PasswordBox` y un `TextBox` superpuestos (`RevealPasswordBox` en RCManager, referencia); en
    MAUI, `IsPassword` alternado con un botón. *(Decisión de Josep del 2026-09-16.)*
+7. **Toda aplicación enseña sus novedades.** Tiene una pantalla (o diálogo) de **Novedades** con lo
+   que cambió en las **cinco últimas versiones**, de la más nueva a la más antigua, sacado del
+   CHANGELOG y escrito para el usuario (qué nota él, no cómo está hecho), en los dos idiomas. **Sale
+   sola la primera vez que se abre la aplicación tras instalar una versión nueva**: se guarda la
+   última versión vista y, si la instalada es distinta, se muestra y se actualiza; al cerrarla no
+   vuelve a salir hasta la siguiente versión. Además se puede abrir cuando se quiera desde el menú o
+   desde «Acerca de». *(Decisión de Josep del 2026-09-24.)*
 
 ## 7. Idiomas
 
