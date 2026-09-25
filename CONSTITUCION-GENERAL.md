@@ -203,7 +203,9 @@ Una tarea está **terminada** cuando:
 - [ ] Los textos están en los dos idiomas.
 - [ ] Está commiteada.
 - [ ] La documentación afectada está actualizada.
-- [ ] Si cambia algo de cara al usuario, la ficha o la web se actualizan también.
+- [ ] Si cambia algo de cara al usuario, la ficha de la tienda y la web se actualizan también: su
+      página y su **guía de soporte** en socraticweb0.wordpress.com, con `Web/socraticweb/build.py
+      --publicar` ([Web §3-4](CONSTITUCION-WEB.md)). Una aplicación nueva entra en la web al publicarse.
 - [ ] **La versión está publicada como release en GitHub**, con sus paquetes adjuntos (APK en
       Android; EXE autocontenido y MSIX en Windows) y las notas de la primera sección del
       CHANGELOG. Etiqueta `v` + versión del csproj (`v2026.09.13.2`). Se hace con

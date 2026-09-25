@@ -5,7 +5,7 @@
 >
 > Alcance: `Web/socraticweb` y cualquier sitio o servicio web del proyecto.
 >
-> **Última actualización: 2026-09-01**
+> **Última actualización: 2026-09-25**
 
 ---
 
@@ -39,28 +39,66 @@
   guarda o dónde, se cambian los tres en el mismo ciclo, y la política **antes** de subir nada a la
   consola: publicar con una política que no cuadra es declarar algo falso.
 - La fuente son `Web/socraticweb/privacidad.html` y `CONTENIDO-PARA-GOOGLE-SITES.md`; **Google Sites
-  hay que actualizarlo a mano** pegando el segundo (sección 3).
+  hay que actualizarlo a mano** pegando el segundo, y WordPress con `build.py --publicar` (sección 3).
 - El detalle de permisos de cada app va **en su ficha de Play**, no aquí. Si una app cambia de
   permisos se actualiza la ficha; la política solo se toca si cambia el **tipo** de tratamiento
   (p.ej. una app que hasta ahora era solo local empieza a sincronizar).
 - Lleva fecha de última actualización visible.
 
-## 3. Google Sites
+## 3. Dónde vive el sitio
 
-El sitio público vive en Google Sites, que **no admite subir HTML**. Por eso:
+Desde el 2026-09-25 el sitio público es **https://socraticweb0.wordpress.com** (WordPress.com, plan
+gratuito). La política de privacidad sigue también en **Google Sites**, porque es la URL que tienen
+las fichas de Play y las pantallas About; esa URL no se cambia sin hacer lo de la sección 2.
 
-- En `Web/socraticweb/` se mantiene la versión HTML autónoma (`index.html`, `privacidad.html`),
-  que es la fuente de verdad del contenido y sirve si algún día se aloja en otro sitio.
-- `CONTENIDO-PARA-GOOGLE-SITES.md` contiene el mismo texto en formato pegable en el editor.
-- Cuando se cambia el contenido, se cambian **los dos** y se vuelve a pegar en Sites.
+- **La fuente de verdad es el repositorio `Web/socraticweb`**, nunca el editor de WordPress. Lo que
+  se cambie a mano en el panel se pierde en la siguiente publicación.
+- Cada aplicación tiene su ficha en `contenido/apps/<Carpeta>.md`, con una cabecera fija (`slug`,
+  `plataformas`, `lema`, `github`, `tiendas` con su estado, `descarga_alternativa`) y las secciones
+  «Descripción», «Funciones principales», «Guía de uso (soporte)», «Preguntas frecuentes» y
+  «Privacidad».
+- `python build.py` genera la **copia local**: `sitio/` (HTML autónomo que se abre sin servidor, con
+  `estilo.css`) y `wordpress/` (el cuerpo de cada página en bloques, tal cual se publica). Las dos se
+  commitean: son lo que hay publicado.
+- `python build.py --publicar` crea o actualiza las páginas por su `slug` en WordPress.com, deja la
+  portada como página de inicio y fija título, lema e idioma del sitio. El token OAuth está en
+  `D:\dev\secrets\wordpress-socraticweb0.token`, **fuera del repositorio** (General §4).
+- En WordPress.com no se añaden plugins, widgets de terceros ni código de seguimiento. Sus
+  estadísticas propias vienen de serie en el plan gratuito: es la única excepción al principio 1, y
+  solo afecta al sitio alojado, no a la copia local.
+- `CONTENIDO-PARA-GOOGLE-SITES.md` queda para la política de privacidad de Google Sites; el
+  generador publica la misma política en WordPress a partir de ese texto.
 
 ## 4. Contenido
 
-- La página de inicio lista las aplicaciones con su estado real (producción / prueba cerrada) y su
-  enlace a Google Play. **El estado se revisa cada vez que cambia en Play**, no se deja obsoleto.
+El sitio tiene tres partes, y **cada aplicación del catálogo aparece en las tres**:
+
+1. **Portada**: qué es sOCratic, las tarjetas de todas las aplicaciones y cómo trabajamos.
+2. **Una página por aplicación** (`aplicaciones/<slug>`): lema, plataformas, descripción, funciones
+   y privacidad, con estos enlaces:
+   - **Descarga:** la tienda si está publicada allí de verdad (Play en **producción**, Microsoft
+     Store o tienda de extensiones **publicada**). Una app en prueba cerrada no tiene ficha pública
+     (Play responde «no encontrado»), así que entonces se enlaza a las releases de GitHub.
+   - **GitHub, siempre:** el repositorio de código y, si hay tienda, también las releases. Si el
+     repositorio es privado no se enlaza (daría 404).
+3. **Soporte** (`soporte/<slug>`): cómo se pone en marcha, **cada pantalla con todas sus opciones**
+   con el nombre que tienen en la interfaz y qué hace cada una, y las preguntas frecuentes.
+
+Reglas:
+
+- **Una aplicación nueva entra en la web en el mismo ciclo en que se publica** (en tienda o en
+  releases): ficha en `contenido/apps/`, `build.py --publicar` y commit. Lo que está a medias y no
+  se puede descargar no entra.
+- **Si cambia algo de cara al usuario, cambia su guía de soporte**: una opción nueva, un botón que
+  cambia de nombre o de sitio, un permiso más. La guía describe la versión que se descarga hoy; si la
+  de la tienda va por detrás, se dice en las preguntas frecuentes.
+- **El estado de cada tienda se revisa cada vez que cambia** (paso a producción, publicación en
+  Microsoft Store, retirada), y con él cambia el botón de descarga.
+- Los nombres de pantallas y opciones se copian de los textos reales de la aplicación en castellano,
+  no se inventan.
 - Español e inglés cuando haya versión internacional; hoy, español.
-- **Botones con iconos** cuando haya interfaz, igual que en el resto del catálogo, y **planos**:
-  SVG de línea, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
+- **Botones con iconos** cuando haya interfaz propia, igual que en el resto del catálogo, y
+  **planos**: SVG de línea, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 
 ## 5. Servicios de servidor
 
