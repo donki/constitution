@@ -67,7 +67,37 @@ las fichas de Play y las pantallas About; esa URL no se cambia sin hacer lo de l
   estadísticas propias vienen de serie en el plan gratuito: es la única excepción al principio 1, y
   solo afecta al sitio alojado, no a la copia local.
 - `CONTENIDO-PARA-GOOGLE-SITES.md` queda para la política de privacidad de Google Sites; el
-  generador publica la misma política en WordPress a partir de ese texto.
+  generador publica la misma política en WordPress a partir de ese texto, más la sección de la
+  propia web (`contenido/legal/privacidad-web.md`).
+- **El diseño va en los atributos de los bloques** (colores, bordes, espaciado, rejillas `grid` con
+  ancho mínimo para que se reordenen solas en el móvil), porque el plan gratuito no admite plugins,
+  CSS propio ni estilos globales. La cabecera y el pie del tema también los escribe `build.py`
+  (`wordpress/_cabecera.html`, `_pie.html`). Nada de texto de ejemplo del tema a la vista.
+- **Se revisa en escritorio y en móvil antes de dar nada por terminado**, con capturas de la web
+  publicada: escritorio a 1440 px y móvil **con emulación de dispositivo** (Playwright con
+  `devices['Pixel 7']`), no con una ventana estrecha, porque el navegador sin ventana no baja de
+  unos 500 px y la captura sale cortada. Nada puede tener scroll horizontal.
+- Los comentarios están cerrados en todo el sitio, y sin «Me gusta» ni botones de compartir.
+
+## 3 bis. Normativa (España y UE)
+
+El sitio cumple la LSSI-CE, el RGPD y la LOPDGDD con tres páginas enlazadas desde el pie de todas
+las páginas, cuyo texto está en `contenido/legal/`:
+
+- **Aviso legal** (LSSI art. 10): titular, contacto, objeto, propiedad intelectual (MIT y marcas de
+  terceros), enlaces, responsabilidad y ley aplicable. Josep decidió el 2026-09-25 poner solo
+  nombre y correo; si la web pasa a tener actividad económica, hay que añadir NIF y domicilio.
+- **Privacidad**: la de las aplicaciones más la de la web (responsable, qué se recoge, base legal,
+  derechos y reclamación ante la AEPD).
+- **Cookies** (LSSI art. 22.2 y guía de la AEPD): lista de cada cookie con quién la pone, para qué
+  y cuánto dura, y cómo rechazarlas. Lleva un **aviso de cookies** en todas las páginas (bloque
+  `jetpack/cookie-consent` en el pie).
+- **Límite conocido:** WordPress.com pone sus cookies de estadísticas (`tk_ai`, `tk_qs`) al entrar,
+  antes de que se acepte nada, y en el plan gratuito no se puede impedir. Si hace falta cumplir al
+  pie de la letra (bloqueo previo y botón de rechazar), hay que pasar a un plan con plugins o a un
+  alojamiento propio con la copia de `sitio/`.
+- **Cuando cambian las cookies** (otra plataforma, un servicio nuevo) se vuelven a medir con el
+  navegador —qué cookies y qué dominios de terceros aparecen— y se actualiza la política.
 
 ## 4. Contenido
 
@@ -86,9 +116,13 @@ El sitio tiene tres partes, y **cada aplicación del catálogo aparece en las tr
 
 Reglas:
 
-- **Una aplicación nueva entra en la web en el mismo ciclo en que se publica** (en tienda o en
-  releases): ficha en `contenido/apps/`, `build.py --publicar` y commit. Lo que está a medias y no
-  se puede descargar no entra.
+- **Toda aplicación del catálogo está en la web.** Solo quedan fuera dos casos: el **repositorio es
+  privado**, o la aplicación **está a medias** (no se puede descargar ni usar). En cuanto deja de
+  estarlo, entra en el mismo ciclo: ficha en `contenido/apps/`, `build.py --publicar` y commit.
+  Hoy fuera: sOC the Game (a medias) y RemoteSoc (privado).
+- **En cada cambio de cualquier aplicación se mira si hay que actualizar la web** (General §8): su
+  página, su guía de soporte o el estado de sus tiendas. Es un paso de la lista de «terminada», no
+  algo que se deja para después.
 - **Si cambia algo de cara al usuario, cambia su guía de soporte**: una opción nueva, un botón que
   cambia de nombre o de sitio, un permiso más. La guía describe la versión que se descarga hoy; si la
   de la tienda va por detrás, se dice en las preguntas frecuentes.
