@@ -100,6 +100,14 @@
    **prohibido** (*"Ineligible use case"*). La única vía válida es ser
    **app de SMS predeterminada** (*default SMS handler*), lo que obliga a implementar los 4
    componentes: `SMS_DELIVER`, `WAP_PUSH_DELIVER`, `SENDTO` y `RESPOND_VIA_MESSAGE`.
+   - **El diálogo de gestor por defecto va antes que cualquier permiso.** Una app que es gestor por
+     defecto (SMS, teléfono, navegador, asistente…) pide el rol con `RoleManager` **antes que ningún
+     permiso en tiempo de ejecución**, notificaciones incluidas. Y ninguna página pide permisos a la
+     vez: la primera pantalla se abre en paralelo con `OnCreate`, así que las páginas **esperan** a
+     que termine el diálogo del rol. Se prueba quitando el rol y los permisos
+     (`cmd role remove-role-holder`, `pm revoke`) y abriendo la app: solo sale el diálogo del rol.
+     *(Play rechazó SMS Forwarder 2026.09.23.8 por esto, con el mismo código que aprobó en agosto;
+     y el primer arreglo seguía sacando el permiso a la vez que el rol.)*
 2. **API objetivo (`targetSdk`): es obligatoria, no una recomendación.** Ninguna app se compila
    ni se sube con una API objetivo por debajo de la que exige Google Play en ese momento.
    - **Hoy la exigencia es API 36 (Android 16)**: desde el **31-ago-2026** se aplica a las apps

@@ -198,6 +198,12 @@ detallan en los anexos):
 - **Logging operativo en servidores/servicios:** logging persistente con **rotación** (límite de
   tamaño y número de ficheros) para no agotar el disco; cuando aplique, segmentar por sesión/par.
 - Antes de publicar, revisar que no queden excepciones no controladas en los flujos principales.
+- **No se espera una tarea en el hilo de la interfaz.** Prohibido `.Result`, `.Wait()` y
+  `.GetAwaiter().GetResult()` sobre una tarea en el hilo de la interfaz: si esa tarea necesita el
+  mismo hilo para terminar (`SecureStorage`, diálogos, llamadas a la plataforma), la aplicación se
+  queda colgada para siempre. Si hace falta una respuesta síncrona, la tarea va con
+  `Task.Run(...)`; si no, el método se hace `async`. *(sOC Credentials se colgaba al arrancar con la
+  ventana en negro en cuanto había una clave guardada.)*
 
 ## 11. Versionado
 - **Esquema único y coherente** para todo el proyecto, definido en una **constante única**

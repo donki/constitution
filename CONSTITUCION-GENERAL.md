@@ -154,6 +154,37 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
    última versión vista y, si la instalada es distinta, se muestra y se actualiza; al cerrarla no
    vuelve a salir hasta la siguiente versión. Además se puede abrir cuando se quiera desde el menú o
    desde «Acerca de». *(Decisión de Josep del 2026-09-24.)*
+8. **Nunca se pierde lo escrito sin avisar.** Lo que el usuario escribe o pega en una casilla **se
+   aplica al salir de ella y al guardar**, no solo al pulsar Intro. Si no es válido, se avisa y no se
+   guarda; nunca se descarta en silencio. *(En sOC Credentials, el secreto de doble factor pegado se
+   perdía al pulsar «Guardar», y el usuario creyó que la app no sabía leer su código.)*
+9. **Los errores se dicen en el idioma del usuario, con la razón y qué hacer.** El usuario nunca ve
+   un mensaje técnico ni en otro idioma (excepciones, nombres de parámetros, textos de librerías, un
+   JSON del servidor): cada error previsible tiene su texto localizado. Un fallo que impide lo que
+   el usuario pidió (conectar, sincronizar, entrar) sale en un **aviso**, no en una línea de estado
+   que se pasa por alto, y dice en una frase **la razón** y **qué hacer**. Lo técnico va al registro.
+   *(sOC Credentials enseñaba «Argon2 needs a password set»; un JSON de error de veinte líneas dejó
+   inservible la ventana de RC Manager.)*
+10. **Guía de configuración y opciones en todas las aplicaciones.** Toda aplicación tiene una
+    **guía paso a paso** con lo que hay que configurar para sacarle partido: sus opciones principales
+    y, si las necesita, los ajustes del sistema o de otras aplicaciones (permisos, servicio de
+    autocompletar, rol por defecto, extensiones de navegador, arranque con el sistema…).
+    - Cada paso explica qué hace, tiene un **botón que lo hace** o abre la pantalla donde se hace, y
+      su **estado** (hecho, pendiente u opcional) se vuelve a comprobar solo, también al volver de
+      otra pantalla.
+    - **Sale sola una vez**, tras el primer uso, y después se abre cuando se quiera **desde el menú**.
+    - Los botones de avanzar van **fijos abajo**: con la letra grande el texto se desplaza, pero
+      «Siguiente» siempre se ve.
+    Referencia: `Mobile/Credentials/Pages/TutorialPage.cs`.
+11. **Desbloqueo de las aplicaciones con contraseña propia** (bóveda, cuenta local…):
+    - En Windows, **sin Windows Hello**: se abre con su contraseña o con **«Confiar en este usuario y
+      dispositivo»**.
+    - Esa confianza es **por usuario y dispositivo**, y así se dice en la interfaz: la clave queda
+      protegida por la cuenta del sistema, y otro usuario del mismo equipo, u otro dispositivo,
+      sigue necesitando la contraseña. Al activarla se pide confirmación.
+    - En Windows, la ventana que pide la contraseña sale **pequeña y abajo a la derecha** del
+      escritorio; al abrirse vuelve a su tamaño y a su sitio.
+    Referencia: sOC Credentials 2026.09.24.01-02.
 
 ## 7. Idiomas
 
@@ -223,6 +254,46 @@ viejas: una función que desaparece (Windows Hello en sOC Credentials, 2026-09-2
 las fichas. Los límites de cada tienda se respetan en el propio paquete (la descripción corta de la
 extensión, 132 caracteres como máximo; el zip de las tiendas, sin el campo `key`). Referencia:
 `Mobile/Credentials/store/`. *(Decisión de Josep del 2026-09-24.)*
+
+### 8.3 Aplicaciones de escritorio: instancia única y entrega
+
+- **Instancia única: manda la versión nueva.** Una aplicación de escritorio con instancia única que
+  al arrancar encuentra otra **de una versión anterior** la cierra y sigue ella; no le pasa el
+  turno. Con otra de la misma versión, le pide que se enseñe y **espera su acuse**; si no llega en
+  unos segundos (un proceso colgado o sin ventana), arranca igual. Y si dos arrancan a la vez (la
+  abre el usuario y la levanta el navegador en el mismo segundo), una espera a la otra: nunca
+  quedan dos. *(En sOC Credentials, tras cada entrega el navegador relanzaba la versión vieja en
+  segundo plano y abrir la nueva le pasaba el turno a la vieja: tres veces en un día.)*
+- **La entrega vuelve a dejar la aplicación abierta.** Si el script de entrega cierra la aplicación
+  para sustituirla, al acabar la vuelve a abrir con la versión nueva y comprueba que la que corre
+  es la nueva.
+
+### 8.4 Pruebas en el equipo del desarrollador
+
+Cuando se prueba en el mismo equipo donde el desarrollador **usa la aplicación de verdad**:
+
+- La aplicación tiene un **modo de pruebas aislado**, solo en Debug y activado con una variable de
+  entorno (p. ej. `SOC_SANDBOX`), con sus propios datos y ajustes. Es una herramienta de
+  desarrollo, **no una función para el uso normal**: nunca llega a Release.
+- En ese modo no se registra en nada compartido con la instalación real: ni instancia única, ni
+  puentes con navegadores, ni ganchos del sistema (autocompletar, bandeja, arranque con Windows).
+- Una prueba que pulsa o teclea en la aplicación **no puede llegar a servidores, cuentas ni datos
+  reales**: se usan servidores de prueba locales, bóvedas de prueba y paquetes aparte (`.test` en
+  Android). Antes de cada clic se comprueba qué ventana está en primer plano, las capturas se hacen
+  sin robar el foco (`PrintWindow`), y no se teclea en una ventana de la aplicación mientras la real
+  está abierta.
+
+*(La instancia de pruebas de sOC Credentials chocaba con la real y habría registrado su puente en
+los navegadores del desarrollador; al teclear en ella, el autocompletar de la real la rellenó con la
+contraseña maestra. Un clic perdido en RC Manager abrió una sesión RDP real contra servidores de
+trabajo.)*
+
+### 8.5 Política de privacidad en el repositorio
+
+Cada repositorio de una aplicación publicada tiene **`PRIVACY.md` en castellano e inglés**. Es la URL
+que se pone en las tiendas mientras no exista la página del catálogo, y dice lo mismo que las
+fichas: qué datos se recogen (normalmente ninguno), dónde se guardan y con quién se comparten.
+Referencia: `Mobile/Credentials/PRIVACY.md`.
 
 ## 9. Cómo se registran las tareas
 
