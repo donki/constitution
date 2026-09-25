@@ -119,7 +119,9 @@ Reglas:
 - **Toda aplicación del catálogo está en la web.** Solo quedan fuera dos casos: el **repositorio es
   privado**, o la aplicación **está a medias** (no se puede descargar ni usar). En cuanto deja de
   estarlo, entra en el mismo ciclo: ficha en `contenido/apps/`, `build.py --publicar` y commit.
-  Hoy fuera: sOC the Game (a medias) y RemoteSoc (privado).
+  Hoy fuera: sOC the Game (a medias), RemoteSoc (privado) y sOC Lucia (decisión de Josep del
+  2026-09-25: su ficha sigue en el repo con `- publicar: no`, que es como se saca una app de la web
+  sin perder su texto).
 - **En cada cambio de cualquier aplicación se mira si hay que actualizar la web** (General §8): su
   página, su guía de soporte o el estado de sus tiendas. Es un paso de la lista de «terminada», no
   algo que se deja para después.
@@ -130,7 +132,27 @@ Reglas:
   Microsoft Store, retirada), y con él cambia el botón de descarga.
 - Los nombres de pantallas y opciones se copian de los textos reales de la aplicación en castellano,
   no se inventan.
-- Español e inglés cuando haya versión internacional; hoy, español.
+- **En castellano y en inglés** (desde el 2026-09-25). El castellano en la raíz; el inglés bajo
+  `/en/` (`/en/apps/<slug>/`, `/en/support/<slug>/`, `/en/privacy/`, `/en/legal-notice/`,
+  `/en/cookies/`), con su cabecera, pie y aviso de cookies (partes `header-en` / `footer-en` y
+  plantilla `page-en`). Las fichas inglesas están en `contenido/en/apps/` con las mismas claves de
+  cabecera y las secciones «Description», «Main features», «User guide (support)», «FAQ» y
+  «Privacy»; los nombres de pantallas y opciones se copian de los textos **en inglés de la propia
+  aplicación**. **Una ficha que cambia, cambia en los dos idiomas en el mismo ciclo.** Si falta la
+  inglesa, `build.py` avisa y publica la castellana.
+- **Cambio de idioma con las banderas de España y EE. UU.** en el menú, tras GitHub, dibujadas como
+  PNG (nunca emoji; el plan gratuito no admite SVG), y en cada franja de entrada un enlace a la
+  misma página en el otro idioma.
+- **Imágenes de cada aplicación**: su icono en las tarjetas y en la franja de entrada, y sus
+  capturas en su página. Salen de las fichas de las tiendas (`contenido/imagenes.json` dice de
+  dónde), se reducen a `contenido/img/` y se suben a la biblioteca de WordPress una sola vez
+  (`wordpress/medios.json`). Si cambian las capturas de una tienda, se cambian aquí también.
+- **El menú superior se queda fijo** al hacer scroll (grupo `sticky` en las plantillas de página).
+- **Sin correo a la vista** (Josep, 2026-09-25): ni botones de «escribir un correo» ni la dirección
+  en portada, fichas, guías o pie. El soporte va por **incidencias de GitHub**. La dirección solo
+  aparece donde la ley la exige: aviso legal (LSSI art. 10) y privacidad (RGPD art. 13).
+- **Nada de «sin anuncios» en los textos de la web** (portada, pie, fichas): las aplicaciones tienen
+  que poder monetizarse. Si una ficha de app lo dice, es porque hoy es así y se cambia cuando deje de serlo.
 - **Botones con iconos** cuando haya interfaz propia, igual que en el resto del catálogo, y
   **planos**: SVG de línea, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 
