@@ -17,7 +17,7 @@
 >   [Web §2](CONSTITUCION-WEB.md)) y las secciones 4 y 5 de la
 >   [constitución general](CONSTITUCION-GENERAL.md).
 >
-> **Última actualización: 2026-09-18**
+> **Última actualización: 2026-09-26**
 
 ---
 
@@ -184,6 +184,16 @@ Notas de la API:
   `Resources/Images/ic_*.svg`, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 - Pantalla **About** homogénea en todas (logo, versión, contacto, idioma, licencia).
 - Las que sincronizan enseñan **quién ha entrado** y con qué cuenta, en Ajustes, y permiten salir.
+- **Botón de atrás del móvil** *(regla del 2026-09-26)*:
+  - En cualquier pantalla que no sea la de inicio, **vuelve a la pantalla anterior**, igual que la
+    flecha de la barra superior. Si hay algo abierto encima (un menú lateral, un diálogo, un modo de
+    selección, un buscador), primero se cierra eso.
+  - En la **pantalla de inicio**, la aplicación **se oculta y se ve la pantalla del sistema**
+    (`MoveTaskToBack(true)`), sin cerrarse ni preguntar: al volver sigue donde estaba.
+  - Ojo: si `MainActivity` sobrescribe `OnBackPressed`, el Shell y las páginas **no ven** el botón.
+    La decisión «¿hay pantalla anterior?» la toma quien sí lo sabe (la navegación del Shell); solo
+    cuando no la hay se llama a `MoveTaskToBack`.
+  - Se prueba en el móvil con el gesto y con el botón de atrás, en cada pantalla.
 
 ## 8. Task Manager: cuenta, servidor y cifrado
 

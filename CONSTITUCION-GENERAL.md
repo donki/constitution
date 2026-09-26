@@ -185,6 +185,22 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
     - En Windows, la ventana que pide la contraseña sale **pequeña y abajo a la derecha** del
       escritorio; al abrirse vuelve a su tamaño y a su sitio.
     Referencia: sOC Credentials 2026.09.24.01-02.
+12. **Gestor global de excepciones en todas las aplicaciones.** Un error que no se esperaba **nunca
+    cierra la aplicación**: se apunta en el registro (con la traza completa) y se avisa al usuario
+    en su idioma (regla 9), y la aplicación sigue abierta. Se engancha **al arrancar, antes de
+    abrir ninguna ventana**, en todos los puntos por donde se escapa un error:
+    - **WPF**: `Application.DispatcherUnhandledException` (con `Handled = true`),
+      `TaskScheduler.UnobservedTaskException` (con `SetObserved()`) y
+      `AppDomain.CurrentDomain.UnhandledException` (este no se puede frenar: solo se registra).
+    - **.NET MAUI**: `AppDomain.CurrentDomain.UnhandledException` y
+      `TaskScheduler.UnobservedTaskException` en todas las plataformas; en Android además
+      `AndroidEnvironment.UnhandledExceptionRaiser` (con `Handled = true`), y en Windows
+      `Microsoft.UI.Xaml.Application.UnhandledException` (con `Handled = true`).
+    - **.NET para Android sin MAUI**: `AndroidEnvironment.UnhandledExceptionRaiser` y los dos de .NET.
+    - Los `async void` (manejadores de eventos) son el agujero típico: el gestor global es la red,
+      pero lo que se sepa que puede fallar se captura en su sitio.
+    *(sOC Phone Mirror, 2026-09-25: la Microsoft Store la rechazó porque «se cierra tras arrancar» y
+    no tenía ningún gestor; un fallo al arrancar adb dentro del paquete la tumbaba sin dejar rastro.)*
 
 ## 7. Idiomas
 
