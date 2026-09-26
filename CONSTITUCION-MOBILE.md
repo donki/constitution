@@ -193,6 +193,13 @@ Notas de la API:
   - Ojo: si `MainActivity` sobrescribe `OnBackPressed`, el Shell y las páginas **no ven** el botón.
     La decisión «¿hay pantalla anterior?» la toma quien sí lo sabe (la navegación del Shell); solo
     cuando no la hay se llama a `MoveTaskToBack`.
+  - **Android 16 con `targetSdk 36` activa el «atrás predictivo»** y el botón deja de llegar a
+    `Page.OnBackButtonPressed` y al Shell: la aplicación se cierra desde cualquier pantalla. Hasta
+    que MAUI lo soporte, en el `<application>` del manifiesto va
+    `android:enableOnBackInvokedCallback="false"`. En el emulador con Android 14 no se ve: hay que
+    probarlo en el Xiaomi (File Manager, 2026-09-26).
+  - Con menú lateral (Shell), Configuración o Acerca de abiertas desde el menú vuelven a Inicio con
+    atrás: `AppShell.OnBackButtonPressed` (referencia: `Mobile/FileManager/AppShell.xaml.cs`).
   - Se prueba en el móvil con el gesto y con el botón de atrás, en cada pantalla.
 
 ## 8. Task Manager: cuenta, servidor y cifrado

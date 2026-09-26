@@ -320,11 +320,18 @@ Referencia: `Mobile/Credentials/PRIVACY.md`.
 
 ## 9. Cómo se registran las tareas
 
+Las tareas viven en la carpeta `sOCProjects`, fuera de los repositorios:
+
 | Fichero | Qué va ahí |
 |---|---|
-| `TAREAS-PENDIENTES.md` | Trabajo pendiente que puede hacer Claude. Solo lo pendiente. |
-| `Tareas-pendientes-josep.md` | Lo que exige intervención humana (consolas web, móvil, cuentas). |
-| `Tareas-completadas.md` | Archivo histórico de lo cerrado. |
+| `TAREAS.md` | Índice: qué ficheros hay y de qué va cada uno. |
+| `NN-TAREAS-<App>.md` | Lo pendiente que hace Claude, de esa aplicación (o de todo el catálogo). |
+| `NN-PENDIENTE-<App>.md` | Lo que exige intervención humana (consolas web, móvil, cuentas, pruebas). |
 | `WISHLIST.md` | Ideas sin compromiso ni fecha. |
 
-Todos llevan **fecha y hora de última actualización** en la cabecera.
+- `NN` ordena por esfuerzo o tiempo: `01` es lo más corto. Dentro de cada fichero, igual.
+- **Lo hecho se borra, no se tacha** *(regla del 2026-09-26)*: al terminar una tarea se quita del
+  fichero, y **si un fichero se queda sin nada pendiente, se borra el fichero** (y su enlace del
+  índice). La historia de lo hecho está en el CHANGELOG y en el git de cada aplicación, no aquí.
+- Lo que Josep dice que ha hecho se borra igual, en el momento.
+- Todos llevan **fecha de última actualización** en la cabecera.
