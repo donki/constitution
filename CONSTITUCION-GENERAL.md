@@ -24,6 +24,11 @@
    discute, se busca alternativa. *(Por eso XTTS quedó fuera y se usan Kokoro y Piper para TTS.)*
 2. **Sin anuncios, sin rastreadores, sin analítica.** Esto no tiene excepción ni la tendrá. No se
    mide al usuario, no se le perfila y no se vende nada de lo suyo.
+   *Avisos al momento (FCM):* cuando una función necesita que un aviso llegue enseguida con la app
+   cerrada (el SOS de FamilyLink), se admite **Firebase Cloud Messaging y solo Messaging**: nada de
+   Analytics, Crashlytics ni ningún otro módulo de Firebase. Los mensajes son solo de datos, sin
+   texto legible, y su uso consta en la política de privacidad y en la ficha
+   ([Mobile §10](CONSTITUCION-MOBILE.md)).
 3. **Privacidad primero: local por defecto.** El procesamiento es local y las aplicaciones se usan
    sin cuenta. Nada sale del dispositivo salvo lo que el usuario configure explícitamente y
    entienda. Si un requisito choca con esto, gana la privacidad.
@@ -38,9 +43,19 @@
      y en la ficha de la tienda, y los tres tienen que decir lo mismo.
    - Sigue sin haber anuncios, rastreadores ni analítica (principio 2).
 
-   *Hoy la única es **Task Manager**: sin cuenta no hay manera de saber que el móvil y el portátil
-   son la misma persona, y sin eso no hay tareas compartidas. Las demás aplicaciones no tienen
-   cuenta ni servidor, y el catálogo no se mueve hacia ahí por defecto.*
+   *Hoy son dos. **Task Manager**: sin cuenta no hay manera de saber que el móvil y el portátil son
+   la misma persona, y sin eso no hay tareas compartidas. **FamilyLink** (localización familiar,
+   desde el 2026-09-27): su razón de ser es que los miembros de un grupo cerrado vean dónde está cada
+   uno, y eso no existe sin servidor. Las demás aplicaciones no tienen cuenta ni servidor, y el
+   catálogo no se mueve hacia ahí por defecto.*
+
+   **Excepción registrada — FamilyLink, usuario anónimo** *(2026-09-27)*: en lugar de exigir una
+   cuenta de Google o Microsoft, se entra con un **usuario anónimo de Supabase** creado en el primer
+   arranque, sin pedir nada. Vincularlo a Google o Microsoft es **opcional** y sirve solo para
+   recuperarlo en otro móvil. Se admite porque cada persona usa un solo móvil y pedir cuenta a toda
+   la familia (niños, abuelos) frena justo lo que la app tiene que hacer. Sigue sin haber cuentas ni
+   contraseñas nuestras, y lo demás de este principio se cumple igual. Detalle en
+   [Mobile §10](CONSTITUCION-MOBILE.md).
 5. **Gratis y completo.** No hay funciones de pago ni recortes artificiales.
 
 ## 2. Estructura del repositorio

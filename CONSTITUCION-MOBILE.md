@@ -16,8 +16,10 @@
 >   que se publique — y ese día hay que repasar antes la política de privacidad (ver
 >   [Web §2](CONSTITUCION-WEB.md)) y las secciones 4 y 5 de la
 >   [constitución general](CONSTITUCION-GENERAL.md).
+> - **En desarrollo (1): FamilyLink** *(desde 2026-09-27)*: localización familiar para Android, con
+>   servidor Supabase propio y avisos por FCM. Sus reglas propias, en la sección 10.
 >
-> **Última actualización: 2026-09-26**
+> **Última actualización: 2026-09-27**
 
 ---
 
@@ -240,3 +242,46 @@ publique.
   `INSTALL_FAILED_USER_RESTRICTED`, que despista porque parece un problema de permisos.
 - Instalar un APK firmado localmente sobre una app instalada desde Play da
   `INSTALL_FAILED_UPDATE_INCOMPATIBLE` (firma de Play ≠ upload key). Hay que desinstalar primero.
+
+
+## 10. FamilyLink: usuario anónimo, servidor propio, avisos y ubicación
+
+Excepciones registradas el 2026-09-27 (ver [General §1.2 y §1.4](CONSTITUCION-GENERAL.md)) y reglas
+que solo aplican a esta app.
+
+- **Usuario anónimo de Supabase** al primer arranque, sin pedir nada: solo un nombre visible y,
+  si quiere, un avatar. **Vincular Google o Microsoft es opcional** y sirve para recuperar el
+  usuario en un móvil nuevo. Se verifica el id_token en una Edge Function propia (JWKS del
+  proveedor) y al recuperar se pasan los grupos al usuario del móvil nuevo; nunca se fusionan dos
+  usuarios, y una cuenta ya vinculada a otro se rechaza con aviso. Lo técnico, en su README.
+- **Servidor**: Supabase autoalojado (Apache 2.0) en Oracle Cloud Always Free, región de la UE,
+  distinta de la de Task Manager. En desarrollo vale un proyecto gratuito de Supabase en la nube
+  (misma API: cambiar de uno a otro es URL y claves). **Sin copia de seguridad diaria fuera de la
+  instancia no se pasa a producción.** Solo el 443 abierto; SSH con clave; Studio y la base sin
+  acceso público. Sin servidor la app no funciona: su razón de ser es compartir.
+- **RLS en todas las tablas**, pertenencia por `EXISTS` sobre los miembros, y las altas (unirse,
+  aprobar, expulsar, recuperar) solo por funciones `SECURITY DEFINER` que comprueban el rol. Una
+  prueba con un usuario de otro grupo no debe devolver nada.
+- **Cifrado (General §5)**: nombre del grupo, nombre visible y avatar de cada miembro, nombre de
+  zona **y también las coordenadas** (la base no las necesita: las zonas se detectan en el móvil),
+  con la clave del grupo y el prefijo `enc1:`. La clave del grupo **nunca pasa en claro por el
+  servidor**: se entrega de móvil a móvil cifrada con ECDH (P-256). En claro solo fechas,
+  identificadores, batería y el código de invitación.
+- **Una posición se escribe por cada grupo** donde se comparte, cifrada con su clave: así la pausa
+  se cumple en origen (lo registrado en pausa en A nunca llega a A) y el historial de cada grupo es
+  solo suyo. Retención de **30 días**, borrado por `pg_cron`.
+- **FCM, solo Messaging** (sin Analytics ni Crashlytics): mensajes **solo de datos** con el
+  identificador del grupo y del evento; el texto visible se monta en el móvil. **Sin temas**: los
+  destinatarios los calcula el servidor en el momento del envío. El token es **del móvil**: al
+  cambiar de usuario en un móvil se reasigna y se borra del anterior; un `UNREGISTERED` lo borra.
+  Cada evento lleva un identificador único y el móvil descarta repetidos. Canales Android separados
+  para SOS, zonas y solicitudes.
+- **Mapa**: MapLibre GL JS (BSD-3) **empaquetado dentro de la app**, no desde un CDN, con el estilo
+  vectorial de OpenFreeMap sin clave. Nada de Google Maps ni Google Play Services para el mapa.
+- **Ubicación en segundo plano**: servicio en primer plano de tipo `location` (el de Hiker), umbral
+  de 25 m, lecturas con precisión peor de 25 m descartadas, cola local sin conexión que se envía
+  con la hora original. Guía para excluirla del ahorro de batería del fabricante.
+- **Solo el último móvil que ha entrado comparte ubicación**: al recuperar la cuenta en otro móvil,
+  el anterior deja de enviar.
+- **Permisos**: ubicación precisa y en segundo plano, servicio en primer plano de tipo location,
+  notificaciones y cámara (QR). Todos con declaración en Play Console, vídeo sin cortes y en la ficha.
