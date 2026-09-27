@@ -25,7 +25,7 @@
 2. **Sin anuncios, sin rastreadores, sin analítica.** Esto no tiene excepción ni la tendrá. No se
    mide al usuario, no se le perfila y no se vende nada de lo suyo.
    *Avisos al momento (FCM):* cuando una función necesita que un aviso llegue enseguida con la app
-   cerrada (el SOS de FamilyLink), se admite **Firebase Cloud Messaging y solo Messaging**: nada de
+   cerrada (el SOS de Family Together), se admite **Firebase Cloud Messaging y solo Messaging**: nada de
    Analytics, Crashlytics ni ningún otro módulo de Firebase. Los mensajes son solo de datos, sin
    texto legible, y su uso consta en la política de privacidad y en la ficha
    ([Mobile §10](CONSTITUCION-MOBILE.md)).
@@ -44,12 +44,12 @@
    - Sigue sin haber anuncios, rastreadores ni analítica (principio 2).
 
    *Hoy son dos. **Task Manager**: sin cuenta no hay manera de saber que el móvil y el portátil son
-   la misma persona, y sin eso no hay tareas compartidas. **FamilyLink** (localización familiar,
+   la misma persona, y sin eso no hay tareas compartidas. **Family Together** (localización familiar,
    desde el 2026-09-27): su razón de ser es que los miembros de un grupo cerrado vean dónde está cada
    uno, y eso no existe sin servidor. Las demás aplicaciones no tienen cuenta ni servidor, y el
    catálogo no se mueve hacia ahí por defecto.*
 
-   **Excepción registrada — FamilyLink, usuario anónimo** *(2026-09-27)*: en lugar de exigir una
+   **Excepción registrada — Family Together, usuario anónimo** *(2026-09-27)*: en lugar de exigir una
    cuenta de Google o Microsoft, se entra con un **usuario anónimo de Supabase** creado en el primer
    arranque, sin pedir nada. Vincularlo a Google o Microsoft es **opcional** y sirve solo para
    recuperarlo en otro móvil. Se admite porque cada persona usa un solo móvil y pedir cuenta a toda

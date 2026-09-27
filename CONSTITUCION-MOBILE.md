@@ -16,7 +16,7 @@
 >   que se publique — y ese día hay que repasar antes la política de privacidad (ver
 >   [Web §2](CONSTITUCION-WEB.md)) y las secciones 4 y 5 de la
 >   [constitución general](CONSTITUCION-GENERAL.md).
-> - **En desarrollo (1): FamilyLink** *(desde 2026-09-27)*: localización familiar para Android, con
+> - **En desarrollo (1): Family Together** *(desde 2026-09-27)*: localización familiar para Android, con
 >   servidor Supabase propio y avisos por FCM. Sus reglas propias, en la sección 10.
 >
 > **Última actualización: 2026-09-27**
@@ -244,7 +244,7 @@ publique.
   `INSTALL_FAILED_UPDATE_INCOMPATIBLE` (firma de Play ≠ upload key). Hay que desinstalar primero.
 
 
-## 10. FamilyLink: usuario anónimo, servidor propio, avisos y ubicación
+## 10. Family Together: usuario anónimo, servidor propio, avisos y ubicación
 
 Excepciones registradas el 2026-09-27 (ver [General §1.2 y §1.4](CONSTITUCION-GENERAL.md)) y reglas
 que solo aplican a esta app.
@@ -254,9 +254,9 @@ que solo aplican a esta app.
   usuario en un móvil nuevo. Se verifica el id_token en una Edge Function propia (JWKS del
   proveedor) y al recuperar se pasan los grupos al usuario del móvil nuevo; nunca se fusionan dos
   usuarios, y una cuenta ya vinculada a otro se rechaza con aviso. Lo técnico, en su README.
-- **Servidor**: Supabase autoalojado (Apache 2.0) en Oracle Cloud Always Free, región de la UE,
-  distinta de la de Task Manager. En desarrollo vale un proyecto gratuito de Supabase en la nube
-  (misma API: cambiar de uno a otro es URL y claves). **Sin copia de seguridad diaria fuera de la
+- **Servidor**: **de momento, un proyecto de supabase.com** (decisión de Josep, 2026-09-27). El
+  destino es Supabase autoalojado (Apache 2.0) en Oracle Cloud Always Free, región de la UE,
+  distinta de la de Task Manager; pasar de uno a otro es URL y claves, no código. **Sin copia de seguridad diaria fuera de la
   instancia no se pasa a producción.** Solo el 443 abierto; SSH con clave; Studio y la base sin
   acceso público. Sin servidor la app no funciona: su razón de ser es compartir.
 - **RLS en todas las tablas**, pertenencia por `EXISTS` sobre los miembros, y las altas (unirse,
