@@ -37,7 +37,8 @@
 - **Todas las apps se firman con la misma clave que File Manager**, sin excepciones:
   `Mobile/Shared/socratic.keystore`, alias `smsforwarder`
   (SHA1 `C1:CF:43:32:98:3B:A0:DA:B5:70:7C:13:DF:98:7A:DC:CD:60:E2:A4`). Las 8 apps la usan, Music
-  Player incluido. **Ninguna app tiene *upload key* propia**: si alguna aparece firmada con otra
+  Player incluido. **Ninguna app tiene *upload key* propia** (salvo las dos excepciones heredadas
+  de abajo): si alguna aparece firmada con otra
   clave, se corrige para que use la de File Manager — nunca al revés — y se comprueba que su csproj
   importe `..\Shared\signing.props` sin sobrescribir `AndroidSigningKeyStore` ni
   `AndroidSigningKeyAlias`.
@@ -46,12 +47,22 @@
   Music Player) y `Mobile/Hiker/Hiker/socratic.keystore` (copia antigua, distinta de la compartida;
   su `keystore.password.txt` es de Hiker y no abre la clave común). La única válida es la que
   referencia `signing.props`.
-- **Ojo con un falso bloqueo.** Al subir el **primer** bundle de una app nueva, Play puede
-  rechazarla con *"APK signed with a key that is also used to sign an APK that is delivered to
-  users. Because this app is enrolled in App Signing, you should create a different key"*. **No hay
-  que crear ninguna clave nueva**: comprobado el 2026-08-28 con Music Player, la clave compartida
-  se acepta sin problema en los intentos siguientes. Si aparece ese error, reintentar (con un
-  `versionCode` nuevo si el anterior ya se gastó) antes de tocar nada de la firma.
+- **Apps nuevas: que usen la clave de File Manager desde el alta** (Josep, 2026-09-28). La clave
+  compartida es la **clave de firma** de las apps ya publicadas; si una app nueva se deja con la
+  firma que genera Google, Play rechaza el primer bundle firmado con la compartida con *"APK signed
+  with a key that is also used to sign an APK that is delivered to users. Because this app is
+  enrolled in App Signing, you should create a different key"*, y reintentar no sirve (Credentials,
+  2026-09-28, tres intentos; Task Manager y TDT Online, 2026-09-08/13). **No se crea ninguna clave
+  nueva.** Antes de subir la primera versión, en Play Console › la app › *Probar y publicar ›
+  Configuración de la app › Firma de aplicaciones* (*App signing*) se elige **usar la misma clave
+  de firma que otra app de la cuenta: File Manager**. Solo se puede mientras la app no tenga
+  ninguna versión subida y no hay API para hacerlo: lo hace Josep en la consola. Después, el AAB
+  firmado con la compartida sube por la API como en el resto.
+- **Excepciones heredadas, que no se repiten**: Task Manager
+  (`Mobile/Shared/socratic-taskmanager-upload.keystore`, alias `taskmanager`) y TDT Online
+  (`socratic-tdtonline-upload.keystore`, alias `tdtonline`) se dieron de alta con clave de subida
+  propia antes de esta regla, y en Play ya no se puede cambiar. Sus AAB para Play van con esa
+  clave; lo que se instala por USB, con la compartida.
 - **La clave no se puede perder.** Si se pierde hay que pedirle a Google un *upload key reset*,
   con la espera que eso supone. El certificado público para esa solicitud está exportado en
   `Mobile/Shared/upload_certificate.pem` y en
