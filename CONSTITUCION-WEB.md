@@ -5,7 +5,7 @@
 >
 > Alcance: `Web/socraticweb` y cualquier sitio o servicio web del proyecto.
 >
-> **Última actualización: 2026-09-25**
+> **Última actualización: 2026-09-28**
 
 ---
 
@@ -151,8 +151,20 @@ Reglas:
 - **Sin correo a la vista** (Josep, 2026-09-25): ni botones de «escribir un correo» ni la dirección
   en portada, fichas, guías o pie. El soporte va por **incidencias de GitHub**. La dirección solo
   aparece donde la ley la exige: aviso legal (LSSI art. 10) y privacidad (RGPD art. 13).
-- **Nada de «sin anuncios» en los textos de la web** (portada, pie, fichas): las aplicaciones tienen
-  que poder monetizarse. Si una ficha de app lo dice, es porque hoy es así y se cambia cuando deje de serlo.
+- **La idea del catálogo, en los textos generales** (Josep, 2026-09-28; sustituye a la regla de no
+  decir «sin anuncios»): las aplicaciones son **de uso libre y sin anuncios**; se hacen para que
+  Josep aprenda y para que quien quiera **aprenda también o las use libremente**, con el **código
+  fuente abierto** en GitHub para leerlo, reutilizarlo o mejorarlo. La portada, el pie y los textos
+  que presentan el sitio lo dicen así, sin promesas de producto comercial («herramientas pequeñas
+  que hacen una cosa bien…»).
+- **Nombres propios: solo los de Microsoft y Google** (Josep, 2026-09-28), para evitar problemas de
+  marcas, derechos de autor y parecidos. Se pueden nombrar sus productos (Windows, Android, Google
+  Play, Google Drive, OneDrive, Microsoft Store, Edge, Chrome, Business Central…); **el resto de
+  productos y empresas no se nombran**: se describen por lo que son («otros gestores de
+  contraseñas», «otros navegadores», «aplicaciones de códigos de verificación», «el servicio de
+  mapas»…). Excepción: donde la ley o una licencia obliga a nombrarlos (política de privacidad con
+  los terceros que reciben datos, aviso legal, atribuciones obligatorias como la de los datos del
+  mapa), y ahí solo lo imprescindible.
 - **Botones con iconos** cuando haya interfaz propia, igual que en el resto del catálogo, y
   **planos**: SVG de línea, nunca emoji (ver [General §6.2](CONSTITUCION-GENERAL.md)).
 
