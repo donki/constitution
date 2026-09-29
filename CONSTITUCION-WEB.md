@@ -162,7 +162,18 @@ Reglas:
   Josep aprenda y para que quien quiera **aprenda también o las use libremente**, con el **código
   fuente abierto** en GitHub para leerlo, reutilizarlo o mejorarlo. La portada, el pie y los textos
   que presentan el sitio lo dicen así, sin promesas de producto comercial («herramientas pequeñas
-  que hacen una cosa bien…»).
+  que hacen una cosa bien…»). **Y que es un experimento de desarrollo con inteligencia artificial**
+  (Josep, 2026-09-29): las aplicaciones se desarrollan con ayuda de IA, siguiendo la constitución,
+  para aprender qué se puede hacer así. Se dice en la portada, el pie, la descripción del sitio y el
+  índice de «Constitución», con tono sencillo y sin nombrar la IA ni la empresa (regla de nombres).
+- **Apartado «Constitución»** (Josep, 2026-09-29): la web explica la constitución en
+  `/constitucion/` (inglés en `/en/constitution/`), una página por documento (general, móvil,
+  herramientas, juegos, web y anexos técnicos) con **qué dice y por qué** cada regla, en lenguaje
+  llano, el enlace al texto completo en GitHub y la fecha del texto que explica. El contenido se
+  escribe a mano en `contenido/constitucion/` y `contenido/en/constitucion/` (no se copia: se
+  explica y se quita lo interno —rutas, secretos, identificadores, cuentas, dispositivos—).
+  **Cuando cambia la constitución, cambia su página en el mismo ciclo**, en los dos idiomas; si la
+  fecha del documento es más nueva que la de su página, `build.py` avisa.
 - **Nombres propios: solo los de Microsoft y Google** (Josep, 2026-09-28), para evitar problemas de
   marcas, derechos de autor y parecidos. Se pueden nombrar sus productos (Windows, Android, Google
   Play, Google Drive, OneDrive, Microsoft Store, Edge, Chrome, Business Central…); **el resto de
