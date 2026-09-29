@@ -235,6 +235,8 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
 Una tarea está **terminada** cuando:
 
 - [ ] Compila sin warnings nuevos.
+- [ ] **El banco de pruebas automatizadas pasa entero** (`dotnet test`), el cambio trae sus pruebas
+      y la cobertura no baja; el README tiene al día pruebas, cobertura y tiempo (§8.6).
 - [ ] Se ha probado en dispositivo real, no solo en emulador.
 - [ ] Si la aplicación sincroniza, se ha probado **en dos dispositivos con la misma cuenta**: en uno
       solo no se ve nada de lo que puede fallar.
@@ -339,6 +341,31 @@ Cada repositorio de una aplicación publicada tiene **`PRIVACY.md` en castellano
 que se pone en las tiendas mientras no exista la página del catálogo, y dice lo mismo que las
 fichas: qué datos se recogen (normalmente ninguno), dónde se guardan y con quién se comparten.
 Referencia: `Mobile/Credentials/PRIVACY.md`.
+
+### 8.6 Banco de pruebas automatizadas
+
+*(Josep, 2026-09-29.)* Toda aplicación tiene un **banco de pruebas automatizadas** que se ejecuta
+entero con un solo `dotnet test` (proyecto `<App>.Tests`, xUnit, en la solución de la app).
+
+- **Qué se prueba**: la lógica (servicios, modelos, cálculos, formatos, parsers, importadores,
+  cifrado, reglas de negocio, que las traducciones es/en tengan las mismas claves…). La interfaz no
+  se prueba aquí; para que la lógica se pueda probar, se saca de las páginas a clases propias.
+- **Pruebas de verdad**: comprueban resultados, casos límite y errores; nada de pruebas que solo
+  suben el número. Una prueba que encuentra un fallo real se queda, y el fallo se arregla.
+- **Sin efectos fuera**: ni datos reales del usuario, ni red externa, ni servidores o dispositivos
+  reales por defecto. Las pruebas de integración van detrás de una variable de entorno.
+- **Se miden y se publican tres cifras**, con la misma herramienta en todas las apps (coverlet +
+  ReportGenerator, `--collect:"XPlat Code Coverage"`), en el `README.md` de cada repositorio
+  (apartado «Pruebas», con fecha y cómo lanzarlas):
+  1. **número de pruebas** (y cuántas pasan);
+  2. **cobertura de líneas**: la del código instrumentado y la de **toda la aplicación** (líneas
+     cubiertas ÷ líneas de código C# de la app, sin generados ni recursos), que es la cifra honesta;
+  3. **tiempo que tarda el banco** en ejecutarse entero (lo que informa `dotnet test`).
+- **La cobertura tiende al 100 %.** Cada cambio que toca lógica llega con sus pruebas, y la cobertura
+  de toda la app **nunca baja** de una versión a la siguiente; si baja, se explica en el CHANGELOG.
+  Lo que no se puede probar automáticamente (la interfaz) se va reduciendo sacando lógica de ella.
+- **Se ejecuta en cada entrega**: el banco en verde es condición para dar una versión por buena
+  (sección 8), y las cifras del README se actualizan cuando cambian.
 
 ## 9. Cómo se registran las tareas
 
