@@ -216,6 +216,13 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
       pero lo que se sepa que puede fallar se captura en su sitio.
     *(sOC Phone Mirror, 2026-09-25: la Microsoft Store la rechazó porque «se cierra tras arrancar» y
     no tenía ningún gestor; un fallo al arrancar adb dentro del paquete la tumbaba sin dejar rastro.)*
+13. **Nombres de productos ajenos en los textos de las apps** (Josep, 2026-09-29). Se pueden
+    nombrar los de **Microsoft y Google** y, además, **WhatsApp, Xiaomi, Redmi, POCO, Chrome, Edge,
+    Firefox y Brave**. El resto de productos y empresas no se nombran: se describen por lo que son
+    («otros gestores de contraseñas», «otros instaladores habituales», «el servicio de
+    almacenamiento»…). Quedan las atribuciones que exige una licencia (p. ej. la de Wikipedia /
+    Wikidata en Music Player). En la web la regla es más estricta: solo Microsoft y Google
+    ([Web §4](CONSTITUCION-WEB.md)).
 
 ## 7. Idiomas
 
