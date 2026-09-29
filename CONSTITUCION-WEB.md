@@ -5,7 +5,7 @@
 >
 > Alcance: `Web/socraticweb` y cualquier sitio o servicio web del proyecto.
 >
-> **Última actualización: 2026-09-28**
+> **Última actualización: 2026-09-29**
 
 ---
 
@@ -31,6 +31,12 @@
   anuncia en su ficha, y separa los dos casos que existen — las que funcionan enteras en el
   dispositivo y las que sincronizan, que necesitan cuenta y servidor. Así una app nueva no obliga a
   reescribirla, y la que sí toca al detalle es su ficha de Play.
+- **Excepción: una app que trata datos de otro tipo lleva su propio apartado** (Josep, 2026-09-29).
+  Cuando lo que hace no cabe en los casos genéricos —hoy **Family Together**: comparte la ubicación
+  con un grupo, sin cuenta, y pasa por servidor, servicio de avisos y servicios de mapas—, la
+  política le dedica un apartado con su nombre: qué se envía y cada cuánto, cómo se cifra, cuánto se
+  guarda, cómo se borra y **qué terceros lo reciben, con nombre** (la ley lo exige). El resto sigue en
+  genérico.
 - **El caso «sincroniza» lleva sus condiciones escritas**: cuenta que el usuario ya tiene, sin ver ni
   guardar contraseñas, contenido **cifrado en el dispositivo antes de salir** y guardado cifrado,
   solo lo que esa función necesita, y sin publicidad, perfiles ni analítica. Hasta el 1-sep-2026 la
