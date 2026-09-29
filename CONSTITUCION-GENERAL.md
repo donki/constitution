@@ -1,4 +1,4 @@
-﻿# Constitución general — sOCratic
+# Constitución general — sOCratic
 
 > Norma común a **todo** lo que hay en este repositorio: `Mobile/`, `Games/`, `Tools/` y `Web/`.
 > Cada categoría añade la suya, que **amplía** esta pero nunca la contradice:
