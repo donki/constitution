@@ -162,10 +162,13 @@ Reglas:
   Josep aprenda y para que quien quiera **aprenda también o las use libremente**, con el **código
   fuente abierto** en GitHub para leerlo, reutilizarlo o mejorarlo. La portada, el pie y los textos
   que presentan el sitio lo dicen así, sin promesas de producto comercial («herramientas pequeñas
-  que hacen una cosa bien…»). **Y que es un experimento de desarrollo con inteligencia artificial**
-  (Josep, 2026-09-29): las aplicaciones se desarrollan con ayuda de IA, siguiendo la constitución,
-  para aprender qué se puede hacer así. Se dice en la portada, el pie, la descripción del sitio y el
-  índice de «Constitución», con tono sencillo y sin nombrar la IA ni la empresa (regla de nombres).
+  que hacen una cosa bien…»). **Y que es un experimento de programación con IA siguiendo SDD**
+  (desarrollo guiado por especificaciones; Josep, 2026-09-29): primero se escribe qué debe hacer
+  cada aplicación —su especificación y la constitución, que es la parte fija común a todas— y a
+  partir de eso la programan modelos de lenguaje grandes (LLM). Se dice en la portada, el pie, la
+  descripción del sitio y el índice de «Constitución», con tono sencillo, hablando de LLM en
+  genérico: **nunca se nombran modelos ni productos de IA concretos**, tampoco los de Microsoft o
+  Google, ni la empresa que los hace.
 - **Apartado «Constitución»** (Josep, 2026-09-29): la web explica la constitución en
   `/constitucion/` (inglés en `/en/constitution/`), una página por documento (general, móvil,
   herramientas, juegos, web y anexos técnicos) con **qué dice y por qué** cada regla, en lenguaje
