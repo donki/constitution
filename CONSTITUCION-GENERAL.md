@@ -371,6 +371,32 @@ entero con un solo `dotnet test` (proyecto `<App>.Tests`, xUnit, en la solución
   la web y en su tarjeta del catálogo (`contenido/calidad.json` del repo de la web), y se actualizan
   en el mismo ciclo que el README.
 
+### 8.7 Pruebas de interfaz automatizadas
+
+*(Josep, 2026-09-30; piloto con Task Manager en Android y RC Manager en Windows: 6 de 6 en tres
+tandas seguidas.)* Cada app con interfaz tiene un proyecto **`<App>.UITests`**, separado de las
+pruebas de lógica (§8.6).
+
+- **Herramientas**: en Android, **Appium** con el driver UiAutomator2 (Appium en `D:\dev\appium`,
+  drivers en `APPIUM_HOME=D:\dev\appium-home`; pruebas en C# con `Appium.WebDriver`); en Windows,
+  **FlaUI** (UIA3). Licencias Apache 2.0 y MIT.
+- **Tanda mínima**: la app arranca y llega a su pantalla principal; cada entrada del menú abre su
+  pantalla; el botón de atrás según Mobile §7; cambio de idioma es/en; alta y borrado de un
+  elemento de prueba; en Android, la letra al 145 % sin textos que se salgan o se recorten (lo que
+  la prueba no puede ver, como una elipsis dentro de su fila, se sigue mirando a ojo).
+- **Identificadores**: lo que se pulsa lleva `AutomationId` (en WPF, `x:Name` o
+  `AutomationProperties.AutomationId`); las pruebas nunca buscan por el texto, que cambia con el idioma.
+- **Nunca datos ni cuentas reales**: en Android, solo en emulador o dispositivo de pruebas, con los
+  datos de la app borrados y entrando sin cuenta; en escritorio, con el modo aislado solo de Debug
+  (`SOC_SANDBOX`) que lleva los datos a una carpeta temporal y corta red, nube, arranque con Windows y
+  cualquier conexión real (§8.4).
+- Cada paso guarda una **captura** en `artifacts/` (fuera de git) y la tanda deja el dispositivo como
+  estaba (letra a 1.0). Se documenta en `<App>.UITests/README.md`.
+- **Cuándo**: antes de cada versión que toque la interfaz, tomando el cerrojo del emulador. Son lentas
+  en Android (≈ 2 min por app) y rápidas en Windows (≈ 10 s).
+- **Cifras**: número de pruebas de interfaz y tiempo de la tanda, en el README y en la ficha de la app
+  en la web, aparte de las de §8.6 (no suman a la cobertura de código).
+
 ## 9. Cómo se registran las tareas
 
 Las tareas viven en la carpeta `sOCProjects`, fuera de los repositorios:
