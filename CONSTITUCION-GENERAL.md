@@ -366,6 +366,10 @@ entero con un solo `dotnet test` (proyecto `<App>.Tests`, xUnit, en la solución
   Lo que no se puede probar automáticamente (la interfaz) se va reduciendo sacando lógica de ella.
 - **Se ejecuta en cada entrega**: el banco en verde es condición para dar una versión por buena
   (sección 8), y las cifras del README se actualizan cuando cambian.
+- **También en la web** *(Josep, 2026-09-30)*: las cifras del README (pruebas, coberturas y tiempo del
+  banco) y el **tiempo de desarrollo con LLM** (horas aproximadas) se publican en la ficha de la app en
+  la web y en su tarjeta del catálogo (`contenido/calidad.json` del repo de la web), y se actualizan
+  en el mismo ciclo que el README.
 
 ## 9. Cómo se registran las tareas
 
