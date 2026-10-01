@@ -361,9 +361,15 @@ entero con un solo `dotnet test` (proyecto `<App>.Tests`, xUnit, en la solución
   2. **cobertura de líneas**: la del código instrumentado y la de **toda la aplicación** (líneas
      cubiertas ÷ líneas de código C# de la app, sin generados ni recursos), que es la cifra honesta;
   3. **tiempo que tarda el banco** en ejecutarse entero (lo que informa `dotnet test`).
-- **La cobertura tiende al 100 %.** Cada cambio que toca lógica llega con sus pruebas, y la cobertura
-  de toda la app **nunca baja** de una versión a la siguiente; si baja, se explica en el CHANGELOG.
-  Lo que no se puede probar automáticamente (la interfaz) se va reduciendo sacando lógica de ella.
+- **Mínimo: el 90 % de toda la aplicación** *(Josep, 2026-10-01)*. La cifra que cuenta es la
+  cobertura de líneas **sobre toda la app** (no solo la del código instrumentado), y tiene que llegar
+  al **90 %** como mínimo; la meta sigue siendo el 100 %. Cuentan las pruebas de lógica (§8.6) y, si
+  se miden con cobertura, las de interfaz (§8.7). Para llegar, la lógica se saca de las pantallas a
+  clases que se puedan probar, y las pantallas que quedan se cubren con pruebas de interfaz.
+- **Mientras una app no llega al 90 %**, cada versión que toca su código **sube su cobertura** (nunca
+  la baja; si baja, se explica en el CHANGELOG), y su fichero de tareas lleva el plan para llegar
+  (qué falta por probar y cómo). Una app nueva nace ya con el 90 %. Cada cambio que toca lógica llega
+  con sus pruebas.
 - **Se ejecuta en cada entrega**: el banco en verde es condición para dar una versión por buena
   (sección 8), y las cifras del README se actualizan cuando cambian.
 - **También en la web** *(Josep, 2026-09-30)*: las cifras del README (pruebas, coberturas y tiempo del
