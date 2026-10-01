@@ -296,3 +296,35 @@ que solo aplican a esta app.
   el anterior deja de enviar.
 - **Permisos**: ubicación precisa y en segundo plano, servicio en primer plano de tipo location,
   notificaciones y cámara (QR). Todos con declaración en Play Console, vídeo sin cortes y en la ficha.
+
+## 11. Paso a producción en Google Play: el cuestionario, preparado en cada app
+
+*(Josep, 2026-10-01.)* Para pasar de la prueba cerrada a producción, Play Console (Panel › Solicitar
+acceso a producción) pide un cuestionario. Cada app de Play lleva sus respuestas preparadas en
+**`docs/PLAY-PRODUCCION.md`** de su repositorio, en el idioma de la consola (catalán), con cada texto
+de **300 caracteres como máximo** (su longitud entre paréntesis), listas para pegar.
+Referencia: `Mobile/PDFReader/docs/PLAY-PRODUCCION.md`. Las preguntas:
+
+- **Informació sobre la prova tancada**
+  1. Com has reclutat usuaris per a la prova tancada? (300) — los cuatro grupos públicos de
+     verificadores (`GRUPOS-VERIFICADORES.md` en la raíz de proyectos), sin proveedores de pago, y
+     las pruebas propias en dispositivo real.
+  2. Fins a quin punt t'ha resultat fàcil reclutar verificadors? (Molt difícil … Molt fàcil).
+  3. Descriu la implicació dels verificadors: si han fet servir totes les funcions i si l'ús és
+     coherent amb el d'un usuari real; si no, quines diferències esperaries. (300)
+  4. Resum dels suggeriments rebuts i com els has recollit. (300)
+- **Informació sobre l'aplicació**
+  5. A quin públic objectiu va dirigida? (300)
+  6. Com proporciona valor als usuaris? (300)
+  7. Quantes instal·lacions esperes el primer any? (0-10.000 · 10.000-100.000 · 100.000-1.000.000 ·
+     Més d'1 milió · No ho sé).
+- **Preparació per a la producció**
+  8. Quins canvis has fet en funció del que has après durant la prova tancada? (300) — sale del
+     CHANGELOG desde que la app entró en prueba cerrada.
+  9. Com has decidit que està preparada per a producció? (300) — banco de pruebas (General §8.6),
+     pruebas en dispositivo real (§9), Android Vitals sin fallos, ficha y seguridad de datos completas.
+
+Reglas: **nunca inventar** lo que hicieron o dijeron los verificadores; lo que solo se sabe mirando la
+consola (si la usaron, comentarios, fallos en Android Vitals) va marcado con ⚠ para que Josep lo
+compruebe antes de enviarlo. El fichero se crea al subir una app nueva a la prueba cerrada y se pone
+al día en cada versión que cambie lo que dice (cambios, número de pruebas).
