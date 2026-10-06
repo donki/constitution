@@ -241,6 +241,8 @@ Una tarea está **terminada** cuando:
 - [ ] Si la aplicación sincroniza, se ha probado **en dos dispositivos con la misma cuenta**: en uno
       solo no se ve nada de lo que puede fallar.
 - [ ] Los textos están en los dos idiomas.
+- [ ] **Si es una funcionalidad nueva, llega con sus pruebas**: las de lógica en el banco de la app
+      (§8.6) y las **E2E** en sus pruebas de interfaz (§8.7), en la misma versión. *(Josep, 2026-10-06.)*
 - [ ] Está commiteada.
 - [ ] La documentación afectada está actualizada.
 - [ ] **En cada cambio se mira si hay que actualizar la web**, sea grande o pequeño: una opción
@@ -370,6 +372,12 @@ entero con un solo `dotnet test` (proyecto `<App>.Tests`, xUnit, en la solución
   la baja; si baja, se explica en el CHANGELOG), y su fichero de tareas lleva el plan para llegar
   (qué falta por probar y cómo). Una app nueva nace ya con el 90 %. Cada cambio que toca lógica llega
   con sus pruebas.
+- **Funcionalidad nueva, pruebas nuevas** *(Josep, 2026-10-06)*: cada funcionalidad que se añade
+  entra **con su código de prueba en el banco del proyecto**, en el mismo commit o versión: pruebas
+  de lógica aquí y, además, al menos una prueba **E2E** (de extremo a extremo, por la interfaz, §8.7)
+  que la recorra como lo haría el usuario. Lo que de verdad no se pueda automatizar (un sensor, un
+  gesto que adb no simula, un permiso del sistema) se dice en el CHANGELOG y pasa a la prueba a mano
+  del fichero de pendientes.
 - **Se ejecuta en cada entrega**: el banco en verde es condición para dar una versión por buena
   (sección 8), y las cifras del README se actualizan cuando cambian.
 - **También en la web** *(Josep, 2026-09-30)*: las cifras del README (pruebas, coberturas y tiempo del
@@ -398,6 +406,7 @@ pruebas de lógica (§8.6).
   cualquier conexión real (§8.4).
 - Cada paso guarda una **captura** en `artifacts/` (fuera de git) y la tanda deja el dispositivo como
   estaba (letra a 1.0). Se documenta en `<App>.UITests/README.md`.
+- **Cada funcionalidad nueva suma su prueba E2E** a esta tanda (ver §8.6), además de la tanda mínima.
 - **Cuándo**: antes de cada versión que toque la interfaz, tomando el cerrojo del emulador. Son lentas
   en Android (≈ 2 min por app) y rápidas en Windows (≈ 10 s).
 - **Cifras**: número de pruebas de interfaz y tiempo de la tanda, en el README y en la ficha de la app
