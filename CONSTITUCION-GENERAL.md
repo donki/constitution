@@ -13,7 +13,7 @@
 > `constitution/`. **Se editan aquí**: una copia suelta en la carpeta de trabajo se queda vieja sin
 > que nadie se entere.
 >
-> **Última actualización: 2026-09-12**
+> **Última actualización: 2026-10-15**
 
 ---
 
@@ -335,6 +335,14 @@ Cuando se prueba en el mismo equipo donde el desarrollador **usa la aplicación 
   interfaz, por adb en un móvil o emulador) ni fuera de ellas. Compartir o enviar algo por WhatsApp
   se prueba **a mano**: la prueba automática llega, como mucho, hasta la hoja de compartir del
   sistema y ahí se para, sin elegir WhatsApp ni pulsar «Enviar». *(Regla de Josep, 2026-10-15.)*
+
+- **Ningún mensaje real sale de forma automática** *(Josep, 2026-10-15)*: ni las pruebas (de lógica, de
+  interfaz o de integración) ni ningún proceso desatendido envían un WhatsApp, un SMS o un correo de
+  verdad a nadie. Enviar mensajes a personas es siempre **una acción a mano**: alguien pulsa el botón
+  y confirma, en la app de verdad. Las pruebas que recorren un envío lo hacen contra un servidor o un
+  doble local que solo apunta lo que habría salido; si algo apunta a un servicio real de mensajería
+  (Twilio, la API de WhatsApp, un SMTP), la prueba no se lanza. *(FBMManager, avisos de cuotas por
+  WhatsApp.)*
 
 *(La instancia de pruebas de sOC Credentials chocaba con la real y habría registrado su puente en
 los navegadores del desarrollador; al teclear en ella, el autocompletar de la real la rellenó con la
