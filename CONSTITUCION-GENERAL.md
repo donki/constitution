@@ -331,6 +331,10 @@ Cuando se prueba en el mismo equipo donde el desarrollador **usa la aplicación 
   Android). Antes de cada clic se comprueba qué ventana está en primer plano, las capturas se hacen
   sin robar el foco (`PrintWindow`), y no se teclea en una ventana de la aplicación mientras la real
   está abierta.
+- **Los mensajes de WhatsApp no se envían nunca de forma automática**: ni en pruebas (de lógica, de
+  interfaz, por adb en un móvil o emulador) ni fuera de ellas. Compartir o enviar algo por WhatsApp
+  se prueba **a mano**: la prueba automática llega, como mucho, hasta la hoja de compartir del
+  sistema y ahí se para, sin elegir WhatsApp ni pulsar «Enviar». *(Regla de Josep, 2026-10-15.)*
 
 *(La instancia de pruebas de sOC Credentials chocaba con la real y habría registrado su puente en
 los navegadores del desarrollador; al teclear en ella, el autocompletar de la real la rellenó con la
