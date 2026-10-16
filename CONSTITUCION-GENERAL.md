@@ -223,6 +223,33 @@ El detalle y el cómo, en la sección 9 del submódulo de gobernanza.
     almacenamiento»…). Quedan las atribuciones que exige una licencia (p. ej. la de Wikipedia /
     Wikidata en Music Player). En la web la regla es más estricta: solo Microsoft y Google
     ([Web §4](CONSTITUCION-WEB.md)).
+14. **Menús contextuales y de bandeja: el de sOC ScreenShare** (Josep, 2026-10-16). Todo menú que
+    se abre con el botón derecho, desde el icono junto al reloj o desde un botón «▾» es el mismo en
+    todas las aplicaciones de escritorio, y nunca el menú gris del sistema:
+    - **Contenedor**: tarjeta con el fondo de las tarjetas (`CardBackground`), borde de 1 px del
+      color de separador (`Separator`), **esquinas de 10 px**, relleno de 4 px, ancho mínimo de
+      240 px (220 en los submenús) y **sin sombra**. Texto de 13 px en el color principal del texto.
+    - **Elemento**: alto mínimo de 32 px, relleno 8·7·10·7, esquinas de 6 px. Tres columnas: el
+      **icono** (glifo plano de Segoe Fluent Icons, con Segoe MDL2 Assets de reserva, de 14 px, en
+      el color de acento; en rojo `Danger` si la acción es destructiva o de grabar) en una columna
+      fija de 26 px, el **texto** y, si tiene submenú, la flecha `›` (glifo E76C, 10 px). Todo
+      elemento lleva icono (§6.1). El atajo de teclado, si lo hay, va tras el texto separado por dos
+      espacios.
+    - **Al pasar el ratón** o con el teclado, el fondo del elemento pasa al de selección
+      (`SelectionSurface`); **desactivado**, al 45 % de opacidad.
+    - **Separador**: línea de 1 px del color de separador con márgenes de 8·4.
+    - **Submenú**: se abre a la derecha, a 2 px, con el mismo contenedor y un fundido.
+    - **Claro y oscuro** (§6.4): los colores salen de los recursos del tema, nunca fijos. Teclado:
+      las flechas recorren los elementos en ciclo.
+    - En el **icono de la bandeja**: clic izquierdo abre la ventana y clic derecho el menú, junto
+      al puntero; al abrirse, el menú pasa a primer plano para que se cierre al pulsar fuera.
+
+    Implementación de referencia (WPF): `Tools/ScreenShare/src/ScreenShare.App/App.xaml` (estilos
+    `TrayMenu`, `TrayItem` y `TraySeparator`) y `Services/TrayIcon.cs` (`TrayIcon.Item(texto, glifo,
+    acción, enabled, danger)` y `TrayIcon.Separator()`). En **WinForms**, un `ToolStripRenderer`
+    propio que dibuje lo mismo; en **MAUI para Windows**, la bandeja abre un menú WinUI
+    (`MenuFlyout`) con estos colores y medidas en lugar del menú Win32. Las aplicaciones Android
+    no tienen menús contextuales: sus acciones van en botones con icono (§6.1).
 
 ## 7. Idiomas
 
