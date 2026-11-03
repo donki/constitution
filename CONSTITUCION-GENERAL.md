@@ -13,7 +13,7 @@
 > `constitution/`. **Se editan aquí**: una copia suelta en la carpeta de trabajo se queda vieja sin
 > que nadie se entere.
 >
-> **Última actualización: 2026-10-15**
+> **Última actualización: 2026-11-03**
 
 ---
 
@@ -57,6 +57,14 @@
    contraseñas nuestras, y lo demás de este principio se cumple igual. Detalle en
    [Mobile §10](CONSTITUCION-MOBILE.md).
 5. **Gratis y completo.** No hay funciones de pago ni recortes artificiales.
+6. **Ninguna imagen que pueda infringir derechos de autor o de imagen.** En las fichas de las
+   tiendas, la web, los README, los iconos y cualquier material de la aplicación solo van imágenes
+   hechas por nosotros o con licencia que permita el uso comercial. Nunca fotos de personas reales
+   (cantantes, actores, famosos), carátulas de discos o películas, logotipos ni marcas ajenas, ni
+   capturas de otras aplicaciones. Las capturas de pantalla se hacen con **datos inventados**: en un
+   reproductor, canciones, grupos y carátulas ficticios creados para la ocasión; nunca la biblioteca
+   real de nadie. Si una captura ya publicada incumple esto, se sustituye.
+   *(Decisión de Josep del 2026-11-03, al ver fotos de cantantes reales en la ficha de Music Player.)*
 
 ## 2. Estructura del repositorio
 
