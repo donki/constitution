@@ -65,6 +65,17 @@
    reproductor, canciones, grupos y carátulas ficticios creados para la ocasión; nunca la biblioteca
    real de nadie. Si una captura ya publicada incumple esto, se sustituye.
    *(Decisión de Josep del 2026-11-03, al ver fotos de cantantes reales en la ficha de Music Player.)*
+7. **Ningún nombre comercial de terceros.** Ni en la interfaz, ni en los textos de novedades, ni en
+   las fichas de las tiendas, la web, los README, los CHANGELOG, los comentarios del código, las
+   pruebas o las capturas se nombran productos, marcas o empresas ajenas: ni como ejemplo, ni como
+   comparación, ni como dato inventado. Se describe qué hacen: «un programa de control remoto»,
+   «una aplicación de reuniones», y en el código y las pruebas nombres genéricos (`AppReunion`,
+   `OtraApp`). Las capturas, tampoco: ni en un campo de texto. **Solo** se admite el nombre ajeno
+   cuando sin él no se puede decir qué hace la aplicación: la plataforma en la que corre (Windows,
+   Android), el servicio con el que se conecta de verdad (la nube del usuario, su cuenta para
+   vincular) y los créditos de licencia (`THIRD-PARTY-NOTICES.md`). Si un texto ya publicado incumple
+   esto, se corrige en la versión siguiente.
+   *(Decisión de Josep del 2026-11-05, al ver un nombre comercial de ejemplo en sOC ScreenShare.)*
 
 ## 2. Estructura del repositorio
 
