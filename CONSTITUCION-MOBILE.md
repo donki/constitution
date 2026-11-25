@@ -206,6 +206,11 @@ Notas de la API:
   - Ojo: si `MainActivity` sobrescribe `OnBackPressed`, el Shell y las páginas **no ven** el botón.
     La decisión «¿hay pantalla anterior?» la toma quien sí lo sabe (la navegación del Shell); solo
     cuando no la hay se llama a `MoveTaskToBack`.
+  - **Abierta desde otra app** («Abrir con», regla del 2026-10-31): si la pantalla se abrió por un
+    `ACTION_VIEW` de otra aplicación, atrás **vuelve a esa aplicación** (`Finish()` de la actividad),
+    no a la pantalla de inicio propia ni al escritorio. `MoveTaskToBack(true)` no sirve aquí: la
+    actividad vive en la tarea de la otra app y se iría al fondo la tarea entera. La decisión va en
+    `MainActivity` (`AppPlatform.ReturnToCaller`); referencia: PDF Reader y TXT Reader.
   - **Android 16 con `targetSdk 36` activa el «atrás predictivo»** y el botón deja de llegar a
     `Page.OnBackButtonPressed` y al Shell: la aplicación se cierra desde cualquier pantalla. Hasta
     que MAUI lo soporte, en el `<application>` del manifiesto va
