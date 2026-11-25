@@ -414,7 +414,13 @@ entero con un solo `dotnet test` (proyecto `<App>.Tests`, xUnit, en la solución
   (apartado «Pruebas», con fecha y cómo lanzarlas):
   1. **número de pruebas** (y cuántas pasan);
   2. **cobertura de líneas**: la del código instrumentado y la de **toda la aplicación** (líneas
-     cubiertas ÷ líneas de código C# de la app, sin generados ni recursos), que es la cifra honesta;
+     ejecutables cubiertas ÷ líneas ejecutables de la app), que es la cifra honesta. *(Josep,
+     2026-11-25.)* **Solo cuenta el código ejecutable**: las sentencias que coverlet marca como
+     puntos de secuencia. Quedan fuera la definición de la interfaz (XAML y código generado de él),
+     las interfaces, las declaraciones de tipos y miembros sin cuerpo, llaves, `using`, atributos,
+     comentarios, generados (`obj/`, `*.g.cs`, `*.Designer.cs`) y recursos. Lo que no se compila en las
+     pruebas (código de otra plataforma o del dispositivo) sí cuenta en el total, con sus líneas
+     ejecutables estimadas con esas mismas reglas;
   3. **tiempo que tarda el banco** en ejecutarse entero (lo que informa `dotnet test`).
 - **Mínimo: el 90 % de toda la aplicación** *(Josep, 2026-10-01)*. La cifra que cuenta es la
   cobertura de líneas **sobre toda la app** (no solo la del código instrumentado), y tiene que llegar
